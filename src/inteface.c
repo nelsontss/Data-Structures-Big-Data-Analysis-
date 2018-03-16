@@ -1,6 +1,7 @@
 #include "../include/interface.h"
 #include "../include/myparser.h"
 #include <common.h>
+#include <pair.h>
 #include <glib-2.0/gmodule.h>
 #include <string.h>
 
@@ -24,10 +25,28 @@ typedef struct mypost
 	char* ownerUser;
 }*MyPost;
 
+void destroy_myuser(MyUser user){
+	free(user->id);
+	free(user->name);
+	free(user);
+}
+
+void destroy_key(char* key){
+	free(key);
+}
+
+void destroy_mypost (MyPost post){
+	free(post->id);
+	free(post->title);
+	free(post->ownerUser);
+	free(post);
+}
+
+
 TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
-	com->users = g_hash_table_new(g_str_hash,g_str_equal);
-	com->posts = g_hash_table_new(g_str_hash,g_str_equal);
+	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
+	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
 	return com;
 }
 
@@ -38,12 +57,6 @@ MyUser create_myuser(char *id, char *name){
 	user->name = mystrdup(name);
 
 	return user;
-}
-
-void destroy_myuser(MyUser user){
-	free(user->id);
-	free(user->name);
-	free(user);
 }
 
 
@@ -94,8 +107,8 @@ USER toUSER (MyUser user) {
 
 
 void imprime(gpointer key, gpointer user_, gpointer user_data){
-	MyUser user = (MyUser) user_;
-	printf("%s\n", user->name);
+	MyPost post = (MyPost) user_;
+	printf("%s\n", post->id);
 }
 
 MyUser get_user(TAD_community com, char* id){
@@ -108,11 +121,6 @@ MyUser get_user(TAD_community com, char* id){
 	return myuser;
 }
 
-TAD_community load(TAD_community com, char* dump_path){
-	
-	load_users(com,dump_path);
-	return com;
-}
 
 MyPost create_mypost(char* id, char* title, char* ownerUser){
 	MyPost post= (MyPost) malloc(sizeof(struct mypost));
@@ -122,12 +130,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser){
 	return post;
 }
 
-void destroy_mypost (MyPost post){
-	free(post->id);
-	free(post->title);
-	free(post->ownerUser);
-	free(post);
-}
+
 
 int load_posts(TAD_community com, char* dump_path){
 	char id[1000],  title[1000], ownerUser[1000], dump[1000];
@@ -155,9 +158,7 @@ int load_posts(TAD_community com, char* dump_path){
 		post = create_mypost(id,title,ownerUser);
 		char* id_= mystrdup(id);
 
-		g_hash_table_insert(com->posts, id_, post);
-		
-		
+		g_hash_table_insert(com->posts, id_, post);	
 		cur = cur->next->next;
 		
 		
@@ -177,14 +178,25 @@ MyPost get_post (TAD_community com, char* id){
 	return mypost;	
 }
 
+TAD_community load(TAD_community com, char* dump_path){
+	
+	load_users(com,dump_path);
+	load_posts(com,dump_path);
+	return com;
+}
+
+
 STR_pair info_from_post(TAD_community com, int id){
-	char c = (char) id;
-	MyPost mypost = get_post(com, &c);
-	if (mypost==NULL)
+	char * id_=(char*)malloc(sizeof(char));
+	sprintf(id_, "%d", id);
+	
+	MyPost mypost = get_post(com, id_);
+	if (mypost==NULL){
 		return NULL;
+	}
 	MyUser myuser = get_user (com, mypost->ownerUser);
 	if (myuser==NULL)
 		return NULL;
-	STR_pair pair = create_str_pair(mypost->title, myuser->name);
+	STR_pair pair = create_str_pair(mypost->title, myuser->name);	
 	return pair;
 }
