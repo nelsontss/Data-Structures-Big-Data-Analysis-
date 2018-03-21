@@ -2,6 +2,8 @@
 #include "../include/myparser.h"
 #include <common.h>
 #include <pair.h>
+#include <myuser.h>
+#include <mypost.h>
 #include <glib-2.0/gmodule.h>
 #include <string.h>
 
@@ -9,56 +11,15 @@ typedef struct TCD_community
 {
 	GHashTable* posts;
 	GHashTable* users;
+	
+	long total_questions;
+	long total_answers;
 
 }TCD_community;
-
-typedef struct myuser
-{
-	char * id;
-	char * name;
-}*MyUser;
-
-typedef struct mypost
-{
-	char* id;
-	char* title;
-	char* ownerUser;
-}*MyPost;
-
-void destroy_myuser(MyUser user){
-	free(user->id);
-	free(user->name);
-	free(user);
-}
 
 void destroy_key(char* key){
 	free(key);
 }
-
-void destroy_mypost (MyPost post){
-	free(post->id);
-	free(post->title);
-	free(post->ownerUser);
-	free(post);
-}
-
-
-TAD_community init() {
-	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
-	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
-	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
-	return com;
-}
-
-
-MyUser create_myuser(char *id, char *name){
-	MyUser user = (MyUser)malloc(sizeof(struct myuser));
-	user->id = mystrdup(id);
-	user->name = mystrdup(name);
-
-	return user;
-}
-
 
 int load_users(TAD_community com, char *dump_path){
 	char id[1000] ,name[1000];char dump[100];
@@ -100,15 +61,8 @@ int load_users(TAD_community com, char *dump_path){
 
 USER toUSER (MyUser user) {
 	long post_history;
-	USER res = create_user(strcat(user->id,user->name),&post_history);
+	USER res = create_user(strcat(get_user_id(user),get_user_name(user)),&post_history);
 	return res;
-}
-
-
-
-void imprime(gpointer key, gpointer user_, gpointer user_data){
-	MyPost post = (MyPost) user_;
-	printf("%s\n", post->id);
 }
 
 MyUser get_user(TAD_community com, char* id){
@@ -121,23 +75,13 @@ MyUser get_user(TAD_community com, char* id){
 	return myuser;
 }
 
-
-MyPost create_mypost(char* id, char* title, char* ownerUser){
-	MyPost post= (MyPost) malloc(sizeof(struct mypost));
-	post->id = mystrdup(id);
-	post->title= mystrdup(title);
-	post->ownerUser= mystrdup(ownerUser);
-	return post;
-}
-
-
-
 int load_posts(TAD_community com, char* dump_path){
-	char id[1000],  title[1000], ownerUser[1000], dump[1000];
+	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100];
 	memset(dump, '\0', sizeof(dump));
 	memset(id, '\0', sizeof(id));
 	memset(title, '\0', sizeof(title));
 	memset(ownerUser, '\0', sizeof(ownerUser));
+	memset(post_type, '\0', sizeof(post_type));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -150,6 +94,8 @@ int load_posts(TAD_community com, char* dump_path){
 	cur = cur->next;
 	while(cur!=NULL) {		
 		
+		get_prop(cur,"PostTypeId",post_type);
+		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
 		get_prop(cur,"Id",id);
 		get_prop(cur,"Title",title);
@@ -159,13 +105,21 @@ int load_posts(TAD_community com, char* dump_path){
 		char* id_= mystrdup(id);
 
 		g_hash_table_insert(com->posts, id_, post);	
+		
+		if(strcmp(post_type,"1")==0)
+			com->total_questions++;
+		if(strcmp(post_type,"2")==0)
+			com->total_answers++;
+		}
 		cur = cur->next->next;
-		
-		
 	}
 	free(doc);
 	free(cur);
 	return 0;
+}
+
+int date_to_int(Date a){
+	return (get_year(a)-2000)*365+get_month(a)*30+get_day(a);
 }
 
 MyPost get_post (TAD_community com, char* id){
@@ -176,6 +130,15 @@ MyPost get_post (TAD_community com, char* id){
 	if(mypost==NULL)
 		return NULL;
 	return mypost;	
+}
+
+TAD_community init() {
+	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
+	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
+	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
+	com->total_answers = (long)malloc(sizeof(long));
+	com->total_questions = (long)malloc(sizeof(long));
+	return com;
 }
 
 TAD_community load(TAD_community com, char* dump_path){
@@ -194,9 +157,19 @@ STR_pair info_from_post(TAD_community com, int id){
 	if (mypost==NULL){
 		return NULL;
 	}
-	MyUser myuser = get_user (com, mypost->ownerUser);
+	MyUser myuser = get_user (com, get_post_ownerUser(mypost));
 	if (myuser==NULL)
 		return NULL;
-	STR_pair pair = create_str_pair(mypost->title, myuser->name);	
+	STR_pair pair = create_str_pair(get_post_title(mypost), get_user_name(myuser));	
 	return pair;
+}
+
+
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+
+}
+
+TAD_community clean(TAD_community com){
+	g_hash_table_destroy(com->users);
+	g_hash_table_destroy(com->posts);
 }
