@@ -9,6 +9,7 @@ char * get_post_ownerUser(MyPost post);
 void set_post_id(MyPost post, char* id);
 void set_post_title(MyPost post, char* title);
 void set_post_ownerUser(MyPost post, char* ownerUser);
+int compare_posts (MyPost p1, MyPost p2);
 void destroy_mypost (MyPost post);
 
 #endif
