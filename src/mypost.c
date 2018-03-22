@@ -8,6 +8,7 @@ struct mypost
 	char* id;
 	char* title;
 	char* ownerUser;
+	int data;
 };
 
 MyPost create_mypost(char* id, char* title, char* ownerUser){
@@ -43,6 +44,15 @@ void set_post_title(MyPost post, char* title){
 void set_post_ownerUser(MyPost post, char* ownerUser){
 	free(post->ownerUser);
 	post->ownerUser=mystrdup(ownerUser);
+}
+
+int compare_posts (MyPost p1, MyPost p2){
+	if(p1->data<p2->data)
+		return -1;
+	if(p1->data==p2->data)
+		return 0;
+
+	return 1;
 }
 
 void destroy_mypost (MyPost post){

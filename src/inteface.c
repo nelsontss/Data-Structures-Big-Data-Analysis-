@@ -11,7 +11,9 @@ typedef struct TCD_community
 {
 	GHashTable* posts;
 	GHashTable* users;
-	
+	GList* posts_list;
+	GList* users_list;
+
 	long total_questions;
 	long total_answers;
 
@@ -75,6 +77,18 @@ MyUser get_user(TAD_community com, char* id){
 	return myuser;
 }
 
+void aumenta_answers(GHashTable* users, char *id){
+	MyUser user = g_hash_table_lookup(users,id);
+	aumenta_answers_user(user);
+
+}
+
+void aumenta_questions(GHashTable* users, char *id){
+	MyUser user = g_hash_table_lookup(users,id);
+	aumenta_questions_user(user);
+
+}
+
 int load_posts(TAD_community com, char* dump_path){
 	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100];
 	memset(dump, '\0', sizeof(dump));
@@ -97,19 +111,23 @@ int load_posts(TAD_community com, char* dump_path){
 		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
-		get_prop(cur,"Id",id);
-		get_prop(cur,"Title",title);
-		get_prop(cur, "OwnerUserId", ownerUser);
+			get_prop(cur,"Id",id);
+			get_prop(cur,"Title",title);
+			get_prop(cur, "OwnerUserId", ownerUser);
 		
-		post = create_mypost(id,title,ownerUser);
-		char* id_= mystrdup(id);
+			post = create_mypost(id,title,ownerUser);
+			char* id_= mystrdup(id);
 
-		g_hash_table_insert(com->posts, id_, post);	
+			g_hash_table_insert(com->posts, id_, post);	
 		
-		if(strcmp(post_type,"1")==0)
-			com->total_questions++;
-		if(strcmp(post_type,"2")==0)
-			com->total_answers++;
+			if(strcmp(post_type,"1")==0){
+				com->total_questions++;
+				aumenta_questions(com->users,ownerUser);
+			}
+			if(strcmp(post_type,"2")==0){
+				com->total_answers++;
+				aumenta_answers(com->users,ownerUser);
+			}
 		}
 		cur = cur->next->next;
 	}
@@ -122,6 +140,7 @@ int date_to_int(Date a){
 	return (get_year(a)-2000)*365+get_month(a)*30+get_day(a);
 }
 
+
 MyPost get_post (TAD_community com, char* id){
 	if(g_hash_table_contains(com->posts, id)==FALSE){
 		return NULL;
@@ -132,12 +151,27 @@ MyPost get_post (TAD_community com, char* id){
 	return mypost;	
 }
 
+void imprime (gpointer data, gpointer user_data){
+	MyUser user = (MyUser) data;
+	printf("%d\n",get_user_totalposts(user));
+}
+
+
+void load_userslist(TAD_community com){
+	com->users_list=g_hash_table_get_values(com->users);
+	com->users_list = g_list_sort(com->users_list,(GCompareFunc)compare_users);
+	g_list_foreach(com->users_list,imprime,NULL);
+}
+
+void load_postslist(TAD_community com){
+	com->posts_list = g_hash_table_get_values(com->posts);
+	com->posts_list = g_list_sort(com->posts_list,(GCompareFunc)compare_posts);
+}
+
 TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
-	com->total_answers = (long)malloc(sizeof(long));
-	com->total_questions = (long)malloc(sizeof(long));
 	return com;
 }
 
@@ -145,6 +179,8 @@ TAD_community load(TAD_community com, char* dump_path){
 	
 	load_users(com,dump_path);
 	load_posts(com,dump_path);
+	load_postslist(com);
+	load_userslist(com);
 	return com;
 }
 
@@ -172,4 +208,5 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
 	g_hash_table_destroy(com->posts);
+	return com;
 }
