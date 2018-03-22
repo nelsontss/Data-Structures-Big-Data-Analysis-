@@ -90,36 +90,42 @@ void aumenta_questions(GHashTable* users, char *id){
 }
 
 Date get_data (char* creationdate){
-	int i=0, day, month, year;
+	int i=0, j=0, day, month, year;
 	char* year_s, month_s, day_s;
 	while (i!=4){
 		year_s[i]=creationdate[i];
 		i++;
 	}
-	i++
+	i++;
 	year= atoi(year_s);
 	while (i!=7){
-		month_s[i]=creationdate[i];
+		month_s[j++]=creationdate[i];
 		i++;
 	}
 	i++;
 	month= atoi(month_s);
+	j=0;
 	while (i!=10){
-		day_s[i]= creationdate[i];
+		day_s[j++]= creationdate[i];
 		i++;
 	}
 	day= atoi(day_s);
 	return createDate (day,month,year);
 }
 
+int date_to_int(Date a){
+	return (get_year(a)-2000)*365+get_month(a)*30+get_day(a);
+}
+
 int load_posts(TAD_community com, char* dump_path){
 	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
+	int data;
 	memset(dump, '\0', sizeof(dump));
 	memset(id, '\0', sizeof(id));
 	memset(title, '\0', sizeof(title));
 	memset(ownerUser, '\0', sizeof(ownerUser));
-	memset(creationdate, '\0', sizeof(creationdate))
+	memset(creationdate, '\0', sizeof(creationdate));
 	memset(post_type, '\0', sizeof(post_type));
 	MyPost post;
 	xmlDocPtr doc;
@@ -139,7 +145,7 @@ int load_posts(TAD_community com, char* dump_path){
 			get_prop(cur,"Id",id);
 			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
-			get_prop(cur, "CreationDate" creationdate);
+			get_prop(cur, "CreationDate", creationdate);
 			
 			d = get_data(creationdate);
 			data=date_to_int (d);
@@ -151,7 +157,7 @@ int load_posts(TAD_community com, char* dump_path){
 			
 			if(strcmp(post_type,"1")==0){
 				com->total_questions++;
-				aumenta_questions(com->users, ownerUser)
+				aumenta_questions(com->users, ownerUser);
 			}
 
 			if(strcmp(post_type,"2")==0){
@@ -164,10 +170,6 @@ int load_posts(TAD_community com, char* dump_path){
 	free(doc);
 	free(cur);
 	return 0;
-}
-
-int date_to_int(Date a){
-	return (get_year(a)-2000)*365+get_month(a)*30+get_day(a);
 }
 
 

@@ -32,7 +32,7 @@ char * get_post_ownerUser(MyPost post){
 	return post ? mystrdup(post->ownerUser) : NULL;
 }
 
-int get_data (MyPost post){
+int get_post_data (MyPost post){
 	return post ? post->data : 0;
 }
 
