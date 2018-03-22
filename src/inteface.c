@@ -89,12 +89,37 @@ void aumenta_questions(GHashTable* users, char *id){
 
 }
 
+Date get_data (char* creationdate){
+	int i=0, day, month, year;
+	char* year_s, month_s, day_s;
+	while (i!=4){
+		year_s[i]=creationdate[i];
+		i++;
+	}
+	i++
+	year= atoi(year_s);
+	while (i!=7){
+		month_s[i]=creationdate[i];
+		i++;
+	}
+	i++;
+	month= atoi(month_s);
+	while (i!=10){
+		day_s[i]= creationdate[i];
+		i++;
+	}
+	day= atoi(day_s);
+	return createDate (day,month,year);
+}
+
 int load_posts(TAD_community com, char* dump_path){
-	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100];
+	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	Date d;
 	memset(dump, '\0', sizeof(dump));
 	memset(id, '\0', sizeof(id));
 	memset(title, '\0', sizeof(title));
 	memset(ownerUser, '\0', sizeof(ownerUser));
+	memset(creationdate, '\0', sizeof(creationdate))
 	memset(post_type, '\0', sizeof(post_type));
 	MyPost post;
 	xmlDocPtr doc;
@@ -114,19 +139,24 @@ int load_posts(TAD_community com, char* dump_path){
 			get_prop(cur,"Id",id);
 			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
-		
-			post = create_mypost(id,title,ownerUser);
+			get_prop(cur, "CreationDate" creationdate);
+			
+			d = get_data(creationdate);
+			data=date_to_int (d);
+
+			post = create_mypost(id,title,ownerUser, data);
 			char* id_= mystrdup(id);
 
-			g_hash_table_insert(com->posts, id_, post);	
-		
+			g_hash_table_insert(com->posts, id_, post);
+			
 			if(strcmp(post_type,"1")==0){
 				com->total_questions++;
-				aumenta_questions(com->users,ownerUser);
+				aumenta_questions(com->users, ownerUser)
 			}
+
 			if(strcmp(post_type,"2")==0){
 				com->total_answers++;
-				aumenta_answers(com->users,ownerUser);
+				aumenta_answers(com->users, ownerUser);
 			}
 		}
 		cur = cur->next->next;
@@ -172,6 +202,8 @@ TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
+	com->total_answers = (long)malloc(sizeof(long));
+	com->total_questions = (long)malloc(sizeof(long));
 	return com;
 }
 
@@ -202,7 +234,37 @@ STR_pair info_from_post(TAD_community com, int id){
 
 
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-
+	long answers, questions;
+	if (begin == NULL && end == NULL)
+		return (create_long_pair (com->total_questions, com->total_answers));
+	else
+		if (begin == NULL){
+			while (com->posts_list != NULL && com->posts_list->date != (date_to_int (end))){
+				answers++;
+				questions++;
+				g_glist_next(com->posts_list);
+			}
+			return (create_long_pair (questions, answers));
+		}
+		else
+			if (end == NULL){
+				while (com->posts_list != NULL && com->posts_list->date != (date_to_int (begin)))
+					g_glist_next(com->posts_list);
+				while (com->posts_list !=NULL){
+					answers++;
+					questions++;
+					g_glist_next(com->posts_list);
+				}
+			return (create_long_pair (questions, answers));
+			}
+	while (com->posts_list != NULL && com->posts_list->date != (date_to_int (begin)))
+		g_glist_next(com->posts_list);
+	while (com->posts_list != NULL && com->posts_list->date != (date_to_int (end))){
+				answers++;
+				questions++;
+				g_glist_next(com->posts_list);
+			}
+			return (create_long_pair (questions, answers));
 }
 
 TAD_community clean(TAD_community com){
