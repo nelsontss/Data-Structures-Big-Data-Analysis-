@@ -186,16 +186,16 @@ MyPost get_post (TAD_community com, char* id){
 	return mypost;	
 }
 
-void imprime (gpointer data, gpointer user_data){
+/*void imprime (gpointer data, gpointer user_data){
 	MyUser user = (MyUser) data;
 	printf("%d\n",get_user_totalposts(user));
 }
-
+*/
 
 void load_userslist(TAD_community com){
 	com->users_list=g_hash_table_get_values(com->users);
 	com->users_list = g_list_sort(com->users_list,(GCompareFunc)compare_users);
-	g_list_foreach(com->users_list,imprime,NULL);
+	//g_list_foreach(com->users_list,imprime,NULL);
 }
 
 void load_postslist(TAD_community com){
