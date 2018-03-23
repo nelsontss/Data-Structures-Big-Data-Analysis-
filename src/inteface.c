@@ -7,6 +7,7 @@
 #include <glib-2.0/gmodule.h>
 #include <string.h>
 
+
 typedef struct TCD_community
 {
 	GHashTable* posts;
@@ -91,25 +92,27 @@ void aumenta_questions(GHashTable* users, char *id){
 
 Date get_data (char* creationdate){
 	int i=0, j=0, day, month, year;
-	char* year_s, month_s, day_s;
+	char year_s[4]; 
+	char month_s[2];
+	char day_s[2];
 	while (i!=4){
 		year_s[i]=creationdate[i];
 		i++;
 	}
 	i++;
-	year= atoi(year_s);
 	while (i!=7){
 		month_s[j++]=creationdate[i];
 		i++;
 	}
 	i++;
-	month= atoi(month_s);
 	j=0;
 	while (i!=10){
 		day_s[j++]= creationdate[i];
 		i++;
 	}
 	day= atoi(day_s);
+	month= atoi(month_s);
+	year= atoi(year_s);
 	return createDate (day,month,year);
 }
 
@@ -237,34 +240,37 @@ STR_pair info_from_post(TAD_community com, int id){
 
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long answers, questions;
+	MyPost aux= com->posts_list;
 	if (begin == NULL && end == NULL)
 		return (create_long_pair (com->total_questions, com->total_answers));
-	else
+	else{
 		if (begin == NULL){
-			while (com->posts_list != NULL && com->posts_list->date != (date_to_int (end))){
+			while (aux != NULL && get_post_data(aux) != (date_to_int (end))){
 				answers++;
 				questions++;
-				g_glist_next(com->posts_list);
+				g_list_next(aux);
 			}
 			return (create_long_pair (questions, answers));
 		}
-		else
+		else{
 			if (end == NULL){
-				while (com->posts_list != NULL && com->posts_list->date != (date_to_int (begin)))
-					g_glist_next(com->posts_list);
+				while (aux != NULL && get_post_data(aux) != (date_to_int (begin)))
+					g_list_next(aux);
 				while (com->posts_list !=NULL){
 					answers++;
 					questions++;
-					g_glist_next(com->posts_list);
+					g_list_next(aux);
 				}
 			return (create_long_pair (questions, answers));
 			}
-	while (com->posts_list != NULL && com->posts_list->date != (date_to_int (begin)))
-		g_glist_next(com->posts_list);
-	while (com->posts_list != NULL && com->posts_list->date != (date_to_int (end))){
+		}
+	}
+	while (aux != NULL && get_post_data(aux) != (date_to_int (begin)))
+		g_list_next(aux);
+	while (aux != NULL && get_post_data(aux) != (date_to_int (end))){
 				answers++;
 				questions++;
-				g_glist_next(com->posts_list);
+				g_list_next(aux);
 			}
 			return (create_long_pair (questions, answers));
 }
