@@ -237,15 +237,18 @@ STR_pair info_from_post(TAD_community com, int id){
 	return pair;
 }
 
+MyPost g_list_get_post(GList* g){
+	return g->data;
+}
 
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long answers, questions;
-	MyPost aux= com->posts_list;
-	if (begin == NULL && end == NULL)
+	GList* aux= com->posts_list;
+	if (begin == NULL || end == NULL)
 		return (create_long_pair (com->total_questions, com->total_answers));
 	else{
 		if (begin == NULL){
-			while (aux != NULL && get_post_data(aux) != (date_to_int (end))){
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
 				answers++;
 				questions++;
 				g_list_next(aux);
@@ -254,9 +257,9 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 		}
 		else{
 			if (end == NULL){
-				while (aux != NULL && get_post_data(aux) != (date_to_int (begin)))
+				while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
 					g_list_next(aux);
-				while (com->posts_list !=NULL){
+				while (aux !=NULL){
 					answers++;
 					questions++;
 					g_list_next(aux);
@@ -265,9 +268,9 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 			}
 		}
 	}
-	while (aux != NULL && get_post_data(aux) != (date_to_int (begin)))
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
 		g_list_next(aux);
-	while (aux != NULL && get_post_data(aux) != (date_to_int (end))){
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
 				answers++;
 				questions++;
 				g_list_next(aux);
