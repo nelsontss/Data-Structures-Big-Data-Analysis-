@@ -278,6 +278,15 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 			return (create_long_pair (questions, answers));
 }
 
+LONG_list top_most_active(TAD_community com, int N){
+	LONG_list r = create_list(N);
+	for (int i=0; i<N; i++) {
+		MyUser user = g_list_nth_data(com->users_list,i);	
+		set_list(r, i, (strtol(get_user_id(user),NULL,10)));
+	}
+	return r;
+}
+
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
 	g_hash_table_destroy(com->posts);
