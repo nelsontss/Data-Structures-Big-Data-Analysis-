@@ -207,8 +207,8 @@ TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
-	com->total_answers = (long)malloc(sizeof(long));
-	com->total_questions = (long)malloc(sizeof(long));
+	com->total_answers = 0;
+	com->total_questions = 0;
 	return com;
 }
 
