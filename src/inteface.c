@@ -91,28 +91,18 @@ void aumenta_questions(GHashTable* users, char *id){
 }
 
 Date get_data (char* creationdate){
-	int i=0, j=0, day, month, year;
-	char year_s[4]; 
-	char month_s[2];
-	char day_s[2];
-	while (i!=4){
-		year_s[i]=creationdate[i];
+	int i=0, day, month, year;
+	while (creationdate[i]!='T'){
+		if(creationdate[i]=='-')
+			creationdate[i]='\0';
 		i++;
 	}
-	i++;
-	while (i!=7){
-		month_s[j++]=creationdate[i];
-		i++;
-	}
-	i++;
-	j=0;
-	while (i!=10){
-		day_s[j++]= creationdate[i];
-		i++;
-	}
-	day= atoi(day_s);
-	month= atoi(month_s);
-	year= atoi(year_s);
+	creationdate[i]='\0';
+	
+	day= atoi(creationdate+8);
+	month= atoi(creationdate+5);
+	year= atoi(creationdate);
+	
 	return createDate (day,month,year);
 }
 
@@ -152,7 +142,6 @@ int load_posts(TAD_community com, char* dump_path){
 			
 			d = get_data(creationdate);
 			data=date_to_int (d);
-
 			post = create_mypost(id,title,ownerUser, data,0);
 			char* id_= mystrdup(id);
 
@@ -167,7 +156,7 @@ int load_posts(TAD_community com, char* dump_path){
 			if(strcmp(post_type,"2")==0){
 				com->total_answers++;
 				aumenta_answers(com->users, ownerUser);
-				set_post_type(post,0);
+				set_post_type(post,2);
 			}
 		}
 		cur = cur->next->next;
@@ -261,7 +250,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	else{
 		if (begin == NULL){
 			while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
-				if(strcmp(get_post_type(g_list_get_post(aux)),"1")==0)
+				if(get_post_type(g_list_get_post(aux))==1)
 					questions++;
 				else
 					answers++;
@@ -274,7 +263,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 				while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
 					aux=aux->next;
 				while (aux !=NULL){
-					if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
+					if(get_post_type(g_list_get_post(aux))==1)
 						questions++;
 					else
 						answers++;
@@ -287,7 +276,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
 		aux=aux->next;
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
-				if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
+				if(get_post_type(g_list_get_post(aux))==1)
 					questions++;
 				else
 					answers++;
