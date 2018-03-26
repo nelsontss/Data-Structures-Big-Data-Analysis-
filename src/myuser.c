@@ -73,11 +73,11 @@ void aumenta_answers_user(MyUser user){
 
 int compare_users (MyUser u1, MyUser u2){
 	if(u1->total_posts<u2->total_posts)
-		return -1;
+		return 1;
 	if(u1->total_posts==u2->total_posts)
 		return 0;
-	if(u1->total_posts>u2->total_posts)
-		return 1;
+	
+	return -1;
 }
 
 void destroy_myuser(MyUser user){

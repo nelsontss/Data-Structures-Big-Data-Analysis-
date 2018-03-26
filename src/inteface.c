@@ -121,7 +121,7 @@ int date_to_int(Date a){
 }
 
 int load_posts(TAD_community com, char* dump_path){
-	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[2], creationdate[20];
+	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -142,7 +142,7 @@ int load_posts(TAD_community com, char* dump_path){
 	cur = cur->next;
 	while(cur!=NULL) {		
 		
-		get_prop(cur,"PostTypeId", post_type);
+		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
 			get_prop(cur,"Id",id);
@@ -153,7 +153,7 @@ int load_posts(TAD_community com, char* dump_path){
 			d = get_data(creationdate);
 			data=date_to_int (d);
 
-			post = create_mypost(id,title,ownerUser, data, post_type);
+			post = create_mypost(id,title,ownerUser, data,0);
 			char* id_= mystrdup(id);
 
 			g_hash_table_insert(com->posts, id_, post);
@@ -161,11 +161,13 @@ int load_posts(TAD_community com, char* dump_path){
 			if(strcmp(post_type,"1")==0){
 				com->total_questions++;
 				aumenta_questions(com->users, ownerUser);
+				set_post_type(post,1);
 			}
 
 			if(strcmp(post_type,"2")==0){
 				com->total_answers++;
 				aumenta_answers(com->users, ownerUser);
+				set_post_type(post,0);
 			}
 		}
 		cur = cur->next->next;
@@ -191,6 +193,9 @@ MyPost get_post (TAD_community com, char* id){
 	printf("%d\n",get_user_totalposts(user));
 }
 */
+MyPost g_list_get_post(GList* g){
+	return g->data;
+}
 
 void load_userslist(TAD_community com){
 	com->users_list=g_hash_table_get_values(com->users);
@@ -207,10 +212,8 @@ TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
-	com->total_answers = (long)malloc(sizeof(long));
-	com->total_answers=0;
-	com->total_questions = (long)malloc(sizeof(long));
-	com->total_questions=0;
+	com->total_answers = 0;
+	com->total_questions = 0;
 	return com;
 }
 
@@ -239,52 +242,7 @@ STR_pair info_from_post(TAD_community com, int id){
 	return pair;
 }
 
-MyPost g_list_get_post(GList* g){
-	return g->data;
-}
 
-LONG_pair total_posts(TAD_community com, Date begin, Date end){
-	long answers=0, questions=0;
-	GList* aux= com->posts_list;
-	if (begin == NULL && end == NULL)
-		return (create_long_pair (com->total_questions, com->total_answers));
-	else{
-		if (begin == NULL){
-			while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
-				if(strcmp(get_post_type(g_list_get_post(aux)),"1")==0)
-					questions++;
-				else
-					answers++;
-				aux=aux->next;
-			}
-			return (create_long_pair (questions, answers));
-		}
-		else{
-			if (end == NULL){
-				while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
-					aux=aux->next;
-				while (aux !=NULL){
-					if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
-						questions++;
-					else
-						answers++;
-					aux=aux->next;
-				}
-			return (create_long_pair (questions, answers));
-			}
-		}
-	}
-	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
-		aux=aux->next;
-	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
-				if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
-					questions++;
-				else
-					answers++;
-				aux=aux->next;
-	}
-	return (create_long_pair (questions, answers));
-}
 
 LONG_list top_most_active(TAD_community com, int N){
 	LONG_list r = create_list(N);
@@ -294,6 +252,52 @@ LONG_list top_most_active(TAD_community com, int N){
 	}
 	return r;
 }
+
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+
+	long answers, questions;
+	GList* aux= com->posts_list;
+	if (begin == NULL && end == NULL)
+		return (create_long_pair (com->total_questions, com->total_answers));
+	else{
+		if (begin == NULL){
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
+				if(get_post_type(g_list_get_post(aux))==1)
+					questions++;
+				else
+					answers++;
+				g_list_next(aux);
+			}
+			return (create_long_pair (questions, answers));
+		}
+		else{
+			if (end == NULL){
+				while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
+					g_list_next(aux);
+				while (aux !=NULL){
+					if(get_post_type(g_list_get_post(aux))==1)
+						questions++;
+					else
+						answers++;
+					g_list_next(aux);
+				}
+			return (create_long_pair (questions, answers));
+			}
+		}
+	}
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
+		g_list_next(aux);
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
+				if(get_post_type(g_list_get_post(aux))==1)
+					questions++;
+				else
+					answers++;
+				g_list_next(aux);
+			}
+			return (create_long_pair (questions, answers));
+}
+
+
 
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
