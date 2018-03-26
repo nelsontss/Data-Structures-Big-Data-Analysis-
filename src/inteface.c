@@ -254,47 +254,46 @@ LONG_list top_most_active(TAD_community com, int N){
 }
 
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-
-	long answers, questions;
+	long answers=0, questions=0;
 	GList* aux= com->posts_list;
 	if (begin == NULL && end == NULL)
 		return (create_long_pair (com->total_questions, com->total_answers));
 	else{
 		if (begin == NULL){
-			while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
-				if(get_post_type(g_list_get_post(aux))==1)
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
+				if(strcmp(get_post_type(g_list_get_post(aux)),"1")==0)
 					questions++;
 				else
 					answers++;
-				g_list_next(aux);
+				aux=aux->next;
 			}
 			return (create_long_pair (questions, answers));
 		}
 		else{
 			if (end == NULL){
-				while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
-					g_list_next(aux);
+				while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
+					aux=aux->next;
 				while (aux !=NULL){
-					if(get_post_type(g_list_get_post(aux))==1)
+					if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
 						questions++;
 					else
 						answers++;
-					g_list_next(aux);
+					aux=aux->next;
 				}
 			return (create_long_pair (questions, answers));
 			}
 		}
 	}
-	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (begin)))
-		g_list_next(aux);
-	while (aux != NULL && get_post_data(g_list_get_post(aux)) != (date_to_int (end))){
-				if(get_post_type(g_list_get_post(aux))==1)
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
+		aux=aux->next;
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
+				if(strcmp(get_post_type(g_list_get_post(aux)), "1")==0)
 					questions++;
 				else
 					answers++;
-				g_list_next(aux);
-			}
-			return (create_long_pair (questions, answers));
+				aux=aux->next;
+	}
+	return (create_long_pair (questions, answers));
 }
 
 
