@@ -111,7 +111,7 @@ int date_to_int(Date a){
 }
 
 int load_posts(TAD_community com, char* dump_path){
-	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	char tags[1000],id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -120,6 +120,7 @@ int load_posts(TAD_community com, char* dump_path){
 	memset(ownerUser, '\0', sizeof(ownerUser));
 	memset(creationdate, '\0', sizeof(creationdate));
 	memset(post_type, '\0', sizeof(post_type));
+	memset(tags,'\0',sizeof(tags));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -135,6 +136,7 @@ int load_posts(TAD_community com, char* dump_path){
 		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
+			get_prop(cur,"Tags",tags);
 			get_prop(cur,"Id",id);
 			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
@@ -144,7 +146,7 @@ int load_posts(TAD_community com, char* dump_path){
 			data=date_to_int (d);
 			post = create_mypost(id,title,ownerUser, data,0);
 			char* id_= mystrdup(id);
-
+			insert_tags(post,tags);
 			g_hash_table_insert(com->posts, id_, post);
 			
 			if(strcmp(post_type,"1")==0){
