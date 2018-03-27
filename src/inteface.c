@@ -243,6 +243,7 @@ LONG_list top_most_active(TAD_community com, int N){
 }
 
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
+	
 	long answers=0, questions=0;
 	GList* aux= com->posts_list;
 	if (begin == NULL && end == NULL)
@@ -285,7 +286,50 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	return (create_long_pair (questions, answers));
 }
 
-
+LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
+	GList* aux = com->posts_list;
+	int i=0;
+	LONG_list lista= create_list(0);
+	while (aux->next!=NULL)
+		aux=aux->next;
+	if (begin==NULL && end==NULL){
+		if (begin==NULL){
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end)))
+				aux=aux->prev;
+		}
+		while (aux!=NULL){
+			if (get_post_type(g_list_get_post(aux))==2)
+				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
+					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->size++;
+					aux->prev;
+			}
+		}
+		return lista;
+	}
+	if (end==NULL){
+		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
+			if (get_post_type(g_list_get_post(aux))==2)
+				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
+					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->size++;
+					aux->prev;
+				}
+		}
+		return lista;
+	}
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end))){
+			aux=aux->prev;
+		}
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin)))
+			if (get_post_type(g_list_get_post(aux))==2)
+				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
+					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->size++;
+					aux->prev;
+	}
+	return lista;
+}
 
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
