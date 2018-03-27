@@ -111,7 +111,7 @@ int date_to_int(Date a){
 }
 
 int load_posts(TAD_community com, char* dump_path){
-	char tags[1000],id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	char id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -120,7 +120,6 @@ int load_posts(TAD_community com, char* dump_path){
 	memset(ownerUser, '\0', sizeof(ownerUser));
 	memset(creationdate, '\0', sizeof(creationdate));
 	memset(post_type, '\0', sizeof(post_type));
-	memset(tags,'\0',sizeof(tags));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -136,7 +135,6 @@ int load_posts(TAD_community com, char* dump_path){
 		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
-			get_prop(cur,"Tags",tags);
 			get_prop(cur,"Id",id);
 			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
@@ -146,7 +144,7 @@ int load_posts(TAD_community com, char* dump_path){
 			data=date_to_int (d);
 			post = create_mypost(id,title,ownerUser, data,0);
 			char* id_= mystrdup(id);
-			insert_tags(post,tags);
+
 			g_hash_table_insert(com->posts, id_, post);
 			
 			if(strcmp(post_type,"1")==0){
@@ -300,7 +298,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 		}
 		while (aux!=NULL){
 			if (get_post_type(g_list_get_post(aux))==2)
-				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
+				if (post_contains_tag(g_list_get_post(aux), tag)){
 					lista->list[i++]=get_post_id(g_list_get_post(aux));
 					lista->size++;
 					aux=aux->prev;
@@ -311,7 +309,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	if (end==NULL){
 		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
 			if (get_post_type(g_list_get_post(aux))==2)
-				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
+				if (post_contains_tag(g_list_get_post(aux), tag)){
 					lista->list[i++]=get_post_id(g_list_get_post(aux));
 					lista->size++;
 					aux=aux->prev;
@@ -324,13 +322,22 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 		}
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin)))
 			if (get_post_type(g_list_get_post(aux))==2)
-				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
-					lista->list[i++]=get_post_id(g_list_get_post(aux));
+				if (post_contains_tag(g_list_get_post(aux), tag)){
+					lista->list[i++]= get_post_id(g_list_get_post(aux));
 					lista->size++;
 					aux=aux->prev;
 	}
 	return lista;
 }
+
+/*
+USER get_user_info(TAD_community com, long id){
+	char* id_;
+	sprintf (id_, "%lu" , id );	
+	MyUser user= get_user(com, id_);
+
+}
+*/
 
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
