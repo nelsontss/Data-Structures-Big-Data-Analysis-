@@ -1,6 +1,8 @@
 #include <mypost.h>
 #include <common.h>
 #include <stdlib.h>
+#include <string.h>
+#include <glib-2.0/gmodule.h>
 
 
 struct mypost
@@ -10,6 +12,7 @@ struct mypost
 	char* ownerUser;
 	int data;
 	int type;
+	GTree *tags;
 };
 
 MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type){
@@ -17,8 +20,9 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type)
 	post->id = mystrdup(id);
 	post->title= mystrdup(title);
 	post->ownerUser= mystrdup(ownerUser);
-	post->data= data;
-	post->type= type;
+	post->data = data;
+	post->type = type;
+	post->tags = g_tree_new_full((GCompareDataFunc)strcmp,NULL,free,free);
 	return post;
 }
 
@@ -63,6 +67,32 @@ void set_post_data (MyPost post, int data){
 
 void set_post_type (MyPost post, int type){
 	post->type = type;
+}
+
+
+void set_post_tag (MyPost post, char *tag){
+	g_tree_insert(post->tags,tag,tag);
+}
+
+void insert_tags(MyPost post,char *tags) {
+	int i = 0;	
+	char *aux ;
+	while(tags[i]!='\0'){
+		if(tags[i]=='<'){
+				aux = tags+1;
+		}
+		if(aux[i]=='>'){
+		aux[i]='\0';
+		set_post_tag(post, aux);	
+		}
+		i++;
+	}
+}
+
+int post_contains_tag(MyPost post,char* tag) {
+	if(g_tree_lookup(post->tags,tag)==NULL)
+		return 1;
+	return 0;
 }
 
 int compare_posts (MyPost p1, MyPost p2){
