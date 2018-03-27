@@ -290,8 +290,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	GList* aux = com->posts_list;
 	int i=0;
 	LONG_list lista= create_list(0);
-	while (aux->next!=NULL)
-		aux=aux->next;
+	g_list_last(aux);
 	if (begin==NULL && end==NULL){
 		if (begin==NULL){
 			while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end)))
@@ -300,9 +299,9 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 		while (aux!=NULL){
 			if (get_post_type(g_list_get_post(aux))==2)
 				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
-					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->list[i++]=get_post_id(g_list_get_post(aux));
 					lista->size++;
-					aux->prev;
+					aux=aux->prev;
 			}
 		}
 		return lista;
@@ -311,9 +310,9 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
 			if (get_post_type(g_list_get_post(aux))==2)
 				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
-					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->list[i++]=get_post_id(g_list_get_post(aux));
 					lista->size++;
-					aux->prev;
+					aux=aux->prev;
 				}
 		}
 		return lista;
@@ -324,9 +323,9 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin)))
 			if (get_post_type(g_list_get_post(aux))==2)
 				if (strcmp(tag, get_post_tag(g_list_get_post(aux))) == 0){
-					lista[i++]=get_post_id(g_list_get_post(aux));
+					lista->list[i++]=get_post_id(g_list_get_post(aux));
 					lista->size++;
-					aux->prev;
+					aux=aux->prev;
 	}
 	return lista;
 }
