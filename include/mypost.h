@@ -1,3 +1,4 @@
+#include <glib-2.0/gmodule.h>
 #ifndef __MYPOST_H__
 #define __MYPOST_H__
 typedef struct mypost* MyPost;
@@ -8,6 +9,7 @@ char * get_post_title(MyPost post);
 char * get_post_ownerUser(MyPost post);
 int get_post_data(MyPost post);
 int get_post_type (MyPost post);
+GList* post_get_tags(MyPost post);
 void set_post_id(MyPost post, char* id);
 void set_post_title(MyPost post, char* title);
 void set_post_ownerUser(MyPost post, char* ownerUser);
