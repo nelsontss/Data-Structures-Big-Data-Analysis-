@@ -146,7 +146,6 @@ int load_posts(TAD_community com, char* dump_path){
 			data=date_to_int (d);
 			post = create_mypost(id,title,ownerUser, data,0);
 			char* id_= mystrdup(id);
-			insert_tags(post,tags);
 			g_hash_table_insert(com->posts, id_, post);
 			
 			if(strcmp(post_type,"1")==0){
@@ -160,6 +159,11 @@ int load_posts(TAD_community com, char* dump_path){
 				aumenta_answers(com->users, ownerUser);
 				set_post_type(post,2);
 			}
+			if (get_prop(cur,"Tags",tags)==0)
+			{
+				insert_tags(post,tags);
+			}
+			
 		}
 		cur = cur->next->next;
 	}
@@ -179,11 +183,11 @@ MyPost get_post (TAD_community com, char* id){
 	return mypost;	
 }
 
-/*void imprime (gpointer data, gpointer user_data){
-	MyUser user = (MyUser) data;
-	printf("%d\n",get_user_totalposts(user));
+void imprime (gpointer data, gpointer user_data){
+	//MyPost post = (MyPost) data;
+	printf("%s--",(char *)data);
 }
-*/
+
 MyPost g_list_get_post(GList* g){
 	return g->data;
 }
@@ -191,12 +195,13 @@ MyPost g_list_get_post(GList* g){
 void load_userslist(TAD_community com){
 	com->users_list=g_hash_table_get_values(com->users);
 	com->users_list = g_list_sort(com->users_list,(GCompareFunc)compare_users);
-	//g_list_foreach(com->users_list,imprime,NULL);
+	
 }
 
 void load_postslist(TAD_community com){
 	com->posts_list = g_hash_table_get_values(com->posts);
 	com->posts_list = g_list_sort(com->posts_list,(GCompareFunc)compare_posts);
+	//g_list_foreach(com->posts_list,imprime,NULL);
 }
 
 TAD_community init() {
@@ -218,9 +223,9 @@ TAD_community load(TAD_community com, char* dump_path){
 }
 
 
-STR_pair info_from_post(TAD_community com, int id){
+STR_pair info_from_post(TAD_community com, long id){
 	char * id_=(char*)malloc(sizeof(char));
-	sprintf(id_, "%d", id);
+	sprintf(id_, "%ld", id);
 	
 	MyPost mypost = get_post(com, id_);
 	if (mypost==NULL){
@@ -287,19 +292,24 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	}
 	return (create_long_pair (questions, answers));
 }
-//so esta a imprimir os ids dos posts onde a tag é a primeira que aparece
+
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
 	GList* aux = com->posts_list;
 	int i=0;
 	LONG_list lista= create_list(com->total_questions);
-	while (aux->next!=NULL)
+	while (aux->next!=NULL){
 		aux=aux->next;
+	}
+		
+		
+
 	if (begin==NULL && end==NULL){
 		while (aux!=NULL){
-			if (get_post_type(g_list_get_post(aux))==1)
+			if (get_post_type(g_list_get_post(aux))==1){
 				if (post_contains_tag(g_list_get_post(aux), tag)==0){
 					set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
 					i++;
+				}
 			}
 		aux=aux->prev;
 		}
@@ -322,11 +332,12 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 		else{
 			if (end==NULL){
 				while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
-					if (get_post_type(g_list_get_post(aux))==1)
+					if (get_post_type(g_list_get_post(aux))==1){
 						if (post_contains_tag(g_list_get_post(aux), tag)==0){
 							set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
 							i++;
 						}
+					}
 				aux=aux->prev;
 				}
 			return lista;
@@ -337,16 +348,17 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 			aux=aux->prev;
 		}
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
-			if (get_post_type(g_list_get_post(aux))==2)
-				if (post_contains_tag(g_list_get_post(aux), tag)){
+			if (get_post_type(g_list_get_post(aux))==1){
+				if (post_contains_tag(g_list_get_post(aux), tag)==0){
 					set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
+					
 					i++;
 				}
+			}
 	aux=aux->prev;
 	}
 	return lista;
 }
-
 
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);

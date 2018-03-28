@@ -2,7 +2,7 @@
 #include <common.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glib-2.0/gmodule.h>
+#include <stdio.h>
 
 
 struct mypost
@@ -12,7 +12,7 @@ struct mypost
 	char* ownerUser;
 	int data;
 	int type;
-	GTree *tags;
+	GList *tags;
 };
 
 MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type){
@@ -22,7 +22,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type)
 	post->ownerUser= mystrdup(ownerUser);
 	post->data = data;
 	post->type = type;
-	post->tags = g_tree_new_full((GCompareDataFunc)strcmp,NULL,free,free);
+	post->tags = NULL;
 	return post;
 }
 
@@ -44,6 +44,11 @@ int get_post_data (MyPost post){
 
 int get_post_type (MyPost post){
 	return post ? post->type : -1;
+}
+
+GList* post_get_tags(MyPost post){
+
+	return post->tags;
 }
 
 void set_post_id(MyPost post, char* id){
@@ -71,26 +76,26 @@ void set_post_type (MyPost post, int type){
 
 
 void set_post_tag (MyPost post, char *tag){
-	g_tree_insert(post->tags,tag,tag);
+	post->tags = g_list_append(post->tags,mystrdup(tag));
 }
 
 void insert_tags(MyPost post,char *tags) {
-	int i = 0;	
-	char *aux ;
+	int i = 1;
+	int a  = 1;	
+	char *aux=mystrdup(tags) ;
 	while(tags[i]!='\0'){
-		if(tags[i]=='<'){
-				aux = tags+1;
-		}
-		if(aux[i]=='>'){
-		aux[i]='\0';
-		set_post_tag(post, aux);	
+		if(tags[i]=='<')
+			a=i+1;
+		if(tags[i]=='>'){
+			aux[i]='\0';
+			set_post_tag(post,aux+a);
 		}
 		i++;
 	}
 }
 
 int post_contains_tag(MyPost post,char* tag) {
-	if(g_tree_lookup(post->tags,tag)==NULL)
+	if(g_list_find_custom(post->tags,tag,(GCompareFunc)strcmp)==NULL)
 		return 1;
 	return 0;
 }
