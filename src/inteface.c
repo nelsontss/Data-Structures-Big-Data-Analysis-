@@ -62,10 +62,23 @@ int load_users(TAD_community com, char *dump_path){
 	return 0;
 }
 
+
+
 USER toUSER (MyUser user) {
-	long post_history;
-	USER res = create_user(strcat(get_user_id(user),get_user_name(user)),&post_history);
-	return res;
+	long post_history[10];
+	GList* l = get_user_lastposts(user);
+	int i = 0;
+	while(i<10){
+		if(g_list_nth_data(l,i)!=NULL)
+			post_history[i]=strtol(get_fst_str(g_list_nth_data(l,i)),NULL,10);
+		else
+			post_history[i]=-1;
+		i++;
+	}
+	char *bio = (char *)malloc(sizeof(char));
+	sprintf(bio,"Nome: %s \nId: %s\n",get_user_name(user),get_user_id(user));
+
+	return create_user(bio,post_history);
 }
 
 MyUser get_user(TAD_community com, char* id){
@@ -110,6 +123,11 @@ int date_to_int(Date a){
 	return (get_year(a)-2000)*365+get_month(a)*30+get_day(a);
 }
 
+void insere_post_user(TAD_community com, char * userID, char * postID, int data){
+	MyUser user = get_user(com,userID);
+	set_lastpost(user,postID,data);
+}
+
 int load_posts(TAD_community com, char* dump_path){
 	char tags[1000],id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
@@ -148,6 +166,8 @@ int load_posts(TAD_community com, char* dump_path){
 			char* id_= mystrdup(id);
 			g_hash_table_insert(com->posts, id_, post);
 			
+			insere_post_user(com,ownerUser,id,data);
+
 			if(strcmp(post_type,"1")==0){
 				com->total_questions++;
 				aumenta_questions(com->users, ownerUser);
@@ -359,6 +379,16 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	}
 	return lista;
 }
+
+USER get_user_info(TAD_community com, long id){
+	char *id_=(char*)malloc(sizeof(char));
+	sprintf(id_,"%ld", id);
+	MyUser user = get_user(com,id_);
+	USER r = toUSER(user);
+
+	return r;
+}
+
 
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);

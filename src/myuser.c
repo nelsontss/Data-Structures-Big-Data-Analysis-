@@ -1,6 +1,9 @@
 #include <myuser.h>
 #include <stdlib.h>
 #include <common.h>
+#include <string.h>
+#include <pair.h>
+#include <stdio.h>
 struct myuser
 {
 	char * id;
@@ -8,6 +11,7 @@ struct myuser
 	int questions;
 	int answers;
 	int total_posts;
+	GList* last_posts;
 };
 
 MyUser create_myuser(char *id, char *name){
@@ -17,6 +21,7 @@ MyUser create_myuser(char *id, char *name){
 	user->questions = 0;
 	user->answers = 0;
 	user->total_posts = 0;
+	user->last_posts = NULL;
 	return user;
 }
 
@@ -40,6 +45,10 @@ int get_user_totalposts(MyUser user){
 	return user ? user->total_posts : -1;
 }
 
+GList * get_user_lastposts (MyUser user){
+	return user->last_posts;
+}
+
 void set_user_id(MyUser user, char* id){
 	free(user->id);
 	user->id=mystrdup(id);
@@ -59,6 +68,27 @@ void set_user_answers(MyUser user, int answers){
 
 void set_user_totalposts(MyUser user, int total_posts){
 	user->total_posts=total_posts;	
+}
+
+int inv_strcmp (STR_pair pair1, STR_pair pair2){
+		int x = strcmp(get_snd_str(pair1),get_snd_str(pair2));
+
+		return -x;
+}
+
+void set_lastpost (MyUser user, char * id, int data){
+	char *data_str=(char*)malloc(sizeof(char));
+	sprintf(data_str,"%d",data);
+	STR_pair pair = create_str_pair(id,data_str);
+	if(g_list_length (user->last_posts)<10)
+		user->last_posts = g_list_insert_sorted_with_data(user->last_posts,pair,(GCompareDataFunc)inv_strcmp,NULL);
+	else{
+		if(atoi(get_snd_str(g_list_nth_data(user->last_posts,9)))<data){
+			user->last_posts = g_list_remove(user->last_posts,g_list_nth_data(user->last_posts,9));
+			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,pair,(GCompareDataFunc)inv_strcmp,NULL);
+		}
+	}
+
 }
 
 void aumenta_questions_user(MyUser user){

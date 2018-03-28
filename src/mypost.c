@@ -47,7 +47,6 @@ int get_post_type (MyPost post){
 }
 
 GList* post_get_tags(MyPost post){
-
 	return post->tags;
 }
 
