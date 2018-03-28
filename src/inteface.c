@@ -287,20 +287,21 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	}
 	return (create_long_pair (questions, answers));
 }
-
+//so esta a imprimir os ids dos posts onde a tag é a primeira que aparece
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
 	GList* aux = com->posts_list;
 	int i=0;
 	LONG_list lista= create_list(com->total_questions);
-	g_list_last(aux);
+	while (aux->next!=NULL)
+		aux=aux->next;
 	if (begin==NULL && end==NULL){
 		while (aux!=NULL){
-			if (get_post_type(g_list_get_post(aux))==2)
-				if (post_contains_tag(g_list_get_post(aux), tag)){
+			if (get_post_type(g_list_get_post(aux))==1)
+				if (post_contains_tag(g_list_get_post(aux), tag)==0){
 					set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
 					i++;
-					aux=aux->prev;
 			}
+		aux=aux->prev;
 		}
 		return lista;
 	}
@@ -309,38 +310,39 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 			while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end)))
 				aux=aux->prev;
 			while (aux!=NULL){
-			if (get_post_type(g_list_get_post(aux))==2)
-				if (post_contains_tag(g_list_get_post(aux), tag)){
-					set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
-					i++;
-					aux=aux->prev;
+				if (get_post_type(g_list_get_post(aux))==1)
+					if (post_contains_tag(g_list_get_post(aux), tag)==0){
+						set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
+						i++;
 				}
+			aux=aux->prev;
 			}
 		 return lista;
 		 }
 		else{
 			if (end==NULL){
 				while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
-					if (get_post_type(g_list_get_post(aux))==2)
-						if (post_contains_tag(g_list_get_post(aux), tag)){
+					if (get_post_type(g_list_get_post(aux))==1)
+						if (post_contains_tag(g_list_get_post(aux), tag)==0){
 							set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
 							i++;
-							aux=aux->prev;
 						}
+				aux=aux->prev;
 				}
-		return lista;
+			return lista;
 			}
 		}
 	}
 	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end))){
 			aux=aux->prev;
 		}
-	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin)))
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
 			if (get_post_type(g_list_get_post(aux))==2)
 				if (post_contains_tag(g_list_get_post(aux), tag)){
 					set_list(lista, i, strtol(get_post_id(g_list_get_post(aux)), NULL, 10));
 					i++;
-					aux=aux->prev;
+				}
+	aux=aux->prev;
 	}
 	return lista;
 }
