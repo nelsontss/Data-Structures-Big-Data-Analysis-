@@ -18,6 +18,8 @@ void set_post_type (MyPost post, int type);
 void set_post_tag (MyPost post, char *tag);
 void insert_tags(MyPost post,char *tags);
 int post_contains_tag(MyPost post,char* tag);
+void up_post_votes(MyPost post);
+void down_post_votes(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
 void destroy_mypost (MyPost post);
 
