@@ -129,7 +129,7 @@ void insere_post_user(TAD_community com, char * userID, char * postID, int data)
 }
 
 int load_posts(TAD_community com, char* dump_path){
-	char tags[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	char tags[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -140,6 +140,7 @@ int load_posts(TAD_community com, char* dump_path){
 	memset(post_type, '\0', sizeof(post_type));
 	memset(tags,'\0',sizeof(tags));
 	memset(answercount,'\0',sizeof(answercount));
+	memset(parentID,'\0',sizeof(parentID));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -151,7 +152,8 @@ int load_posts(TAD_community com, char* dump_path){
 	cur = cur->xmlChildrenNode;	
 	cur = cur->next;
 	while(cur!=NULL) {		
-		
+			
+
 		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
@@ -161,7 +163,8 @@ int load_posts(TAD_community com, char* dump_path){
 			get_prop(cur, "OwnerUserId", ownerUser);
 			get_prop(cur, "CreationDate", creationdate);
 			get_prop(cur, "AnswerCount", answercount);
-			
+			get_prop(cur, "ParentId", parentID);
+
 			d = get_data(creationdate);
 			data=date_to_int (d);
 			post = create_mypost(id,"",ownerUser, data,0,atoi(answercount));
@@ -188,7 +191,9 @@ int load_posts(TAD_community com, char* dump_path){
 			if (get_prop(cur,"Title",title)==0){
 				set_post_title(post,title);
 			}
-			
+			if (get_prop(cur,"ParentId",parentID)==0){
+				set_post_parentID(post,parentID);
+			}
 			
 		}
 		cur = cur->next->next;
@@ -285,15 +290,21 @@ TAD_community load(TAD_community com, char* dump_path){
 STR_pair info_from_post(TAD_community com, long id){
 	char * id_=(char*)malloc(sizeof(char));
 	sprintf(id_, "%ld", id);
+	STR_pair pair;
 	
 	MyPost mypost = get_post(com, id_);
 	if (mypost==NULL){
 		return NULL;
 	}
-	MyUser myuser = get_user (com, get_post_ownerUser(mypost));
-	if (myuser==NULL)
-		return NULL;
-	STR_pair pair = create_str_pair(get_post_title(mypost), get_user_name(myuser));	
+
+	if(get_post_type(mypost)==1){
+		MyUser myuser = get_user (com, get_post_ownerUser(mypost));
+		if (myuser==NULL)
+			return NULL;
+		pair = create_str_pair(get_post_title(mypost), get_user_name(myuser));	
+	}
+	else
+		return info_from_post(com,strtol(get_post_parentID(mypost),NULL,10));
 	return pair;
 }
 
