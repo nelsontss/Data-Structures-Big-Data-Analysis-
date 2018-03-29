@@ -3,13 +3,14 @@
 #define __MYPOST_H__
 typedef struct mypost* MyPost;
 
-MyPost create_mypost(char *id, char *title, char *ownerUser, int data, int type);
+MyPost create_mypost(char *id, char *title, char *ownerUser, int data, int type, int answerCount);
 char * get_post_id(MyPost post);
 char * get_post_title(MyPost post);
 char * get_post_ownerUser(MyPost post);
 int get_post_data(MyPost post);
 int get_post_type (MyPost post);
 int get_post_votes (MyPost post);
+int get_post_answerCount (MyPost post);
 GList* post_get_tags(MyPost post);
 void set_post_id(MyPost post, char* id);
 void set_post_title(MyPost post, char* title);
