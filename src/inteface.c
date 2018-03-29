@@ -129,7 +129,7 @@ void insere_post_user(TAD_community com, char * userID, char * postID, int data)
 }
 
 int load_posts(TAD_community com, char* dump_path){
-	char tags[1000],id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	char tags[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -139,6 +139,7 @@ int load_posts(TAD_community com, char* dump_path){
 	memset(creationdate, '\0', sizeof(creationdate));
 	memset(post_type, '\0', sizeof(post_type));
 	memset(tags,'\0',sizeof(tags));
+	memset(answercount,'\0',sizeof(answercount));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -159,10 +160,11 @@ int load_posts(TAD_community com, char* dump_path){
 			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
 			get_prop(cur, "CreationDate", creationdate);
+			get_prop(cur, "AnswerCount", answercount);
 			
 			d = get_data(creationdate);
 			data=date_to_int (d);
-			post = create_mypost(id,title,ownerUser, data,0);
+			post = create_mypost(id,"",ownerUser, data,0,atoi(answercount));
 			char* id_= mystrdup(id);
 			g_hash_table_insert(com->posts, id_, post);
 			
@@ -183,6 +185,10 @@ int load_posts(TAD_community com, char* dump_path){
 			{
 				insert_tags(post,tags);
 			}
+			if (get_prop(cur,"Title",title)==0){
+				set_post_title(post,title);
+			}
+			
 			
 		}
 		cur = cur->next->next;
@@ -420,6 +426,29 @@ USER get_user_info(TAD_community com, long id){
 	USER r = toUSER(user);
 
 	return r;
+}
+
+LONG_list contains_word(TAD_community com, char* word, int N){
+	LONG_list l = create_list(N);
+	int i = 0;
+	GList *aux = com->posts_list;
+	while(aux->next!=NULL){
+		aux=aux->next;
+	}
+	while(aux!=NULL && i<N){	
+		if(strstr(get_post_title(g_list_get_post(aux)),word)!=NULL){
+			set_list(l,i,strtol(get_post_id(g_list_get_post(aux)),NULL,10));
+			i++;
+		}
+		aux=aux->prev;
+	}
+	
+	if(i<N)
+		while(i<N){
+			set_list(l,i,-1);
+			i++;
+		}
+	return l;
 }
 
 
