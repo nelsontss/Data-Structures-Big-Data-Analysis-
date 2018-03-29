@@ -52,6 +52,10 @@ int get_post_votes (MyPost post){
 	return post ? post->votes : -1;
 }
 
+int get_post_answerCount (MyPost post){
+	return post ? post->answerCount : -1;
+}
+
 GList* post_get_tags(MyPost post){
 	return post->tags;
 }
