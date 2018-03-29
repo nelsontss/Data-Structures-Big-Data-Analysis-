@@ -9,6 +9,7 @@ char * get_post_title(MyPost post);
 char * get_post_ownerUser(MyPost post);
 int get_post_data(MyPost post);
 int get_post_type (MyPost post);
+int get_post_votes (MyPost post);
 GList* post_get_tags(MyPost post);
 void set_post_id(MyPost post, char* id);
 void set_post_title(MyPost post, char* title);
