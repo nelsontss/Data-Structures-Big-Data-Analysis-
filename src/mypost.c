@@ -10,11 +10,13 @@ struct mypost
 	char* id;
 	char* title;
 	char* ownerUser;
+	char* parentID;
 	int data;
 	int type;
 	GList *tags;
 	int votes;
 	int answerCount;
+
 };
 
 MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type, int answerCount){
@@ -27,6 +29,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type,
 	post->tags = NULL;
 	post->votes = 0;
 	post->answerCount = answerCount;
+	post->parentID = mystrdup(" ");
 	return post;
 }
 
@@ -40,6 +43,10 @@ char * get_post_title(MyPost post){
 
 char * get_post_ownerUser(MyPost post){
 	return post ? mystrdup(post->ownerUser) : NULL;
+}
+
+char * get_post_parentID(MyPost post){
+	return post ? mystrdup(post->parentID) : NULL;
 }
 
 int get_post_data (MyPost post){
@@ -75,6 +82,11 @@ void set_post_title(MyPost post, char* title){
 void set_post_ownerUser(MyPost post, char* ownerUser){
 	free(post->ownerUser);
 	post->ownerUser=mystrdup(ownerUser);
+}
+
+void set_post_parentID(MyPost post, char* parentID){
+	free(post->parentID);
+	post->parentID=mystrdup(parentID);
 }
 
 void set_post_data (MyPost post, int data){
@@ -121,10 +133,12 @@ int compare_posts (MyPost p1, MyPost p2){
 }
 
 void up_post_votes(MyPost post){
+	if(post!=NULL)
 	post->votes+=1;
 }
 
 void down_post_votes(MyPost post){
+	if(post!=NULL)
 	post->votes+=1;
 }
 
@@ -132,6 +146,8 @@ void destroy_mypost (MyPost post){
 	free(post->id);
 	free(post->title);
 	free(post->ownerUser);
+	free(post->parentID);
+	g_list_free(post->tags);
 	free(post);
 }
 
