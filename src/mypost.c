@@ -14,9 +14,10 @@ struct mypost
 	int type;
 	GList *tags;
 	int votes;
+	int answerCount;
 };
 
-MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type){
+MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type, int answerCount){
 	MyPost post= (MyPost) malloc(sizeof(struct mypost));
 	post->id = mystrdup(id);
 	post->title= mystrdup(title);
@@ -25,6 +26,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type)
 	post->type = type;
 	post->tags = NULL;
 	post->votes = 0;
+	post->answerCount = answerCount;
 	return post;
 }
 
