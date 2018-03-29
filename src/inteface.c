@@ -224,6 +224,38 @@ void load_postslist(TAD_community com){
 	//g_list_foreach(com->posts_list,imprime,NULL);
 }
 
+int load_votes(TAD_community com, char* dump_path){
+	char postID[1000], vote[1000], dump[1000];
+	memset(postID, '\0', sizeof(postID));
+	memset(vote, '\0', sizeof(vote));
+	memset(dump, '\0', sizeof(dump));
+	xmlDocPtr doc;
+	xmlNodePtr cur;
+	strcpy(dump, dump_path);
+	doc = open_doc(strcat(dump, "Votes.xml"));
+	if (doc==NULL)
+		return 1;
+	cur = xmlDocGetRootElement(doc);
+	cur = cur->xmlChildrenNode;	
+	cur = cur->next;
+	while(cur!=NULL) {		
+		
+		get_prop(cur,"PostId",postID);
+		get_prop(cur,"VoteTypeId",vote);
+		if(strcmp(vote,"2")==0)
+			up_post_votes(get_post(com,postID));
+		if(strcmp(vote,"3")==0)
+			down_post_votes(get_post(com,postID));
+			
+
+		cur = cur->next->next;
+	}
+	free(doc);
+	free(cur);
+	return 0;
+
+}
+
 TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
@@ -237,6 +269,7 @@ TAD_community load(TAD_community com, char* dump_path){
 	
 	load_users(com,dump_path);
 	load_posts(com,dump_path);
+	load_votes(com,dump_path);
 	load_postslist(com);
 	load_userslist(com);
 	return com;

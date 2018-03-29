@@ -13,6 +13,7 @@ struct mypost
 	int data;
 	int type;
 	GList *tags;
+	int votes;
 };
 
 MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type){
@@ -23,6 +24,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type)
 	post->data = data;
 	post->type = type;
 	post->tags = NULL;
+	post->votes = 0;
 	return post;
 }
 
@@ -106,6 +108,14 @@ int compare_posts (MyPost p1, MyPost p2){
 		return 0;
 
 	return 1;
+}
+
+void up_post_votes(MyPost post){
+	post->votes+=1;
+}
+
+void down_post_votes(MyPost post){
+	post->votes+=1;
 }
 
 void destroy_mypost (MyPost post){
