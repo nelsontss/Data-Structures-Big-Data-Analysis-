@@ -11,13 +11,15 @@ struct myuser
 	int questions;
 	int answers;
 	int total_posts;
+	int reputation;
 	GList* last_posts;
 };
 
-MyUser create_myuser(char *id, char *name){
+MyUser create_myuser(char *id, char *name, int reputation){
 	MyUser user = (MyUser)malloc(sizeof(struct myuser));
 	user->id = mystrdup(id);
 	user->name = mystrdup(name);
+	user->reputation = reputation;
 	user->questions = 0;
 	user->answers = 0;
 	user->total_posts = 0;
@@ -35,6 +37,10 @@ char * get_user_name(MyUser user){
 
 int get_user_questions(MyUser user){
 	return user ? user->questions : -1;
+}
+
+int get_user_reputation(MyUser user){
+	return user ? user->reputation : -1;
 }
 
 int get_user_answers(MyUser user){
@@ -57,6 +63,10 @@ void set_user_id(MyUser user, char* id){
 void set_user_name(MyUser user, char* name){
 	free(user->name);
 	user->name=mystrdup(name);
+}
+
+void set_user_reputation(MyUser user, int reputation){
+	user->reputation=reputation;
 }
 
 void set_user_questions(MyUser user, int questions){

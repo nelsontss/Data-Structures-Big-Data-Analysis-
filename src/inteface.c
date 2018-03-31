@@ -25,10 +25,11 @@ void destroy_key(char* key){
 }
 
 int load_users(TAD_community com, char *dump_path){
-	char id[1000] ,name[1000];char dump[100];
+	char id[1000] ,name[1000];char dump[100],reputation[1000];
 	memset(dump, '\0', sizeof(dump));
 	memset(id, '\0', sizeof(id));
 	memset(name, '\0', sizeof(name));
+	memset(reputation, '\0', sizeof(reputation));
 	char *id_;
 	MyUser user; 
 	xmlDocPtr doc;
@@ -44,11 +45,11 @@ int load_users(TAD_community com, char *dump_path){
 	cur = cur->next;
 	while(cur!=NULL) {		
 		
-
+		get_prop(cur,"Reputation",reputation);
 		get_prop(cur,"Id",id);
 		get_prop(cur,"DisplayName",name);
 		
-		user = create_myuser(id,name);
+		user = create_myuser(id,name,atoi(reputation));
 		id_=mystrdup(id);
 		g_hash_table_insert(com->users,id_,user);
 		
@@ -128,8 +129,19 @@ void insere_post_user(TAD_community com, char * userID, char * postID, int data)
 	set_lastpost(user,postID,data);
 }
 
+
+MyPost get_post (TAD_community com, char* id){
+	if(g_hash_table_contains(com->posts, id)==FALSE){
+		return NULL;
+	}
+	MyPost mypost = g_hash_table_lookup(com->posts,id);
+	if(mypost==NULL)
+		return NULL;
+	return mypost;	
+}
+
 int load_posts(TAD_community com, char* dump_path){
-	char tags[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
+	char tags[1000], comments[1000], score[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
 	int data;
 	memset(dump, '\0', sizeof(dump));
@@ -141,6 +153,8 @@ int load_posts(TAD_community com, char* dump_path){
 	memset(tags,'\0',sizeof(tags));
 	memset(answercount,'\0',sizeof(answercount));
 	memset(parentID,'\0',sizeof(parentID));
+	memset(score,'\0',sizeof(score));
+	memset(comments,'\0',sizeof(comments));
 	MyPost post;
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -157,13 +171,11 @@ int load_posts(TAD_community com, char* dump_path){
 		get_prop(cur,"PostTypeId",post_type);
 		if(strcmp(post_type,"1") == 0 || strcmp(post_type,"2")==0){
 
-			get_prop(cur,"Tags",tags);
 			get_prop(cur,"Id",id);
-			get_prop(cur,"Title",title);
 			get_prop(cur, "OwnerUserId", ownerUser);
 			get_prop(cur, "CreationDate", creationdate);
 			get_prop(cur, "AnswerCount", answercount);
-			get_prop(cur, "ParentId", parentID);
+			
 
 			d = get_data(creationdate);
 			data=date_to_int (d);
@@ -172,6 +184,18 @@ int load_posts(TAD_community com, char* dump_path){
 			g_hash_table_insert(com->posts, id_, post);
 			
 			insere_post_user(com,ownerUser,id,data);
+
+			
+			if (get_prop(cur,"Tags",tags)==0)
+				insert_tags(post,tags);
+			if (get_prop(cur,"Title",title)==0)
+				set_post_title(post,title);
+			if (get_prop(cur,"ParentId",parentID)==0)
+				set_post_parentID(post,parentID);
+			if(get_prop(cur,"Score",score)==0)
+				set_post_score(post,atoi(score));
+			if(get_prop(cur,"CommentCount",comments)==0)
+				set_post_comments(post,atoi(comments));
 
 			if(strcmp(post_type,"1")==0){
 				com->total_questions++;
@@ -183,18 +207,9 @@ int load_posts(TAD_community com, char* dump_path){
 				com->total_answers++;
 				aumenta_answers(com->users, ownerUser);
 				set_post_type(post,2);
+				set_post_resp(get_post(com,parentID),post);
+				calc_post_pont(post,get_user_reputation(get_user(com,ownerUser)));
 			}
-			if (get_prop(cur,"Tags",tags)==0)
-			{
-				insert_tags(post,tags);
-			}
-			if (get_prop(cur,"Title",title)==0){
-				set_post_title(post,title);
-			}
-			if (get_prop(cur,"ParentId",parentID)==0){
-				set_post_parentID(post,parentID);
-			}
-			
 		}
 		cur = cur->next->next;
 	}
@@ -203,16 +218,6 @@ int load_posts(TAD_community com, char* dump_path){
 	return 0;
 }
 
-
-MyPost get_post (TAD_community com, char* id){
-	if(g_hash_table_contains(com->posts, id)==FALSE){
-		return NULL;
-	}
-	MyPost mypost = g_hash_table_lookup(com->posts,id);
-	if(mypost==NULL)
-		return NULL;
-	return mypost;	
-}
 
 void imprime (gpointer data, gpointer user_data){
 	//MyPost post = (MyPost) data;
@@ -460,6 +465,14 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 			i++;
 		}
 	return l;
+}
+
+
+long better_answer(TAD_community com, long id){
+	char *id_str = (char*)malloc(sizeof(char));
+	sprintf(id_str,"%ld",id);
+	MyPost post = get_post(com,id_str);
+	return (long)get_best_answer(post);
 }
 
 
