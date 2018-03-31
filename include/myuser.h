@@ -3,15 +3,17 @@
 #define __MYUSER_H__
 typedef struct myuser* MyUser;
 
-MyUser create_myuser(char *id, char *name);
+MyUser create_myuser(char *id, char *name, int reputation);
 char * get_user_id(MyUser user);
 char * get_user_name(MyUser user);
+int get_user_reputation(MyUser user);
 int get_user_questions(MyUser user);
 int get_user_answers(MyUser user);
 int get_user_totalposts(MyUser user);
 GList * get_user_lastposts (MyUser user);
 void set_user_id(MyUser user, char* name);
 void set_user_name(MyUser user, char* id);
+void set_user_reputation(MyUser user, int reputation);
 void set_user_questions(MyUser user, int questions);
 void set_user_answers(MyUser user, int answers);
 void set_user_totalposts(MyUser user, int totalposts);
