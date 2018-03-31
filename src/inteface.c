@@ -14,6 +14,7 @@ typedef struct TCD_community
 	GHashTable* users;
 	GList* posts_list;
 	GList* users_list;
+	GList* questions_list;
 
 	long total_questions;
 	long total_answers;
@@ -220,8 +221,8 @@ int load_posts(TAD_community com, char* dump_path){
 
 
 void imprime (gpointer data, gpointer user_data){
-	//MyPost post = (MyPost) data;
-	printf("%s--",(char *)data);
+	MyPost post = (MyPost) data;
+	printf("%d\n",get_post_data(post));
 }
 
 MyPost g_list_get_post(GList* g){
@@ -272,6 +273,24 @@ int load_votes(TAD_community com, char* dump_path){
 
 }
 
+
+void remove_answers (GList * list){
+	GList *l = list;
+	while (l != NULL){
+   		 GList *next = l->next;
+    		if (get_post_type(g_list_get_post(l))==2){
+        		list = g_list_delete_link (list, l);
+      		}
+    	l = next;
+  	}
+}
+
+void load_questionslist (TAD_community com){
+	com->questions_list = g_list_copy (com->posts_list);
+	remove_answers(com->questions_list);
+
+}
+
 TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
@@ -288,6 +307,8 @@ TAD_community load(TAD_community com, char* dump_path){
 	load_votes(com,dump_path);
 	load_postslist(com);
 	load_userslist(com);
+	load_questionslist(com);
+	//g_list_foreach(com->questions_list,(GFunc)imprime,NULL);
 	return com;
 }
 
@@ -467,6 +488,68 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	return l;
 }
 
+
+int both_participated_aux(MyPost post, long id1, long id2){
+	GList *l = post_get_resp(post);
+	int flag = 0, id = 0;
+	if(strtol(get_post_ownerUser(post),NULL,10)==id1 || strtol(get_post_ownerUser(post),NULL,10)==id2){
+		
+		flag = 1;
+		if(strtol(get_post_ownerUser(post),NULL,10)==id1)
+			id=1;
+		else
+			id=2;
+	}
+	if(id != 0)
+	while(l!=NULL && flag != 2){
+			if(strtol(get_post_ownerUser(g_list_get_post(l)),NULL,10)==id1){
+				if(id == 2)
+					flag = 2;
+				else {
+				id=1;
+				flag=1;
+				}
+			}
+			if(strtol(get_post_ownerUser(g_list_get_post(l)),NULL,10)==id2){
+				if(id==1)
+					flag = 2;
+				else {
+				id=2;
+				flag=1;
+				}
+			}
+			
+		l=l->next;
+	}
+
+	if (flag == 2)
+		return 0;
+
+	return 1;
+}
+
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+	GList* aux = com->posts_list;
+	LONG_list l = create_list(N);
+	while (aux->next!=NULL){
+		aux=aux->next;
+	}
+	int i = 0;
+	while(aux!=NULL && i<N){
+		if(both_participated_aux(g_list_get_post(aux), id1, id2) == 0){
+			set_list(l,i,strtol(get_post_id(g_list_get_post(aux)),NULL,10));
+			i++;
+		}
+		aux=aux->prev;
+	}
+
+	if(i<N)
+		while(i<N){
+			set_list(l,i,-1);
+			i++;
+		}
+	return l;
+}
 
 long better_answer(TAD_community com, long id){
 	char *id_str = (char*)malloc(sizeof(char));
