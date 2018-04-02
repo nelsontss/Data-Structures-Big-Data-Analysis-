@@ -35,5 +35,6 @@ void down_post_votes(MyPost post);
 int get_best_answer(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
 void destroy_mypost (MyPost post);
+int compare_votes (MyPost p1, MyPost p2);
 
 #endif
