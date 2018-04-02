@@ -207,3 +207,11 @@ void destroy_mypost (MyPost post){
 	free(post);
 }
 
+int compare_votes (MyPost p1, MyPost p2){
+	if(p1->votes<p2->votes)
+		return 1;
+	if(p1->votes==p2->votes)
+		return 0;
+
+	return -1;
+}	
