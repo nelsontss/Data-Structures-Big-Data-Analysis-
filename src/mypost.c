@@ -40,6 +40,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type,
 	return post;
 }
 
+
 char * get_post_id(MyPost post){
 	return post ? mystrdup(post->id) : NULL;
 }
@@ -144,20 +145,7 @@ void calc_post_pont (MyPost post, int reputation){
 }
 
 
-void insert_tags(MyPost post,char *tags) {
-	int i = 1;
-	int a  = 1;	
-	char *aux=mystrdup(tags) ;
-	while(tags[i]!='\0'){
-		if(tags[i]=='<')
-			a=i+1;
-		if(tags[i]=='>'){
-			aux[i]='\0';
-			set_post_tag(post,aux+a);
-		}
-		i++;
-	}
-}
+
 
 int post_contains_tag(MyPost post,char* tag) {
 	if(g_list_find_custom(post->tags,tag,(GCompareFunc)strcmp)==NULL)
@@ -173,6 +161,16 @@ int compare_posts (MyPost p1, MyPost p2){
 
 	return 1;
 }
+
+int compare_votes (MyPost p1, MyPost p2){
+	if(p1->votes<p2->votes)
+		return 1;
+	if(p1->votes==p2->votes)
+		return 0;
+
+	return -1;
+}
+
 
 void best(MyPost data, LONG_pair pair){
 	if(data->pont>get_fst_long(pair)){
@@ -204,14 +202,7 @@ void destroy_mypost (MyPost post){
 	free(post->ownerUser);
 	free(post->parentID);
 	g_list_free(post->tags);
+	g_list_free(post->resp);
 	free(post);
 }
 
-int compare_votes (MyPost p1, MyPost p2){
-	if(p1->votes<p2->votes)
-		return 1;
-	if(p1->votes==p2->votes)
-		return 0;
-
-	return -1;
-}	

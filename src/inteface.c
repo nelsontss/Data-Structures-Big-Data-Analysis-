@@ -12,9 +12,11 @@ typedef struct TCD_community
 {
 	GHashTable* posts;
 	GHashTable* users;
+	GHashTable* tags;
 	GList* posts_list;
 	GList* users_list;
 	GList* questions_list;
+	GList* users_list_rep;
 
 	long total_questions;
 	long total_answers;
@@ -141,6 +143,22 @@ MyPost get_post (TAD_community com, char* id){
 	return mypost;	
 }
 
+void insert_tags(MyPost post, char *tags) {
+	int i = 1;
+	int a  = 1;	
+	char *aux=mystrdup(tags) ;
+	while(tags[i]!='\0'){
+		if(tags[i]=='<')
+			a=i+1;
+		if(tags[i]=='>'){
+			aux[i]='\0';
+			set_post_tag(post,aux+a);
+		}
+		i++;
+	}
+}
+
+
 int load_posts(TAD_community com, char* dump_path){
 	char tags[1000], comments[1000], score[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
@@ -177,7 +195,8 @@ int load_posts(TAD_community com, char* dump_path){
 			get_prop(cur, "CreationDate", creationdate);
 			get_prop(cur, "AnswerCount", answercount);
 			
-
+			MyUser user = get_user(com,ownerUser);
+			
 			d = get_data(creationdate);
 			data=date_to_int (d);
 			post = create_mypost(id,"",ownerUser, data,0,atoi(answercount));
@@ -209,7 +228,7 @@ int load_posts(TAD_community com, char* dump_path){
 				aumenta_answers(com->users, ownerUser);
 				set_post_type(post,2);
 				set_post_resp(get_post(com,parentID),post);
-				calc_post_pont(post,get_user_reputation(get_user(com,ownerUser)));
+				calc_post_pont(post,get_user_reputation(user));
 			}
 		}
 		cur = cur->next->next;
@@ -221,11 +240,13 @@ int load_posts(TAD_community com, char* dump_path){
 
 
 void imprime (gpointer data, gpointer user_data){
-	MyPost post = (MyPost) data;
-	printf("%d\n",get_post_data(post));
+	STR_pair post = (STR_pair) data;
+	printf("%s\n",get_fst_str(post));
 }
 
 MyPost g_list_get_post(GList* g){
+	if (g==NULL)
+		return NULL;
 	return g->data;
 }
 
@@ -291,10 +312,45 @@ void load_questionslist (TAD_community com){
 
 }
 
+void load_userslist_rep (TAD_community com) {
+	com->users_list_rep = g_list_copy(com->users_list);
+	com->users_list_rep = g_list_sort(com->users_list_rep,(GCompareFunc)compare_users_rep);
+}
+
+int load_tags(TAD_community com, char* dump_path){
+	char TagName[1000], id[1000], dump[1000];
+	memset(TagName, '\0', sizeof(TagName));
+	memset(id, '\0', sizeof(id));
+	memset(dump, '\0', sizeof(dump));
+	xmlDocPtr doc;
+	xmlNodePtr cur;
+	strcpy(dump, dump_path);
+	doc = open_doc(strcat(dump, "Tags.xml"));
+	if (doc==NULL)
+		return 1;
+	cur = xmlDocGetRootElement(doc);
+	cur = cur->xmlChildrenNode;	
+	cur = cur->next;
+	while(cur!=NULL) {		
+		
+		get_prop(cur,"Id",id);
+		get_prop(cur,"TagName",TagName);
+		
+		g_hash_table_insert(com->tags, mystrdup(TagName), mystrdup(id));
+
+		cur = cur->next->next;
+	}
+	free(doc);
+	free(cur);
+	return 0;
+
+}
+
 TAD_community init() {
 	TAD_community com =(TAD_community)malloc(sizeof(struct TCD_community));
 	com->users = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_myuser);
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_mypost);
+	com->tags = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)destroy_key,(GDestroyNotify)destroy_key);
 	com->total_answers = 0;
 	com->total_questions = 0;
 	return com;
@@ -305,10 +361,11 @@ TAD_community load(TAD_community com, char* dump_path){
 	load_users(com,dump_path);
 	load_posts(com,dump_path);
 	load_votes(com,dump_path);
+	load_tags(com,dump_path);
 	load_postslist(com);
 	load_userslist(com);
 	load_questionslist(com);
-	//g_list_foreach(com->questions_list,(GFunc)imprime,NULL);
+	load_userslist_rep(com);
 	return com;
 }
 
@@ -465,6 +522,63 @@ USER get_user_info(TAD_community com, long id){
 	return r;
 }
 
+LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
+	GList* aux = com->posts_list;
+    GList* l=NULL;  
+	int i=0;
+	while (aux->next!=NULL){
+		aux=aux->next;
+	}
+
+	if (begin==NULL && end==NULL){
+		while (aux!=NULL){
+  			if(get_post_type(g_list_get_post(aux))==2)	
+  				l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
+			aux=aux->prev;
+		}
+	}
+	else{
+		if (begin==NULL){
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end)))
+				aux=aux->prev;
+			while (aux!=NULL){
+  				if(get_post_type(g_list_get_post(aux))==2)
+  					l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
+				aux=aux->prev;
+			}
+		 }
+		else{
+			if (end==NULL){
+				while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
+					if(get_post_type(g_list_get_post(aux))==2)	
+						l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
+					aux=aux->prev;
+				}
+			}
+		}
+	}
+
+	if(begin!=NULL && end!=NULL){
+		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end))){
+			aux=aux->prev;
+		}
+		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
+  			if(get_post_type(g_list_get_post(aux))==2)
+  				l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
+			aux=aux->prev;
+		}
+	}
+
+    LONG_list lista = create_list(N);
+	while (i<N){
+		set_list(lista, i, strtol(get_post_id(g_list_get_post(l)), NULL, 10));
+		l=l->next;
+		i++;
+	}
+
+	return lista;
+}
+
 LONG_list contains_word(TAD_community com, char* word, int N){
 	LONG_list l = create_list(N);
 	int i = 0;
@@ -557,19 +671,74 @@ long better_answer(TAD_community com, long id){
 	MyPost post = get_post(com,id_str);
 	return (long)get_best_answer(post);
 }
-LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
-	GList* aux = com->posts_list;
-    GList* l=NULL;  
-	int i=0;
-	while (aux->next!=NULL){
-		aux=aux->next;
+
+int ord_tags(STR_pair pair1, STR_pair pair2){
+	if(atoi(get_snd_str(pair1))<atoi(get_snd_str(pair2)))
+		return 1;
+	if(atoi(get_snd_str(pair1))==atoi(get_snd_str(pair2)))
+		return 0;
+
+	return -1;
+}	
+
+int compara_tags(STR_pair pair, char* tag) {
+	return strcmp(get_fst_str(pair),tag);
+}
+
+GList* insere_tag(char *tag,GList* tags){
+	GList* l = g_list_find_custom(tags,tag,(GCompareFunc)compara_tags);
+	char * count = (char*)malloc(sizeof(char));
+	if(l!=NULL){
+		sprintf(count,"%d",atoi(get_snd_str(l->data))+1);
+		tags=g_list_remove(tags,l->data);
+		tags = g_list_insert_sorted(tags,create_str_pair(mystrdup(tag),count),(GCompareFunc)ord_tags);
+	}else{
+		tags = g_list_insert_sorted(tags,create_str_pair(mystrdup(tag),"1"),(GCompareFunc)ord_tags);
 	}
+	return tags;
+
+}
+
+int is_in_top_N(char* userID, GList* users, int N){
+	int i = 0;
+	while(users!=NULL && userID != NULL && i<N){
+		if(strcmp(get_user_id(users->data),userID)==0){
+			return 0;
+		}
+		i++;
+		users=users->next;
+	}
+	return 1;
+}
+
+char * get_tag_id (TAD_community com, char* tag){
+	if(g_hash_table_contains(com->tags, tag)==FALSE){
+		return NULL;
+	}
+	char * id = g_hash_table_lookup(com->tags,tag);
+	if(id==NULL)
+		return NULL;
+	return id;
+}
+
+LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
+	GList* tags = NULL;
+	GList* aux = com->posts_list;
+	GList* tags_aux = NULL;
+	while(aux->next!=NULL)
+		aux=aux->next;
 
 	if (begin==NULL && end==NULL){
 		while (aux!=NULL){
-  			if(get_post_type(g_list_get_post(aux))==2)	
-  				l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
-			aux=aux->prev;
+  			 if(is_in_top_N(get_post_ownerUser(g_list_get_post(aux)),com->users_list_rep,N)==0){
+  			 	tags_aux = post_get_tags(g_list_get_post(aux));
+  					while(tags_aux!=NULL){
+  						tags = insere_tag(tags_aux->data,tags);
+  						tags_aux=tags_aux->next;
+  					}
+
+  			 }
+  			 aux=aux->prev;	
 		}
 	}
 	else{
@@ -577,17 +746,27 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 			while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (end)))
 				aux=aux->prev;
 			while (aux!=NULL){
-  				if(get_post_type(g_list_get_post(aux))==2)
-  					l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
-				aux=aux->prev;
+  				if(is_in_top_N(get_post_ownerUser(g_list_get_post(aux)),com->users_list_rep,N)==0){
+  					tags_aux = post_get_tags(g_list_get_post(aux));
+  					while(tags_aux!=NULL){
+  						insere_tag(tags_aux->data,tags);
+  						tags_aux=tags_aux->next;
+  					}
+  			 	}
+  			 	aux=aux->prev;		
 			}
 		 }
 		else{
 			if (end==NULL){
 				while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
-					if(get_post_type(g_list_get_post(aux))==2)	
-						l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
-					aux=aux->prev;
+					if(is_in_top_N(get_post_ownerUser(g_list_get_post(aux)),com->users_list_rep,N)==0){
+						tags_aux = post_get_tags(g_list_get_post(aux));
+  						while(tags_aux!=NULL){
+  							insere_tag(tags_aux->data,tags);
+  							tags_aux=tags->next;
+  						}
+  			 		}
+  			 		aux=aux->prev;	
 				}
 			}
 		}
@@ -598,24 +777,35 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 			aux=aux->prev;
 		}
 		while (aux != NULL && get_post_data(g_list_get_post(aux)) > (date_to_int (begin))){
-  			if(get_post_type(g_list_get_post(aux))==2)
-  				l = g_list_insert_sorted (l,g_list_get_post(aux),(GCompareFunc)compare_votes);
-			aux=aux->prev;
+  			if(is_in_top_N(get_post_ownerUser(g_list_get_post(aux)),com->users_list_rep,N)==0){
+  				tags_aux = post_get_tags(g_list_get_post(aux));
+  					while(tags_aux!=NULL){
+  						insere_tag(tags_aux->data,tags);
+  						tags_aux=tags_aux->next;
+  					}	
+  			 }
+  			 aux=aux->prev;
 		}
 	}
-
     LONG_list lista = create_list(N);
+    int i = 0;
 	while (i<N){
-		set_list(lista, i, strtol(get_post_id(g_list_get_post(l)), NULL, 10));
-		l=l->next;
+		set_list(lista, i, strtol(get_tag_id(com,get_fst_str(tags->data)), NULL, 10));
+		tags=tags->next;
 		i++;
 	}
 
 	return lista;
 }
 
+
 TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
 	g_hash_table_destroy(com->posts);
+	g_hash_table_destroy(com->tags);
+	g_list_free(com->users_list);
+	g_list_free(com->users_list_rep);
+	g_list_free(com->posts_list);
+	g_list_free(com->questions_list);
 	return com;
 }

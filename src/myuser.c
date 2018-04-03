@@ -55,6 +55,7 @@ GList * get_user_lastposts (MyUser user){
 	return user->last_posts;
 }
 
+
 void set_user_id(MyUser user, char* id){
 	free(user->id);
 	user->id=mystrdup(id);
@@ -79,6 +80,8 @@ void set_user_answers(MyUser user, int answers){
 void set_user_totalposts(MyUser user, int total_posts){
 	user->total_posts=total_posts;	
 }
+
+
 
 int inv_strcmp (STR_pair pair1, STR_pair pair2){
 		int x = strcmp(get_snd_str(pair1),get_snd_str(pair2));
@@ -111,6 +114,15 @@ void aumenta_answers_user(MyUser user){
 	user->total_posts++;	
 }
 
+int compare_users_rep (MyUser u1, MyUser u2){
+	if(u1->reputation<u2->reputation)
+		return 1;
+	if(u1->reputation==u2->reputation)
+		return 0;
+	
+	return -1;
+}
+
 int compare_users (MyUser u1, MyUser u2){
 	if(u1->total_posts<u2->total_posts)
 		return 1;
@@ -123,5 +135,6 @@ int compare_users (MyUser u1, MyUser u2){
 void destroy_myuser(MyUser user){
 	free(user->id);
 	free(user->name);
+	g_list_free_full(user->last_posts,(GDestroyNotify)free_str_pair);
 	free(user);
 }
