@@ -26,7 +26,6 @@ void set_post_data(MyPost post, int data);
 void set_post_type (MyPost post, int type);
 void set_post_comments (MyPost post, int comments);
 void set_post_tag (MyPost post, char *tag);
-void insert_tags(MyPost post,char *tags);
 void set_post_resp (MyPost post, MyPost resp);
 int post_contains_tag(MyPost post,char* tag);
 void calc_post_pont (MyPost post, int reputation);
@@ -34,7 +33,8 @@ void up_post_votes(MyPost post);
 void down_post_votes(MyPost post);
 int get_best_answer(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
-void destroy_mypost (MyPost post);
 int compare_votes (MyPost p1, MyPost p2);
+MyPost post_clone(MyPost post);
+void destroy_mypost (MyPost post);
 
 #endif

@@ -21,6 +21,7 @@ void set_lastpost (MyUser user, char * id, int data);
 void aumenta_questions_user(MyUser user);
 void aumenta_answers_user(MyUser user);
 int compare_users (MyUser u1, MyUser u2);
+int compare_users_rep (MyUser u1, MyUser u2);
 void destroy_myuser (MyUser user);
 
 #endif
