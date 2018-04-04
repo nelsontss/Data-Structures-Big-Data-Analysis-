@@ -51,6 +51,13 @@ int main(){
     printf("%ld\n",get_list(z,i));
   }
 
+
+  LONG_list k= most_answered_questions(com, 10, a, b);
+  printf("Most answerd questions:\n");
+  for(i=0;i<10;i++){
+    printf("%ld\n",get_list(k,i));
+  }
+
   LONG_list l = contains_word(com, "Nexus", 2);
   printf("Contains_word:\n");
   for(i=0;i<2;i++){
