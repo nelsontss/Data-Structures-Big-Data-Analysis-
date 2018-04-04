@@ -579,6 +579,54 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return lista;
 }
 
+LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
+	GList* aux = com->posts_list;
+	int i=0;
+	GList* l= NULL;
+	if (begin==NULL && end==NULL){
+		while (aux!=NULL){
+			if (get_post_type(g_list_get_post(aux))==1)
+				l= g_list_insert_sorted(l, g_list_get_post(aux), (GCompareFunc)compare_answerCount);
+			aux=aux->next;
+		}
+	}
+	else{
+		if (begin==NULL){
+			while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
+				if (get_post_type(g_list_get_post(aux))==1)
+					l= g_list_insert_sorted(l, g_list_get_post(aux), (GCompareFunc)compare_answerCount);
+				aux=aux->next;
+			}
+		}
+		else{
+			if (end==NULL){
+				while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin)))
+					aux=aux->next;
+				while (aux!=NULL){
+					if (get_post_type(g_list_get_post(aux))==1)
+						l= g_list_insert_sorted(l, g_list_get_post(aux), (GCompareFunc)compare_answerCount);
+					aux=aux->next;
+				}			
+			}
+		}
+	}
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (begin))){
+			aux=aux->next;
+	}
+	while (aux != NULL && get_post_data(g_list_get_post(aux)) < (date_to_int (end))){
+		if (get_post_type(g_list_get_post(aux))==1)
+			l= g_list_insert_sorted(l, g_list_get_post(aux), (GCompareFunc)compare_answerCount);
+		aux=aux->next;
+	}
+	LONG_list lista = create_list(N);
+	while (i<N){
+		set_list(lista, i, strtol(get_post_id(g_list_get_post(l)), NULL, 10));
+		l=l->next;
+		i++;
+	}
+	return lista;
+}	
+
 LONG_list contains_word(TAD_community com, char* word, int N){
 	LONG_list l = create_list(N);
 	int i = 0;

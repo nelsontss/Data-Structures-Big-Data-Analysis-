@@ -171,6 +171,13 @@ int compare_votes (MyPost p1, MyPost p2){
 	return -1;
 }
 
+int compare_answerCount(MyPost p1, MyPost p2){
+	if (p1->answerCount<p2->answerCount)
+		return 1;
+	if (p1->answerCount==p2->answerCount)
+		return 0;
+	return -1;
+}
 
 void best(MyPost data, LONG_pair pair){
 	if(data->pont>get_fst_long(pair)){
