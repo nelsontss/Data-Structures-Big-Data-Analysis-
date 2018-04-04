@@ -34,6 +34,7 @@ void down_post_votes(MyPost post);
 int get_best_answer(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
 int compare_votes (MyPost p1, MyPost p2);
+int compare_answerCount(MyPost p1, MyPost p2);
 MyPost post_clone(MyPost post);
 void destroy_mypost (MyPost post);
 
