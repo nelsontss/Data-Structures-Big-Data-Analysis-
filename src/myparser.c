@@ -6,6 +6,7 @@ xmlDocPtr open_doc(char *dump_path){
 	xmlNodePtr cur;
 	if(!doc){
 		printf("Document not parser successfully\n");
+		xmlFreeDoc(doc);
 		return NULL;
 	}
 	

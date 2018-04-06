@@ -5,35 +5,35 @@
 #include <user.h>
 
 int main(){
-  Date a = createDate(1,12,2017);
-  Date b = createDate(3,12,2017);
+  //Date a = createDate(1,12,2017);
+  //Date b = createDate(3,12,2017);
   TAD_community com;
-  STR_pair pair1;
+  //STR_pair pair1;
   com=init();
-  int i = 0;
+  //int i = 0;
   load(com,"xml/");
    
-  pair1 = info_from_post(com,187246);
+  /*pair1 = info_from_post(com,187246);
   printf("Info_from_post:\n");
   printf("%s--%s\n", get_fst_str(pair1), get_snd_str(pair1));
  
- 	LONG_list list = top_most_active(com,10);
-  	printf("Top_most_active:\n");
+  LONG_list list = top_most_active(com,10);
+    printf("Top_most_active:\n");
     for(i = 0;i<9;i++){
-  		printf("%ld\n", get_list(list,i));
-  		
-	  }
-  LONG_pair pair2 =total_posts(com,a,NULL);
+      printf("%ld\n", get_list(list,i));
+      
+    }
+  LONG_pair pair2 =total_posts(com,b,NULL);
   printf("Total_posts:\n");
   printf("%ld--%ld\n", get_fst_long(pair2), get_snd_long(pair2));
   
-  LONG_list x = questions_with_tag(com, "sms",NULL , NULL);
+  LONG_list x = questions_with_tag(com, "twrp",b , NULL);
   printf("Questions_with_tag:\n");
   for(i=0;get_list(x,i)!=0;i++){
     printf("%ld\n",get_list(x,i));
   }
   
-  USER user = get_user_info(com,241679);
+  USER user = get_user_info(com,241593);
   printf("Get_user_info:\n");
 
   printf("bio: %s\n",get_bio(user));
@@ -79,5 +79,8 @@ int main(){
   for(i=0;i<3;i++){
     printf("%ld\n",get_list(j,i));
   }
+	*/
+  com = clean(com);
   return 0;
 } 
+

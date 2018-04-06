@@ -8,6 +8,7 @@ struct myuser
 {
 	char * id;
 	char * name;
+	char * aboutme;
 	int questions;
 	int answers;
 	int total_posts;
@@ -15,10 +16,11 @@ struct myuser
 	GList* last_posts;
 };
 
-MyUser create_myuser(char *id, char *name, int reputation){
+MyUser create_myuser(char *id, char *name, int reputation, char* aboutme){
 	MyUser user = (MyUser)malloc(sizeof(struct myuser));
 	user->id = mystrdup(id);
 	user->name = mystrdup(name);
+	user->aboutme = mystrdup(aboutme);
 	user->reputation = reputation;
 	user->questions = 0;
 	user->answers = 0;
@@ -33,6 +35,10 @@ char * get_user_id(MyUser user){
 
 char * get_user_name(MyUser user){
 	return user ? mystrdup(user->name) : NULL;
+}
+
+char * get_user_aboutme(MyUser user){
+	return user ? mystrdup(user->aboutme) : NULL;
 }
 
 int get_user_questions(MyUser user){
@@ -66,6 +72,11 @@ void set_user_name(MyUser user, char* name){
 	user->name=mystrdup(name);
 }
 
+void set_user_aboutme(MyUser user, char* aboutme){
+	free(user->aboutme);
+	user->aboutme=mystrdup(aboutme);
+}
+
 void set_user_reputation(MyUser user, int reputation){
 	user->reputation=reputation;
 }
@@ -90,7 +101,7 @@ int inv_strcmp (STR_pair pair1, STR_pair pair2){
 }
 
 void set_lastpost (MyUser user, char * id, int data){
-	char *data_str=(char*)malloc(sizeof(char));
+	char data_str[10];
 	sprintf(data_str,"%d",data);
 	STR_pair pair = create_str_pair(id,data_str);
 	if(g_list_length (user->last_posts)<10)
@@ -101,6 +112,7 @@ void set_lastpost (MyUser user, char * id, int data){
 			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,pair,(GCompareDataFunc)inv_strcmp,NULL);
 		}
 	}
+	
 
 }
 
@@ -135,6 +147,7 @@ int compare_users (MyUser u1, MyUser u2){
 void destroy_myuser(MyUser user){
 	free(user->id);
 	free(user->name);
+	free(user->aboutme);
 	g_list_free_full(user->last_posts,(GDestroyNotify)free_str_pair);
 	free(user);
 }

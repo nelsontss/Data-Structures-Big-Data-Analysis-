@@ -155,11 +155,11 @@ int post_contains_tag(MyPost post,char* tag) {
 
 int compare_posts (MyPost p1, MyPost p2){
 	if(p1->data<p2->data)
-		return -1;
+		return 1;
 	if(p1->data==p2->data)
 		return 0;
 
-	return 1;
+	return -1;
 }
 
 int compare_votes (MyPost p1, MyPost p2){
@@ -200,7 +200,7 @@ void up_post_votes(MyPost post){
 
 void down_post_votes(MyPost post){
 	if(post!=NULL)
-	post->votes+=1;
+	post->votes-=1;
 }
 
 void destroy_mypost (MyPost post){
@@ -208,7 +208,7 @@ void destroy_mypost (MyPost post){
 	free(post->title);
 	free(post->ownerUser);
 	free(post->parentID);
-	g_list_free(post->tags);
+	g_list_free_full(post->tags,(GDestroyNotify)free);
 	g_list_free(post->resp);
 	free(post);
 }
