@@ -15,7 +15,6 @@ struct mypost
 	int type;
 	GList *tags;
 	GList *resp;
-	int votes;
 	int answerCount;
 	int score;
 	int comments;
@@ -31,7 +30,6 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type,
 	post->type = type;
 	post->tags = NULL;
 	post->resp = NULL;
-	post->votes = 0;
 	post->score = 0;
 	post->comments = 0;
 	post->pont = 0;
@@ -77,9 +75,6 @@ int get_post_type (MyPost post){
 	return post ? post->type : -1;
 }
 
-int get_post_votes (MyPost post){
-	return post ? post->votes : -1;
-}
 
 int get_post_answerCount (MyPost post){
 	return post ? post->answerCount : -1;
@@ -141,7 +136,7 @@ void set_post_resp (MyPost post, MyPost resp){
 
 
 void calc_post_pont (MyPost post, int reputation){
-	post->pont = (post->score*0.45)+(reputation*0.25)+(post->votes*0.2)+(post->comments*0.1);
+	post->pont = (post->score*0.65)+(reputation*0.25)+(post->comments*0.1);
 }
 
 
@@ -163,9 +158,9 @@ int compare_posts (MyPost p1, MyPost p2){
 }
 
 int compare_votes (MyPost p1, MyPost p2){
-	if(p1->votes<p2->votes)
+	if(p1->score<p2->score)
 		return 1;
-	if(p1->votes==p2->votes)
+	if(p1->score==p2->score)
 		return 0;
 
 	return -1;
@@ -190,18 +185,11 @@ int get_best_answer(MyPost post){
 	LONG_pair pair = create_long_pair(0,0);
 
 	g_list_foreach(post->resp,(GFunc)best,pair);
-	return get_snd_long(pair);
+	int r = get_snd_long(pair);
+	free_long_pair(pair);
+	return r;
 }
 
-void up_post_votes(MyPost post){
-	if(post!=NULL)
-	post->votes+=1;
-}
-
-void down_post_votes(MyPost post){
-	if(post!=NULL)
-	post->votes-=1;
-}
 
 void destroy_mypost (MyPost post){
 	free(post->id);

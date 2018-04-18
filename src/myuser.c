@@ -95,24 +95,30 @@ void set_user_totalposts(MyUser user, int total_posts){
 
 
 int inv_strcmp (STR_pair pair1, STR_pair pair2){
-		int x = strcmp(get_snd_str(pair1),get_snd_str(pair2));
-
+		char *a = get_snd_str(pair1);
+		char *b = get_snd_str(pair2);
+		int x = strcmp(a,b);
+		free (a);
+		free (b);
 		return -x;
 }
 
 void set_lastpost (MyUser user, char * id, int data){
 	char data_str[10];
+	char *x = get_snd_str(g_list_nth_data(user->last_posts,9));
 	sprintf(data_str,"%d",data);
-	STR_pair pair = create_str_pair(id,data_str);
 	if(g_list_length (user->last_posts)<10)
-		user->last_posts = g_list_insert_sorted_with_data(user->last_posts,pair,(GCompareDataFunc)inv_strcmp,NULL);
+		user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,data_str),(GCompareDataFunc)inv_strcmp,NULL);
 	else{
-		if(atoi(get_snd_str(g_list_nth_data(user->last_posts,9)))<data){
-			user->last_posts = g_list_remove(user->last_posts,g_list_nth_data(user->last_posts,9));
-			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,pair,(GCompareDataFunc)inv_strcmp,NULL);
+		if(atoi(x)<data){
+			GList* l=g_list_nth(user->last_posts,9);
+			user->last_posts = g_list_remove_link(user->last_posts,l);
+			free_str_pair(l->data);
+			g_list_free(l);
+			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,data_str),(GCompareDataFunc)inv_strcmp,NULL);
 		}
 	}
-	
+	free(x);
 
 }
 
@@ -148,6 +154,7 @@ void destroy_myuser(MyUser user){
 	free(user->id);
 	free(user->name);
 	free(user->aboutme);
-	g_list_free_full(user->last_posts,(GDestroyNotify)free_str_pair);
+	if(user->last_posts!=NULL)
+		g_list_free_full(user->last_posts,(GDestroyNotify)free_str_pair);
 	free(user);
 }
