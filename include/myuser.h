@@ -3,7 +3,7 @@
 #define __MYUSER_H__
 typedef struct myuser* MyUser;
 
-MyUser create_myuser(char *id, char *name, int reputation, char* aboutme);
+MyUser create_myuser(char *id, char *name, int reputation, char	* aboutme);
 char * get_user_id(MyUser user);
 char * get_user_name(MyUser user);
 char * get_user_aboutme(MyUser user);
