@@ -219,7 +219,7 @@ GList* load_questionslist (GList* posts_list){
 GList* load_userslist_rep (GList* users_list) {
 	GList* users_list_rep = g_list_copy(users_list);
 	users_list_rep = g_list_sort(users_list_rep,(GCompareFunc)compare_users_rep);
-	return users_list;
+	return users_list_rep;
 }
 
 GList* load_userslist(GHashTable* users){
