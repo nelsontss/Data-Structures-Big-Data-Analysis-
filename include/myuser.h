@@ -1,4 +1,5 @@
 #include <glib-2.0/gmodule.h>
+#include <user.h>
 #ifndef __MYUSER_H__
 #define __MYUSER_H__
 typedef struct myuser* MyUser;
@@ -24,6 +25,7 @@ void aumenta_questions_user(MyUser user);
 void aumenta_answers_user(MyUser user);
 int compare_users (MyUser u1, MyUser u2);
 int compare_users_rep (MyUser u1, MyUser u2);
+USER toUSER (MyUser user);
 void destroy_myuser (MyUser user);
 
 #endif
