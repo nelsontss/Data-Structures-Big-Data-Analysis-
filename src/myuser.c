@@ -4,6 +4,7 @@
 #include <string.h>
 #include <pair.h>
 #include <stdio.h>
+
 struct myuser
 {
 	char * id;
@@ -148,6 +149,27 @@ int compare_users (MyUser u1, MyUser u2){
 		return 0;
 	
 	return -1;
+}
+
+USER toUSER (MyUser user) {
+	long post_history[10];
+	GList* l = get_user_lastposts(user);
+	int i = 0;
+	char * str1 = "";
+	char *aboutme = get_user_aboutme(user);
+	while(i<10){
+		if(g_list_nth_data(l,i)!=NULL){
+			str1 = get_fst_str(g_list_nth_data(l,i));
+			post_history[i]=strtol(str1,NULL,10);
+			free(str1);
+		}
+		else
+			post_history[i]=-1;
+		i++;
+	}
+	USER r = create_user(aboutme,post_history);
+	free(aboutme);
+	return r;
 }
 
 void destroy_myuser(MyUser user){
