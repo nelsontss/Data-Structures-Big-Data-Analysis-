@@ -2,6 +2,7 @@
 #include <myparser.h>
 #include <string.h>
 #include <date_to_int.h>
+#include <common.h>
 
 int load_users(GHashTable* users, char *dump_path){
 	char id[100000], aboutme[1000] ,name[1000];char dump[100],reputation[1000];
