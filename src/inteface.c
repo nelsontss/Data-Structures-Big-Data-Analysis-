@@ -110,7 +110,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 }
 
 long better_answer(TAD_community com, long id){
-	return better_answer_aux(com->users,id);
+	return better_answer_aux(com->posts,id);
 }
 
 
