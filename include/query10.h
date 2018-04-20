@@ -4,6 +4,6 @@
 #ifndef QUERY10_H
 #define QUERY10_H
 
-long better_answer_aux(GHashTable* users, long id);
+long better_answer_aux(GHashTable* posts, long id);
 
 #endif
