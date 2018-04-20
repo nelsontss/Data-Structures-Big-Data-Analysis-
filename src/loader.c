@@ -211,7 +211,7 @@ void copy_questions (MyPost data, GList** userdata) {
 }
 
 GList* load_questionslist (GList* posts_list){
-	GList* questions_list;
+	GList* questions_list = NULL;
 	g_list_foreach(posts_list,(GFunc)copy_questions,&(questions_list));
 	return questions_list;
 }
