@@ -2,6 +2,7 @@
 #include <mypost.h>
 #include <stdlib.h>
 #include <loader.h>
+#include <date_to_int.h>
 
 LONG_list questions_with_tag_aux(GList* posts_list, char* tag, Date begin, Date end, long total_questions){
 GList* aux = posts_list;
