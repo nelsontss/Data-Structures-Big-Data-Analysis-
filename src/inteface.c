@@ -34,10 +34,7 @@ struct TCD_community
 };
 
 
-void imprime (gpointer data, gpointer user_data){
-	MyPost post = (MyPost) data;
-	printf("%d\n",get_post_type(post));
-}
+
 
 MyPost g_list_get_post(GList* g){
 	if (g==NULL)
@@ -52,6 +49,9 @@ TAD_community init() {
 	com->posts = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)free,(GDestroyNotify)destroy_mypost);
 	com->tags = g_hash_table_new_full(g_str_hash,g_str_equal,(GDestroyNotify)free,(GDestroyNotify)free);
 	com->questions_list = NULL;
+	com->posts_list = NULL;
+	com->users_list = NULL;
+	com->users_list_rep = NULL;
 	com->total_answers = 0;
 	com->total_questions = 0;
 	return com;
@@ -59,13 +59,10 @@ TAD_community init() {
 
 TAD_community load(TAD_community com, char* dump_path){
 	
-	load_users(com->users,dump_path);
-	load_posts(com->users,com->posts,&com->total_questions,&com->total_answers,dump_path);
+	load_users(com->users,&(com->users_list),&(com->users_list_rep),dump_path);
+	load_posts(com->users,com->posts,&(com->posts_list),&(com->questions_list),&com->total_questions,&com->total_answers,dump_path);
+	com->users_list = g_list_sort (com->users_list,(GCompareFunc)compare_users);
 	load_tags(com->tags,dump_path);
-	com->posts_list = load_postslist(com->posts);
-	com->users_list = load_userslist(com->users);
-	com->questions_list = load_questionslist(com->posts_list);
-	com->users_list_rep = load_userslist_rep(com->users_list);
 	return com;
 }
 
@@ -123,9 +120,9 @@ TAD_community clean(TAD_community com){
 	g_hash_table_destroy(com->users);
 	g_hash_table_destroy(com->posts);
 	g_hash_table_destroy(com->tags);
-	g_list_free(com->users_list);
 	g_list_free(com->users_list_rep);
 	g_list_free(com->posts_list);
 	g_list_free(com->questions_list);
+	g_list_free(com->users_list);	
 	return com;
 }

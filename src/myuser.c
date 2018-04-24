@@ -143,6 +143,7 @@ int compare_users_rep (MyUser u1, MyUser u2){
 }
 
 int compare_users (MyUser u1, MyUser u2){
+
 	if(u1->total_posts<u2->total_posts)
 		return 1;
 	if(u1->total_posts==u2->total_posts)
