@@ -8,9 +8,19 @@
 #include <stdio.h>
 #include <common.h>
 
+int cmp (int fst, int snd){
+	if (fst<snd)
+		return -1;
+	if (fst==snd)
+		return 0;
+	return 1;
+}
+
 int ord_tags(STR_pair pair1, STR_pair pair2){
 	char * str1 = get_snd_str(pair1);
 	char * str2 = get_snd_str(pair2);
+	char * str3 = get_fst_str(pair1);
+	char * str4 = get_fst_str(pair2);
 	if(atoi(str1)<atoi(str2)){
 		free(str1);
 		free(str2);
@@ -19,7 +29,10 @@ int ord_tags(STR_pair pair1, STR_pair pair2){
 	if(atoi(str1)==atoi(str2)){
 		free(str1);
 		free(str2);
-		return 0;
+		int r = cmp(atoi(str3),atoi(str4));
+		free(str3);
+		free(str4);
+		return r;
 	}
 	free(str1);
 	free(str2);
@@ -146,7 +159,7 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
   			if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
   				tags_aux = post_get_tags(aux->data);
   					while(tags_aux!=NULL){
-  						tags_ = insere_tag(tags_aux->data,tags_);
+  						tags_ = insere_tag(get_tag_id(tags,tags_aux->data),tags_);
   						tags_aux=tags_aux->next;
   					}	
   			 }
@@ -159,7 +172,7 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 	GList *x = tags_;
 	while (i<N){
 		str = get_fst_str(x->data);
-		set_list(lista, i, strtol(get_tag_id(tags,str), NULL, 10));
+		set_list(lista, i, atoi(str));
 		x=x->next;
 		i++;
 		free(str);

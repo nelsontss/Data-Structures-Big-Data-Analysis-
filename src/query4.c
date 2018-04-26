@@ -69,6 +69,7 @@ GList* aux = posts_list;
 									free(postID);
 								}
 							}
+							aux=aux->next;
 					}
 		   		}
 		   	}			

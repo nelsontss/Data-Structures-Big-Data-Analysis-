@@ -11,7 +11,7 @@ LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * tota
 		return (create_long_pair (*total_questions, *total_answers));
 	else{
 		if (end == NULL){
-			while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+			while (aux != NULL && get_post_data(aux->data) > (date_to_int (begin))){
 				if(get_post_type(aux->data)==1)
 					questions++;
 				else
@@ -44,5 +44,7 @@ LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * tota
 					answers++;
 				aux=aux->next;
 	}
+	printf("%d\n",date_to_int (begin));
+	printf("%d--\n",get_post_data(aux->data));
 	return (create_long_pair (questions, answers));
 }
