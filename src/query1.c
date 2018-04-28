@@ -5,6 +5,12 @@
 #include <loader.h>
 #include <stdio.h>
 
+/**
+\brief .
+@param com Estrutura de dados.
+@param id ID do post.
+@returns Se for uma pergunta retorna o título e o ID do user, se for uma resposta retorna o títula da pergunta ao qual foi feita a resposta e o ID da pergunta.
+*/
 STR_pair info_from_post_aux(GHashTable* users, GHashTable* posts, long id){
 	char id_[10];
 	sprintf(id_, "%ld", id);
