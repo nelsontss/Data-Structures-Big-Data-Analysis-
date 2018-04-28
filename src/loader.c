@@ -5,6 +5,12 @@
 #include <common.h>
 
 
+/**
+\brief Esta função carrega as informações dos utilizadores na tabela de hash users.
+@param com Estrutura de dados.
+@param *dump_path Caminho para o dump.
+@returns 0 se não for possível carregar, e 1 se for possível.
+*/
 
 int load_users(GHashTable* users, GList** users_list, GList** users_list_rep, char *dump_path){
 	char id[100000], aboutme[1000] ,name[1000];char dump[100],reputation[1000];
@@ -51,19 +57,33 @@ int load_users(GHashTable* users, GList** users_list, GList** users_list_rep, ch
 	return 0;
 }
 
+/**
+\brief Esta função aumenta o numero de respostas de um user.
+@param users Tabela de hash de users.
+@param *id Id do utilizador.
+*/
 void aumenta_answers(GHashTable* users, char *id){
 	MyUser user = g_hash_table_lookup(users,id);
 	aumenta_answers_user(user);
 
 }
 
+/**
+\brief Esta função aumenta o numero de perguntas de um user.
+@param users Tabela de hash de users.
+@param *id Id do utilizador.
+*/
 void aumenta_questions(GHashTable* users, char *id){
 	MyUser user = g_hash_table_lookup(users,id);
 	aumenta_questions_user(user);
 
 }
 
-
+/**
+\brief Esta função transforma a data do tipo original na data pretendida no trabalho.
+@param creationdate Apontador para uma lista com  a data original.
+@returns Data no tipo pretendido.
+*/
 Date get_data (char* creationdate){
 	int i=0, day, month, year;
 	while (creationdate[i]!='T'){
@@ -80,6 +100,11 @@ Date get_data (char* creationdate){
 	return createDate (day,month,year);
 }
 
+/**
+\brief Esta função insere as tags nos posts.
+@param post Post onde vai ser inserida a tag.
+@param *tags Apontador para as tags.
+*/
 void insert_tags(MyPost post, char *tags) {
 	int i = 1;
 	int a  = 1;	
@@ -96,11 +121,22 @@ void insert_tags(MyPost post, char *tags) {
 	free(aux);
 }
 
+/**
+\brief Esta função aumenta o numero de respostas de um user.
+@param users Tabela de hash de users.
+@param *id Id do utilizador.
+*/
 void insere_post_user(GHashTable* users, char * userID, char * postID, int data){
 	MyUser user = get_user(users,userID);
 	set_lastpost(user,postID,data);
 }
 
+/**
+\brief Esta função carrega os posts na tabela de hash com->posts.
+@param com Estrutura de dados.
+@param *dump_path Caminho para o dump.
+@returns 0 se não for possível carregar, e 1 se for possível.
+*/
 int load_posts(GHashTable* users, GHashTable* posts, GList** posts_list, GList** questions_list ,long* total_questions, long* total_answers, char* dump_path){
 	char tags[1000], comments[1000], score[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
@@ -186,6 +222,12 @@ int load_posts(GHashTable* users, GHashTable* posts, GList** posts_list, GList**
 	return 0;
 }
 
+/**
+\brief Esta função carrega as tags na tabela de hash com->tags.
+@param com Estrutura de dados.
+@param *dump_path Caminho para o dump.
+@returns 0 se não for possível carregar, e 1 se for possível.
+*/
 int load_tags(GHashTable* tags, char* dump_path){
 	char TagName[1000], id[1000], dump[1000];
 	memset(TagName, '\0', sizeof(TagName));
@@ -215,7 +257,11 @@ int load_tags(GHashTable* tags, char* dump_path){
 }
 
 
-
+/**
+\brief Esta função carrega numa lista os users ordenados por reputação.
+@param com Estrutura de dados.
+@returns lista final.
+*/
 GList* load_userslist_rep (GList* users_list) {
 	GList* users_list_rep = g_list_copy(users_list);
 	users_list_rep = g_list_sort(users_list_rep,(GCompareFunc)compare_users_rep);
@@ -224,8 +270,12 @@ GList* load_userslist_rep (GList* users_list) {
 
 
 
-
-
+/**
+\brief Esta função devolve um post a partir do seu id na tabela de hash posts.
+@param users Tabela de hash de posts.
+@param *id Id do post.
+@returns Post pretendido.
+*/
 MyPost get_post (GHashTable* posts, char* id){
 	if(g_hash_table_contains(posts, id)==FALSE){
 		return NULL;
@@ -237,7 +287,12 @@ MyPost get_post (GHashTable* posts, char* id){
 }
 
 
-
+/**
+\brief Esta função devolve um user a partir do seu id na tabela de hash de users.
+@param com Estrutura de dados.
+@param id Id do user.
+@returns User pretendido.
+*/
 MyUser get_user(GHashTable* users, char* id){
 	if(g_hash_table_contains(users, id)==FALSE){
 		return NULL;

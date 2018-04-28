@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <mypost.h>
 
+/**
+\brief Dado um post e dois ids de utilizadores, diz se ambos participaram no post.
+@param post Post onde se vai procurar.
+@param id1 ID do utiliazdor 1.
+@param id2 ID do utilizador 2.
+@returns 0 se ambos participam ou 1 se não.
+*/
 int both_participated_aux_aux(MyPost post, long id1, long id2){
 	GList *l = post_get_resp(post);
 	int flag = 0, id = 0;

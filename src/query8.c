@@ -3,6 +3,13 @@
 #include <mypost.h>
 #include <string.h>
 
+/**
+\brief Procura os N posts mais recentes que contêm a palavra dada.
+@param com Estrutura de dados.
+@param word Palavra procurada.
+@param N Número de posts a procurar.
+@returns Lista com os ids dos posts que contêm a palavra.
+*/
 LONG_list contains_word_aux(GList* posts_list, char* word, int N){
 	LONG_list l = create_list(N);
 	int i = 0;

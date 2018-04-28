@@ -3,6 +3,13 @@
 #include <loader.h>
 #include <date_to_int.h>
 
+/**
+\brief Esta função calcula o número de perguntas e respostas durante um intervalo de tempo.
+@param com Estrutura de dados.
+@param begin Início do intervalo.
+@param end Fim do intervalo.
+@returns Um par com o número de perguntas e respostas.
+*/
 LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * total_answers , Date begin, Date end){
 	long answers=0, questions=0;
 	GList* aux= posts_list;

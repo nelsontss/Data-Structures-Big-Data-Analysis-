@@ -2,6 +2,12 @@
 #include <myuser.h>
 #include <stdlib.h>
 
+/**
+\brief Esta função encontra o top n de utilizadores mais ativos.
+@param com Estrutura de dados.
+@param N Numero de utilizadores do top.
+@returns Lista com o top de utilizadores2.
+*/
 LONG_list top_most_active_aux(GList* users_list , int N){
 
 LONG_list r = create_list(N);

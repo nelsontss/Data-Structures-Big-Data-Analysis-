@@ -3,6 +3,14 @@
 #include <mypost.h>
 #include <date_to_int.h>
 
+/**
+\brief Encontra o top N de preguntas com mais respostas dentro de um intervalo de tempo.
+@param com Estrutura de dados.
+@param N Numero de utilizadores do top.
+@param begin Início do intervalo.
+@param end Fim do intervalo.
+@returns Lista com o top de perguntas mais respondidas.
+*/
 LONG_list most_answered_questions_aux(GList* posts_list, int N, Date begin, Date end){
 	GList* aux = posts_list;
 	int i=0;

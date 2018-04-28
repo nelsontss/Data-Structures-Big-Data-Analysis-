@@ -4,6 +4,14 @@
 #include <stdlib.h>
 #include <loader.h>
 
+/**
+\brief Esta função procura dentro de um intervalo de tempo, as perguntas com a tag dada.
+@param com Estrutura de dados.
+@param tag Apontador para a tag.
+@param begin Início do intervalo de tempo.
+@param end Fim do intervalo de tempo.
+@returns Lista de perguntas com tag.
+*/
 LONG_list questions_with_tag_aux(GList* posts_list, char* tag, Date begin, Date end, long total_questions){
 GList* aux = posts_list;
 	int i=0;
