@@ -101,7 +101,6 @@ LONG_list most_answered_questions_aux(GList* posts_list, int N, Date begin, Date
 	aux = l;
 	while (i<N){
 		set_list(lista, i, get_fst_long(aux->data));
-		printf("--%d\n",get_snd_long(aux->data) );
 		aux=aux->next;
 		i++;
 	}
