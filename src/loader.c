@@ -1,7 +1,6 @@
 #include "loader.h"
 #include <myparser.h>
 #include <string.h>
-#include <date_to_int.h>
 #include <common.h>
 
 
@@ -126,7 +125,7 @@ void insert_tags(MyPost post, char *tags) {
 @param users Tabela de hash de users.
 @param *id Id do utilizador.
 */
-void insere_post_user(GHashTable* users, char * userID, char * postID, int data){
+void insere_post_user(GHashTable* users, char * userID, char * postID, Date data){
 	MyUser user = get_user(users,userID);
 	set_lastpost(user,postID,data);
 }
@@ -140,7 +139,6 @@ void insere_post_user(GHashTable* users, char * userID, char * postID, int data)
 int load_posts(GHashTable* users, GHashTable* posts, GList** posts_list, GList** questions_list ,long* total_questions, long* total_answers, char* dump_path){
 	char tags[1000], comments[1000], score[1000], parentID[1000], answercount[1000], id[1000],  title[1000], ownerUser[1000], dump[1000], post_type[100], creationdate[20];
 	Date d;
-	int data;
 	memset(dump, '\0', sizeof(dump));
 	memset(id, '\0', sizeof(id));
 	memset(title, '\0', sizeof(title));
@@ -176,12 +174,10 @@ int load_posts(GHashTable* users, GHashTable* posts, GList** posts_list, GList**
 			MyUser user = get_user(users,ownerUser);
 			
 			d = get_data(creationdate);
-			data=date_to_int (d);
-			free(d);
-			post = create_mypost(id,"",ownerUser, data,0,atoi(answercount));
+			post = create_mypost(id,"",ownerUser, d,0,atoi(answercount));
 			g_hash_table_insert(posts, mystrdup(id), post);
 			
-			insere_post_user(users,ownerUser,id,data);
+			insere_post_user(users,ownerUser,id,d);
 
 			
 			if (get_prop(cur,"Tags",tags)==0)

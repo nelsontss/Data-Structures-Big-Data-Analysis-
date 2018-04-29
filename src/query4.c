@@ -1,8 +1,9 @@
 #include "query4.h"
-#include <date_to_int.h>
+#include <compare_date.h>
 #include <mypost.h>
 #include <stdlib.h>
 #include <loader.h>
+#include <stdio.h>
 
 /**
 \brief Esta função procura dentro de um intervalo de tempo, as perguntas com a tag dada.
@@ -36,7 +37,7 @@ GList* aux = posts_list;
 	}
 	else{
 		if (begin==NULL){
-			while (aux != NULL && get_post_data(aux->data) > (date_to_int (end)))
+			while (aux != NULL && compare_date(get_post_data(aux->data), end)>0)
 				aux=aux->next;
 			while (aux!=NULL){
 				if (get_post_type(aux->data)==1)
@@ -51,7 +52,7 @@ GList* aux = posts_list;
 		 }
 		else{
 			if (end==NULL){
-				while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+				while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 					if (get_post_type(aux->data)==1){
 						if (post_contains_tag(aux->data, tag)==0){
 							postID = get_post_id(aux->data);
@@ -65,10 +66,10 @@ GList* aux = posts_list;
 			}
 			else{
 		
-					while (aux != NULL && get_post_data(aux->data) > (date_to_int (end))){
+					while (aux != NULL && compare_date(get_post_data(aux->data), end)>0){
 							aux=aux->next;
 					}
-					while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+					while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 							if (get_post_type(aux->data)==1){
 								if (post_contains_tag(aux->data, tag)==0){
 									postID = get_post_id(aux->data);

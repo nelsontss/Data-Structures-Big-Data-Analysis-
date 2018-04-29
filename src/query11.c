@@ -1,6 +1,6 @@
 #include "query11.h"
 #include <stdlib.h>
-#include <date_to_int.h>
+#include <compare_date.h>
 #include <mypost.h>
 #include <myuser.h>
 #include <string.h>
@@ -36,6 +36,8 @@ int ord_tags(STR_pair pair1, STR_pair pair2){
 	if(atoi(str1)<atoi(str2)){
 		free(str1);
 		free(str2);
+		free(str3);
+		free(str4);
 		return 1;
 	}
 	if(atoi(str1)==atoi(str2)){
@@ -48,6 +50,8 @@ int ord_tags(STR_pair pair1, STR_pair pair2){
 	}
 	free(str1);
 	free(str2);
+	free(str3);
+	free(str4);
 	return -1;
 }
 
@@ -164,7 +168,7 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 	}
 	else{
 		if (begin==NULL){
-			while (aux != NULL && get_post_data(aux->data) > (date_to_int (end)))
+			while (aux != NULL && compare_date(get_post_data(aux->data), end)>0)
 				aux=aux->next;
 			while (aux!=NULL){
   				ownerUserId = get_post_ownerUser(aux->data);
@@ -181,7 +185,7 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 		 }
 		else{
 			if (end==NULL){
-				while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+				while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 					ownerUserId = get_post_ownerUser(aux->data);
 					if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
 						tags_aux = post_get_tags(aux->data);
@@ -198,10 +202,10 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 	}
 
 	if(begin!=NULL && end!=NULL){
-		while (aux != NULL && get_post_data(aux->data) > (date_to_int (end))){
+		while (aux != NULL && compare_date(get_post_data(aux->data), end)>0){
 			aux=aux->next;
 		}
-		while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+		while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
   			ownerUserId = get_post_ownerUser(aux->data);
   			if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
   				tags_aux = post_get_tags(aux->data);

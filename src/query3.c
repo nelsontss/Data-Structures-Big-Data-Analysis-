@@ -1,7 +1,8 @@
 #include "query3.h"
 #include <mypost.h>
 #include <loader.h>
-#include <date_to_int.h>
+#include <compare_date.h>
+#include <stdio.h>
 
 /**
 \brief Esta função calcula o número de perguntas e respostas durante um intervalo de tempo.
@@ -18,7 +19,7 @@ LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * tota
 		return (create_long_pair (*total_questions, *total_answers));
 	else{
 		if (end == NULL){
-			while (aux != NULL && get_post_data(aux->data) > (date_to_int (begin))){
+			while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 				if(get_post_type(aux->data)==1)
 					questions++;
 				else
@@ -29,7 +30,7 @@ LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * tota
 		}
 		else{
 			if (begin == NULL){
-				while (aux != NULL && get_post_data(aux->data) > (date_to_int (end)))
+				while (aux != NULL && compare_date(get_post_data(aux->data), end)>0)
 					aux=aux->next;
 				while (aux !=NULL){
 					if(get_post_type(aux->data)==1)
@@ -42,16 +43,16 @@ LONG_pair total_posts_aux(GList* posts_list, long * total_questions, long * tota
 			}
 		}
 	}
-	while (aux != NULL && get_post_data(aux->data) > (date_to_int (end)))
+
+	while (aux != NULL && compare_date(get_post_data(aux->data), end)>0)
 		aux=aux->next;
-	while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+	
+	while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 				if(get_post_type(aux->data)==1)
 					questions++;
 				else
 					answers++;
 				aux=aux->next;
 	}
-	printf("%d\n",date_to_int (begin));
-	printf("%d--\n",get_post_data(aux->data));
 	return (create_long_pair (questions, answers));
 }

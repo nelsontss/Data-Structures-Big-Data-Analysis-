@@ -1,7 +1,8 @@
 #include "query6.h"
 #include <mypost.h>
 #include <stdlib.h>
-#include <date_to_int.h>
+#include <compare_date.h>
+#include <stdio.h>
 
 /**
 \brief Encontra o top N de respostas com mais votos dentro de um intervalo de tempo.
@@ -26,7 +27,7 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 	}
 	else{
 		if (begin==NULL){
-			while (aux != NULL && get_post_data(aux->data) > (date_to_int (end)))
+			while (aux != NULL && compare_date(get_post_data(aux->data), end)>0)
 				aux=aux->next;
 			while (aux!=NULL){
   				if(get_post_type(aux->data)==2)
@@ -36,7 +37,7 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 		 }
 		else{
 			if (end==NULL){
-				while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+				while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 					if(get_post_type(aux->data)==2)	
 						l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
 					aux=aux->next;
@@ -46,12 +47,12 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 	}
 
 	if(begin!=NULL && end!=NULL){
-		while (aux != NULL && get_post_data(aux->data) > (date_to_int (end))){
+		while (aux != NULL && compare_date(get_post_data(aux->data), end)>0){
 			aux=aux->next;
 		}
-		while (aux != NULL && get_post_data(aux->data) >= (date_to_int (begin))){
+		while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
   			if(get_post_type(aux->data)==2){
-  				
+  	
   				l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
 			}
 			aux=aux->next;

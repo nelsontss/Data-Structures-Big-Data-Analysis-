@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <pair.h>
+#include <compare_date.h>
+
 
 struct mypost
 {
@@ -11,7 +13,7 @@ struct mypost
 	char* title;
 	char* ownerUser;
 	char* parentID;
-	int data;
+	Date data;
 	int type;
 	GList *tags;
 	GList *resp;
@@ -21,7 +23,7 @@ struct mypost
 	float pont;
 };
 
-MyPost create_mypost(char* id, char* title, char* ownerUser, int data, int type, int answerCount){
+MyPost create_mypost(char* id, char* title, char* ownerUser, Date data, int type, int answerCount){
 	MyPost post= (MyPost) malloc(sizeof(struct mypost));
 	post->id = mystrdup(id);
 	post->title= mystrdup(title);
@@ -55,8 +57,8 @@ char * get_post_parentID(MyPost post){
 	return post ? mystrdup(post->parentID) : NULL;
 }
 
-int get_post_data (MyPost post){
-	return post ? post->data : -1;
+Date get_post_data (MyPost post){
+	return post ? post->data : NULL;
 }
 
 float get_post_pont (MyPost post){
@@ -116,9 +118,7 @@ void set_post_comments (MyPost post, int comments){
 	post->comments = comments;
 }
 
-void set_post_data (MyPost post, int data){
-	post->data = data;
-}
+
 
 void set_post_type (MyPost post, int type){
 	post->type = type;
@@ -149,12 +149,9 @@ int post_contains_tag(MyPost post,char* tag) {
 }
 
 int compare_posts (MyPost p1, MyPost p2){
-	if(p1->data<p2->data)
-		return 1;
-	if(p1->data==p2->data)
-		return 0;
+	
 
-	return -1;
+	return -1*compare_date(p1->data,p2->data);
 }
 
 int compare_votes (MyPost p1, MyPost p2){
@@ -166,13 +163,7 @@ int compare_votes (MyPost p1, MyPost p2){
 	return -1;
 }
 
-int compare_answerCount(MyPost p1, MyPost p2){
-	if (p1->answerCount<p2->answerCount)
-		return 1;
-	if (p1->answerCount==p2->answerCount)
-		return 0;
-	return -1;
-}
+
 
 void best(MyPost data, LONG_pair pair){
 	if(data->pont>get_fst_long(pair)){
@@ -196,6 +187,7 @@ void destroy_mypost (MyPost post){
 	free(post->title);
 	free(post->ownerUser);
 	free(post->parentID);
+	free_date(post->data);
 	g_list_free_full(post->tags,(GDestroyNotify)free);
 	g_list_free(post->resp);
 	free(post);
