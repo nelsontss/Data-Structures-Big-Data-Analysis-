@@ -1,4 +1,5 @@
 #include <glib-2.0/gmodule.h>
+#include <date.h>
 #include <user.h>
 #ifndef __MYUSER_H__
 #define __MYUSER_H__
@@ -20,7 +21,7 @@ void set_user_reputation(MyUser user, int reputation);
 void set_user_questions(MyUser user, int questions);
 void set_user_answers(MyUser user, int answers);
 void set_user_totalposts(MyUser user, int totalposts);
-void set_lastpost (MyUser user, char * id, int data);
+void set_lastpost (MyUser user, char * id, Date data);
 void aumenta_questions_user(MyUser user);
 void aumenta_answers_user(MyUser user);
 int compare_users (MyUser u1, MyUser u2);

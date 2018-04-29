@@ -1,14 +1,15 @@
 #include <glib-2.0/gmodule.h>
+#include <date.h>
 #ifndef __MYPOST_H__
 #define __MYPOST_H__
 typedef struct mypost* MyPost;
 
-MyPost create_mypost(char *id, char *title, char *ownerUser, int data, int type, int answerCount);
+MyPost create_mypost(char *id, char *title, char *ownerUser, Date data, int type, int answerCount);
 char * get_post_id(MyPost post);
 char * get_post_title(MyPost post);
 char * get_post_ownerUser(MyPost post);
 char * get_post_parentID(MyPost post);
-int get_post_data(MyPost post);
+Date get_post_data(MyPost post);
 int get_post_type (MyPost post);
 int get_post_comments (MyPost post);
 int get_post_score (MyPost post);
@@ -31,7 +32,6 @@ void calc_post_pont (MyPost post, int reputation);
 int get_best_answer(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
 int compare_votes (MyPost p1, MyPost p2);
-int compare_answerCount(MyPost p1, MyPost p2);
 MyPost post_clone(MyPost post);
 void destroy_mypost (MyPost post);
 
