@@ -1,6 +1,7 @@
 #include "query9.h"
 #include <stdlib.h>
 #include <mypost.h>
+#include <stdio.h>
 
 /**
 \brief Dado um post e dois ids de utilizadores, diz se ambos participaram no post.
@@ -10,44 +11,28 @@
 @returns 0 se ambos participam ou 1 se não.
 */
 int both_participated_aux_aux(MyPost post, long id1, long id2){
-	GList *l = post_get_resp(post);
-	int flag = 0, id = 0;
+	GHashTable *l = post_get_resp_hash(post);
+	char aux1[10];
+	char aux2[10];
+	sprintf(aux1,"%ld",id1);
+	sprintf(aux2,"%ld",id2);
 	char *ownerUserId = get_post_ownerUser(post);
-	if(strtol(ownerUserId,NULL,10)==id1 || strtol(ownerUserId,NULL,10)==id2){
-		
-		flag = 1;
-		if(strtol(ownerUserId,NULL,10)==id1)
-			id=1;
-		else
-			id=2;
-	}
+	int flag = 0;
+	if(atoi(ownerUserId) == id1)
+		flag++;
+	if(atoi(ownerUserId) == id2)
+		flag++;
+	if(atoi(ownerUserId)!= id1 && g_hash_table_lookup(l,aux1)!=NULL)
+		flag++;
+	if(atoi(ownerUserId)!= id2 && g_hash_table_lookup(l,aux2)!=NULL)
+		flag++;
+
+
 	free(ownerUserId);
-	while(l!=NULL && flag != 2){
-			ownerUserId = get_post_ownerUser(l->data);
-			if(strtol(ownerUserId,NULL,10)==id1){
-				if(id == 2)
-					flag = 2;
-				else {
-				id=1;
-				flag=1;
-				}
-			}
-			if(strtol(ownerUserId,NULL,10)==id2){
-				if(id==1)
-					flag = 2;
-				else {
-				id=2;
-				flag=1;
-				}
-			}
-			free(ownerUserId);
-		l=l->next;
-	}
-
-	if (flag == 2)
+	if (flag >= 2)
 		return 0;
-
-	return 1;
+	else
+		return 1;
 }
 
 LONG_list both_participated_aux(GList* questions_list, long id1, long id2, int N){

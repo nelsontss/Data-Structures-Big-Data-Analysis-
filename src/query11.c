@@ -102,19 +102,9 @@ GList* insere_tag(char *tag,GList* tags){
 @param N Número de elementos da lista.
 @returns 1 se não está contido, ou 0 se está contido.
 */
-int is_in_top_N(char* userID, GList* users, int N){
-	int i = 0;
-	char* aux = "";
-	while(users!=NULL && userID != NULL && i<N){
-		aux = get_user_id(users->data);
-		if(strcmp(aux,userID)==0){
-			free(aux);
-			return 0;
-		}
-		i++;
-		free(aux);
-		users=users->next;
-	}
+int is_in_top_N(char* userID, GHashTable* users_rep_N){
+	if(g_hash_table_lookup(users_rep_N,userID)!=NULL)
+		return 0;
 	return 1;
 }
 
@@ -146,24 +136,33 @@ char * get_tag_id (GHashTable* tags, char* tag){
 */
 LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHashTable* tags ,int N, Date begin, Date end){
 	GList* tags_ = NULL;
-	GList* aux = posts_list;
+	GList* aux = users_list_rep;
 	GList* tags_aux = NULL;
+	GHashTable* users_rep_N = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	int i = 0;
+	char *userID = NULL;
+	while(aux != NULL  && i<N){
+		userID = get_user_id(aux->data);
+		g_hash_table_insert(users_rep_N,userID,aux->data);
+		i++;
+	}
+
 	char * ownerUserId = "";
 	char * str = "";
-
+	i = 0;
+	aux = posts_list;
 	if (begin==NULL && end==NULL){
 		while (aux!=NULL){
   			 ownerUserId = get_post_ownerUser(aux->data);
-  			 if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
-  			 	tags_aux = post_get_tags(aux->data);
+  			 if(is_in_top_N(ownerUserId,users_rep_N)==0){
+  				tags_aux = post_get_tags(aux->data);
   					while(tags_aux!=NULL){
-  						tags_ = insere_tag(tags_aux->data,tags_);
+  						tags_ = insere_tag(get_tag_id(tags,tags_aux->data),tags_);
   						tags_aux=tags_aux->next;
-  					}
-
+  					}	
   			 }
   			 free(ownerUserId);
-  			 aux=aux->next;	
+  			 aux=aux->next;
 		}
 	}
 	else{
@@ -172,29 +171,29 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 				aux=aux->next;
 			while (aux!=NULL){
   				ownerUserId = get_post_ownerUser(aux->data);
-  				if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
+  				if(is_in_top_N(ownerUserId,users_rep_N)==0){
   					tags_aux = post_get_tags(aux->data);
-  					while(tags_aux!=NULL){
-  						tags_ = insere_tag(tags_aux->data,tags_);
-  						tags_aux=tags_aux->next;
-  					}
+  						while(tags_aux!=NULL){
+  							tags_ = insere_tag(get_tag_id(tags,tags_aux->data),tags_);
+  							tags_aux=tags_aux->next;
+  						}	
   			 	}
   			 	free(ownerUserId);
-  			 	aux=aux->next;		
+  			 	aux=aux->next;	
 			}
 		 }
 		else{
 			if (end==NULL){
 				while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 					ownerUserId = get_post_ownerUser(aux->data);
-					if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
-						tags_aux = post_get_tags(aux->data);
+  					if(is_in_top_N(ownerUserId,users_rep_N)==0){
+  						tags_aux = post_get_tags(aux->data);
   						while(tags_aux!=NULL){
-  							tags_ = insere_tag(tags_aux->data,tags_);
+  							tags_ = insere_tag(get_tag_id(tags,tags_aux->data),tags_);
   							tags_aux=tags_aux->next;
-  						}
-  			 		}
-  			 		free(ownerUserId);
+  						}		
+  					}
+  				    free(ownerUserId);
   			 		aux=aux->next;	
 				}
 			}
@@ -207,7 +206,7 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 		}
 		while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
   			ownerUserId = get_post_ownerUser(aux->data);
-  			if(is_in_top_N(ownerUserId,users_list_rep,N)==0){
+  			if(is_in_top_N(ownerUserId,users_rep_N)==0){
   				tags_aux = post_get_tags(aux->data);
   					while(tags_aux!=NULL){
   						tags_ = insere_tag(get_tag_id(tags,tags_aux->data),tags_);
@@ -219,16 +218,21 @@ LONG_list most_used_best_rep_aux(GList* posts_list, GList* users_list_rep, GHash
 		}
 	}
     LONG_list lista = create_list(N);
-    int i = 0;
+    
 	GList *x = tags_;
-	while (i<N){
+	while (x!=NULL && i<N){
 		str = get_fst_str(x->data);
 		set_list(lista, i, atoi(str));
 		x=x->next;
 		i++;
 		free(str);
 	}
+	while(i<N){
+		set_list(lista, i, -1);
+		i++;
+	}
 	
+	g_hash_table_destroy(users_rep_N);
 	g_list_free_full(tags_,(GDestroyNotify)free_str_pair);
 	return lista;
 }

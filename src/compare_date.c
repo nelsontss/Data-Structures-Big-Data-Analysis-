@@ -21,10 +21,10 @@ int compare_date(Date d1, Date d2){
 
 
 char* date_toString (Date a){
-	char *r = (char*)malloc(sizeof(10));
+	char r[11];
 	sprintf(r,"%.2d-%.2d-%.4d",get_day(a),get_month(a),get_year(a));
 
-	return r;
+	return mystrdup(r);
 }
 
 Date string_toDate (char* s){

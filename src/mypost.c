@@ -17,6 +17,7 @@ struct mypost
 	int type;
 	GList *tags;
 	GList *resp;
+	GHashTable *resp_hash;
 	int answerCount;
 	int score;
 	int comments;
@@ -31,6 +32,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, Date data, int type
 	post->data = data;
 	post->type = type;
 	post->tags = NULL;
+	post->resp_hash = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
 	post->resp = NULL;
 	post->score = 0;
 	post->comments = 0;
@@ -90,6 +92,10 @@ GList* post_get_resp(MyPost post){
 	return post->resp;
 }
 
+GHashTable* post_get_resp_hash(MyPost post){
+	return post->resp_hash;
+}
+
 void set_post_id(MyPost post, char* id){
 	free(post->id);
 	post->id=mystrdup(id);
@@ -130,8 +136,10 @@ void set_post_tag (MyPost post, char *tag){
 }
 
 void set_post_resp (MyPost post, MyPost resp){
-	if(post!=NULL)
+	if(post!=NULL){
 	post->resp = g_list_append(post->resp,resp);
+	g_hash_table_insert(post->resp_hash,get_post_ownerUser(resp),resp);
+	}	
 }
 
 
@@ -157,13 +165,33 @@ int compare_posts (MyPost p1, MyPost p2){
 int compare_votes (MyPost p1, MyPost p2){
 	if(p1->score<p2->score)
 		return 1;
-	if(p1->score==p2->score)
-		return 0;
+	if(p1->score==p2->score){
+		if (atoi(p1->id) < atoi(p2->id))
+			return 1;
+		else
+			if (atoi(p1->id) < atoi(p2->id))
+				return -1;
+			else
+				return 0;
+	}
 
 	return -1;
 }
 
-
+int compare_answerCount(MyPost p1, MyPost p2){
+	if (p1->answerCount<p2->answerCount)
+		return 1;
+	if (p1->answerCount==p2->answerCount){
+		if (atoi(p1->id) < atoi(p2->id))
+			return 1;
+		else
+			if (atoi(p1->id) < atoi(p2->id))
+				return -1;
+			else
+				return 0;
+	}
+	return -1;
+}
 
 void best(MyPost data, LONG_pair pair){
 	if(data->pont>get_fst_long(pair)){
@@ -189,6 +217,7 @@ void destroy_mypost (MyPost post){
 	free(post->parentID);
 	free_date(post->data);
 	g_list_free_full(post->tags,(GDestroyNotify)free);
+	g_hash_table_destroy(post->resp_hash);
 	g_list_free(post->resp);
 	free(post);
 }

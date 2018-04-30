@@ -99,25 +99,35 @@ void set_user_totalposts(MyUser user, int total_posts){
 int inv_cmp (STR_pair pair1, STR_pair pair2){
 		char *a = get_snd_str(pair1);
 		char *b = get_snd_str(pair2);
-		int x = compare_date(string_toDate(a),string_toDate(b));
+		Date c = string_toDate(a);
+		Date d = string_toDate(b);
+		int x = compare_date(c,d);
 		free (a);
 		free (b);
+		free_date(c);
+		free_date(d);
 		return -x;
 }
 
 void set_lastpost (MyUser user, char * id, Date data){
 	char *x = get_snd_str(g_list_nth_data(user->last_posts,9));
+	char* date = date_toString(data);
+	
 	if(g_list_length (user->last_posts)<10)
-		user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,date_toString(data)),(GCompareDataFunc)inv_cmp,NULL);
+		user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,date),(GCompareDataFunc)inv_cmp,NULL);
 	else{
-		if(compare_date(string_toDate(x),data)<0){
+		Date x_ = string_toDate(x);
+		if(compare_date(x_,data)<0){
 			GList* l=g_list_nth(user->last_posts,9);
 			user->last_posts = g_list_remove_link(user->last_posts,l);
 			free_str_pair(l->data);
 			g_list_free(l);
-			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,date_toString(data)),(GCompareDataFunc)inv_cmp,NULL);
+			user->last_posts = g_list_insert_sorted_with_data(user->last_posts,create_str_pair(id,date),(GCompareDataFunc)inv_cmp,NULL);
 		}
+		free_date(x_);
 	}
+	
+	free(date);
 	free(x);
 
 }
