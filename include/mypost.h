@@ -17,6 +17,7 @@ int get_post_answerCount (MyPost post);
 float get_post_pont(MyPost post);
 GList* post_get_tags(MyPost post);
 GList* post_get_resp(MyPost post);
+GHashTable* post_get_resp_hash(MyPost post);
 void set_post_id(MyPost post, char* id);
 void set_post_title(MyPost post, char* title);
 void set_post_ownerUser(MyPost post, char* ownerUser);
@@ -32,6 +33,7 @@ void calc_post_pont (MyPost post, int reputation);
 int get_best_answer(MyPost post);
 int compare_posts (MyPost p1, MyPost p2);
 int compare_votes (MyPost p1, MyPost p2);
+int compare_answerCount(MyPost p1, MyPost p2);
 MyPost post_clone(MyPost post);
 void destroy_mypost (MyPost post);
 
