@@ -186,7 +186,7 @@ void set_user_totalposts(MyUser user, int total_posts){
 @param pair2 2º par
 @returns 1 se a data do par pair1 é menor que o do par pair2, 0 se as datas são iguais e -1 se a data do par pair1 é maior que o do par pair2
 */
-int inv_strcmp (STR_pair pair1, STR_pair pair2){
+int inv_cmp (STR_pair pair1, STR_pair pair2){
 	char *a = get_snd_str(pair1);
 	char *b = get_snd_str(pair2);
 	Date c = string_toDate(a);

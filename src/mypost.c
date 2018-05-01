@@ -96,7 +96,7 @@ char * get_post_parentID(MyPost post){
 @returns Data do post se o post existe, -1 se não existe
 */
 Date get_post_data (MyPost post){
-	return post ? post->data : -1;
+	return post ? post->data : NULL;
 }
 
 /**
@@ -252,8 +252,10 @@ void set_post_tag (MyPost post, char *tag){
 @param resp Resposta do post 
 */
 void set_post_resp (MyPost post, MyPost resp){
-	if(post!=NULL)
+	if(post!=NULL){
 	post->resp = g_list_append(post->resp,resp);
+	g_hash_table_insert(post->resp_hash,get_post_ownerUser(resp),resp);
+	}
 }
 
 /**
@@ -318,8 +320,15 @@ int compare_votes (MyPost p1, MyPost p2){
 int compare_answerCount(MyPost p1, MyPost p2){
 	if (p1->answerCount<p2->answerCount)
 		return 1;
-	if (p1->answerCount==p2->answerCount)
-		return 0;
+	if (p1->answerCount==p2->answerCount){
+		if (atoi(p1->id) < atoi(p2->id))
+			return 1;
+		else
+			if (atoi(p1->id) < atoi(p2->id))
+				return -1;
+			else
+				return 0;
+	}
 	return -1;
 }
 
@@ -359,6 +368,7 @@ void destroy_mypost (MyPost post){
 	free(post->ownerUser);
 	free(post->parentID);
 	g_list_free_full(post->tags,(GDestroyNotify)free);
+	g_hash_table_destroy(post->resp_hash);
 	g_list_free(post->resp);
 	free(post);
 }
