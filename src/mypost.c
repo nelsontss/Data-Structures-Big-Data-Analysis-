@@ -367,6 +367,7 @@ void destroy_mypost (MyPost post){
 	free(post->title);
 	free(post->ownerUser);
 	free(post->parentID);
+	free_date(post->data);
 	g_list_free_full(post->tags,(GDestroyNotify)free);
 	g_hash_table_destroy(post->resp_hash);
 	g_list_free(post->resp);
