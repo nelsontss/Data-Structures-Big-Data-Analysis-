@@ -26,7 +26,7 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 	if (begin==NULL && end==NULL){
 		while (aux!=NULL){
   			if(get_post_type(aux->data)==2)	
-  				l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
+  				l = g_list_prepend (l,aux->data);
 			aux=aux->next;
 		}
 	}
@@ -36,7 +36,7 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 				aux=aux->next;
 			while (aux!=NULL){
   				if(get_post_type(aux->data)==2)
-  					l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
+  					l = g_list_prepend (l,aux->data);
 				aux=aux->next;
 			}
 		 }
@@ -44,7 +44,7 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 			if (end==NULL){
 				while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
 					if(get_post_type(aux->data)==2)	
-						l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
+						l = g_list_prepend (l,aux->data);
 					aux=aux->next;
 				}
 			}
@@ -58,12 +58,12 @@ LONG_list most_voted_answers_aux(GList* posts_list, int N, Date begin, Date end)
 		while (aux != NULL && compare_date(get_post_data(aux->data), begin)>=0){
   			if(get_post_type(aux->data)==2){
   	
-  				l = g_list_insert_sorted (l,aux->data,(GCompareFunc)compare_votes);
+  				l = g_list_prepend (l,aux->data);
 			}
 			aux=aux->next;
 		}
 	}
-
+    l = g_list_sort(l,(GCompareFunc)compare_votes);
     LONG_list lista = create_list(N);
 	aux = l;
 	while (i<N){
