@@ -5,6 +5,11 @@
 #include <stdio.h>
 
 /**
+@file query3.c
+Implementação da query 3.
+*/
+
+/**
 \brief Esta função calcula o número de perguntas e respostas durante um intervalo de tempo.
 @param com Estrutura de dados.
 @param begin Início do intervalo.
