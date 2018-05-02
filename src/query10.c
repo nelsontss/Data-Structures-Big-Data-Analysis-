@@ -4,8 +4,8 @@
 #include <loader.h>
 
 /**
-@file query11.c
-Implementação da query 11.
+@file query10.c
+Implementação da query 10.
 */
 
 /**
