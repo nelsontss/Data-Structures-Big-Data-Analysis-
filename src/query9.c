@@ -4,6 +4,11 @@
 #include <stdio.h>
 
 /**
+@file query9.c
+Implementação da query 9.
+*/
+
+/**
 \brief Dado um post e dois ids de utilizadores, diz se ambos participaram no post.
 @param post Post onde se vai procurar.
 @param id1 ID do utiliazdor 1.
