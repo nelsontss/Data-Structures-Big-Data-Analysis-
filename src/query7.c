@@ -5,10 +5,10 @@
 #include <pair.h>
 #include <stdio.h>
 
-
-
-
-
+/**
+@file query7.c
+Implementação da query 7.
+*/
 
 /**
 \brief Encontra o top N de preguntas com mais respostas dentro de um intervalo de tempo.
