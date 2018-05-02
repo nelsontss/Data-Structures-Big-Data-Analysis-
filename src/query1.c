@@ -6,6 +6,11 @@
 #include <stdio.h>
 
 /**
+@file query1.c
+Implementação da query 1.
+*/
+
+/**
 \brief .
 @param com Estrutura de dados.
 @param id ID do post.
