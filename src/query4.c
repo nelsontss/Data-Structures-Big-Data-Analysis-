@@ -6,6 +6,11 @@
 #include <stdio.h>
 
 /**
+@file query4.c
+Implementação da query 4.
+*/
+
+/**
 \brief Esta função procura dentro de um intervalo de tempo, as perguntas com a tag dada.
 @param com Estrutura de dados.
 @param tag Apontador para a tag.
