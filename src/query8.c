@@ -4,6 +4,11 @@
 #include <string.h>
 
 /**
+@file query8.c
+Implementação da query 8.
+*/
+
+/**
 \brief Procura os N posts mais recentes que contêm a palavra dada.
 @param com Estrutura de dados.
 @param word Palavra procurada.
