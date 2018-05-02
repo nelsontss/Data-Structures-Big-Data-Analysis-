@@ -9,6 +9,11 @@
 #include <common.h>
 
 /**
+@file query11.c
+Implementação da query 11.
+*/
+
+/**
 \brief Função que compara 2 inteiros.
 @param fst Primeiro inteiro a comparar.
 @param snd Segundo inteiro a comparar.
