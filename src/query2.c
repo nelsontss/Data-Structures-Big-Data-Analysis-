@@ -3,6 +3,11 @@
 #include <stdlib.h>
 
 /**
+@file query2.c
+Implementação da query 2.
+*/
+
+/**
 \brief Esta função encontra o top n de utilizadores mais ativos.
 @param com Estrutura de dados.
 @param N Numero de utilizadores do top.
