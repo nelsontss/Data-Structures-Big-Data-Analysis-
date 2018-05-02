@@ -7,8 +7,9 @@
 #include <compare_date.h>
 
 /**
- * Estrutura criada por nós que representa um utilizador
- */
+@file myuser.c
+Estrutura criada por nós que representa um utilizador
+*/
 struct myuser
 {
 	char * id; /**<Id do utilizador */
@@ -22,7 +23,7 @@ struct myuser
 };
 
 /*
-\ brief Função que cria um utilizador
+\brief Função que cria um utilizador
 @param id Id do utilizador
 @param name Nome do utilizador
 @param reputation Reputação do utilizador
@@ -43,7 +44,7 @@ MyUser create_myuser(char *id, char *name, int reputation, char* aboutme){
 }
 
 /**
-\ brief Função que dá o id do utilizador
+\brief Função que dá o id do utilizador
 @param user Utilizador recebido
 @returns Id do utilizador se existir, NULL se não existir
 */
@@ -52,7 +53,7 @@ char * get_user_id(MyUser user){
 }
 
 /**
-\ brief Função que dá o nome do utilizador
+\brief Função que dá o nome do utilizador
 @param user Utilizador recebido
 @returns Nome do utilizador se existir, NULL se não existir
 */
@@ -61,7 +62,7 @@ char * get_user_name(MyUser user){
 }
 
 /**
-\ brief Função que dá a desrição do utilizador
+\brief Função que dá a desrição do utilizador
 @param user Utilizador recebido
 @returns Descrição do utilizador se existir, NULL se não existir
 */
@@ -70,7 +71,7 @@ char * get_user_aboutme(MyUser user){
 }
 
 /**
-\ brief Função que dá o número de questões do utilizador
+\brief Função que dá o número de questões do utilizador
 @param user Utilizador recebido
 @returns Número de questões do utilizador se existir, NULL se não existir
 */
@@ -79,7 +80,7 @@ int get_user_questions(MyUser user){
 }
 
 /**
-\ brief Função que dá a reputação do utilizador
+\brief Função que dá a reputação do utilizador
 @param user Utilizador recebido
 @returns Reputação do utilizador se existir, NULL se não existir
 */
@@ -88,7 +89,7 @@ int get_user_reputation(MyUser user){
 }
 
 /**
-\ brief Função que dá o número de respostas do utilizador
+\brief Função que dá o número de respostas do utilizador
 @param user Utilizador recebido
 @returns Número de respostas do utilizador se existir, NULL se não existir
 */
@@ -97,7 +98,7 @@ int get_user_answers(MyUser user){
 }
 
 /**
-\ brief Função que dá o número de posts do utilizador
+\brief Função que dá o número de posts do utilizador
 @param user Utilizador recebido
 @returns Numero de posts do utilizador se existir, NULL se não existir
 */
@@ -106,7 +107,7 @@ int get_user_totalposts(MyUser user){
 }
 
 /**
-\ brief Função que dá a lista dos ultimos posts do utilizador
+\brief Função que dá a lista dos ultimos posts do utilizador
 @param user Utilizador recebido
 @returns Lista dos ultimos posts do utilizador se existir, NULL se não existir
 */
@@ -115,7 +116,7 @@ GList * get_user_lastposts (MyUser user){
 }
 
 /**
-\ brief Função que define o id do utilizador
+\brief Função que define o id do utilizador
 @param user Utilizador recebido
 @param id Id do utilizador
 */
@@ -125,7 +126,7 @@ void set_user_id(MyUser user, char* id){
 }
 
 /**
-\ brief Função que define o nome do utilizador
+\brief Função que define o nome do utilizador
 @param user Utilizador recebido
 @param name Nome do utilizador
 */
@@ -135,7 +136,7 @@ void set_user_name(MyUser user, char* name){
 }
 
 /**
-\ brief Função que define a descrição do utilizador
+\brief Função que define a descrição do utilizador
 @param user Utilizador recebido
 @param aboutme Descrição do utilizador
 */
@@ -145,7 +146,7 @@ void set_user_aboutme(MyUser user, char* aboutme){
 }
 
 /**
-\ brief Função que define a reputação do utilizador
+\brief Função que define a reputação do utilizador
 @param user Utilizador recebido
 @param reputation Reputação do utilizador
 */
@@ -154,7 +155,7 @@ void set_user_reputation(MyUser user, int reputation){
 }
 
 /**
-\ brief Função que define as questões do utilizador
+\brief Função que define as questões do utilizador
 @param user Utilizador recebido
 @param questions Questões do utilizador
 */
@@ -163,7 +164,7 @@ void set_user_questions(MyUser user, int questions){
 }
 
 /**
-\ brief Função que define as respostas do utilizador
+\brief Função que define as respostas do utilizador
 @param user Utilizador recebido
 @param answers Respostas do utilizador
 */
@@ -172,7 +173,7 @@ void set_user_answers(MyUser user, int answers){
 }
 
 /**
-\ brief Função que define o número total de posts do utilizador
+\brief Função que define o número total de posts do utilizador
 @param user Utilizador recebido
 @param total_posts Número total de posts do utilizador
 */
@@ -181,7 +182,7 @@ void set_user_totalposts(MyUser user, int total_posts){
 }
 
 /**
-\ brief Função que compara os segundos elementos dos pares, que são datas
+\brief Função que compara os segundos elementos dos pares, que são datas
 @param pair1 1º par
 @param pair2 2º par
 @returns 1 se a data do par pair1 é menor que o do par pair2, 0 se as datas são iguais e -1 se a data do par pair1 é maior que o do par pair2
@@ -200,7 +201,7 @@ int inv_cmp (STR_pair pair1, STR_pair pair2){
 }
 
 /**
-\ brief Função que define o último post feito pelo utilizador
+\brief Função que define o último post feito pelo utilizador
 @param user Utilizador recebido
 @param id Id do post
 @param data Data do post
@@ -228,7 +229,7 @@ void set_lastpost (MyUser user, char * id, Date data){
 }
 
 /**
-\ brief Função que aumenta o número de perguntas feitas pelo utilizador
+\brief Função que aumenta o número de perguntas feitas pelo utilizador
 @param user Utilizador recebido
 */
 void aumenta_questions_user(MyUser user){
@@ -237,7 +238,7 @@ void aumenta_questions_user(MyUser user){
 }
 
 /**
-\ brief Função que aumenta o número de respostas feitas pelo utilizador
+\brief Função que aumenta o número de respostas feitas pelo utilizador
 @param user Utilizador recebido
 */
 void aumenta_answers_user(MyUser user){
@@ -246,7 +247,7 @@ void aumenta_answers_user(MyUser user){
 }
 
 /**
-\ brief Função que compara a reputação de 2 utilizadores
+\brief Função que compara a reputação de 2 utilizadores
 @param u1 1º utilizador recebido
 @param u2 2º utilizador recebido
 @returns 1 se a reputação do utilizador u1 é menor que o do utilizador u2, 0 se as reputações são iguais e -1 se a reputação do utilizador u1 é maior que o do utilizador u2
@@ -254,14 +255,20 @@ void aumenta_answers_user(MyUser user){
 int compare_users_rep (MyUser u1, MyUser u2){
 	if(u1->reputation<u2->reputation)
 		return 1;
-	if(u1->reputation==u2->reputation)
-		return 0;
-	
+	if(u1->reputation==u2->reputation){
+		if (atoi(u1->id) < atoi(u2->id))
+			return 1;
+		else
+			if (atoi(u1->id) > atoi(u2->id))
+				return -1;
+			else
+				return 0;	
+	}
 	return -1;
 }
 
 /**
-\ brief Função que compara a reputação de 2 utilizadores
+\brief Função que compara a reputação de 2 utilizadores
 @param u1 1º utilizador recebido
 @param u2 2º utilizador recebido
 @returns 1 se o número total de posts do utilizador u1 é menor que o do utilizador u2, 0 se o número total de posts é igual e -1 se o número total de posts do utilizador u1 é maior que o do utilizador u2
@@ -269,14 +276,20 @@ int compare_users_rep (MyUser u1, MyUser u2){
 int compare_users (MyUser u1, MyUser u2){
 	if(u1->total_posts<u2->total_posts)
 		return 1;
-	if(u1->total_posts==u2->total_posts)
-		return 0;
-	
+	if(u1->total_posts==u2->total_posts){
+		if (atoi(u1->id) < atoi(u2->id))
+			return 1;
+		else
+			if (atoi(u1->id) > atoi(u2->id))
+				return -1;
+			else
+				return 0;
+	}
 	return -1;
 }
 
 /**
-\ brief Função que transforma um myuser (estrutura do utilizador criada pelo grupo) num user (estrututa de um utilizador criada pelos docentes)
+\brief Função que transforma um myuser (estrutura do utilizador criada pelo grupo) num user (estrututa de um utilizador criada pelos docentes)
 @param user Utilizador recebido
 @returns Utilizador na estrutura "user"
 */
@@ -302,7 +315,7 @@ USER toUSER (MyUser user) {
 }
 
 /**
-\ brief Função que liberta a memória ocupada pelo utilizador
+\brief Função que liberta a memória ocupada pelo utilizador
 @param user Utilizador recebido
 */
 void destroy_myuser(MyUser user){

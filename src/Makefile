@@ -20,8 +20,13 @@ $(ODIR)/%.o : %.c $(DEPS)
 
 program: $(SOURCES_OBJ) $(MY_LIBS_OBJ)
 	$(CC) $(CFLAGS) $(wildcard $(ODIR)/*.o)  $(wildcard $(OLDIR)/*.o) -o program $(LIBS)
+	doxygen -g
+	doxygen
 
 clean:
 	rm obj/*.o
 	rm obj/lib/*.o
 	rm program
+	rm Doxyfile
+	rm -rf latex
+	rm -rf html

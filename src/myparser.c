@@ -2,7 +2,12 @@
 #include <string.h>
 
 /**
-\ brief Função que abre os ficheiros xml
+@file myparser.c
+Funções de abertura do documento e de busca de propriedades
+*/
+
+/**
+\brief Função que abre os ficheiros xml
 @param dump_path Caminho para a pasta que contém os ficheiros xml
 @returns NULL se o doc não existe e o doc se existir
 */
@@ -25,7 +30,7 @@ xmlDocPtr open_doc(char *dump_path){
 }
 
 /**
-\ brief Função que 
+\brief Função que coloca em memória o conteudo de cur que corresponde à propriedade prop
 @param cur Apontador para uma zona do ficheiro
 @param prop String que contém informação para algo
 @param res Local onde poderá ser colocado o id

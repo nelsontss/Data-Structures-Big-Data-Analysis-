@@ -7,7 +7,8 @@
 #include <compare_date.h>
 
 /**
- * Estrutura criada por nós que representa um post
+@file mypost.c
+Estrutura que representa um post, criada pelo grupo 
  */
 struct mypost
 {
@@ -27,7 +28,7 @@ struct mypost
 };
 
 /**
-\ brief Função que cria um post dados os parâmetros da estrutura
+\brief Função que cria um post dados os parâmetros da estrutura
 @param id Id do post
 @param title Titulo do post
 @param ownerUser Id do proprietário do post
@@ -55,7 +56,7 @@ MyPost create_mypost(char* id, char* title, char* ownerUser, Date data, int type
 }
 
 /**
-\ brief Função que dá o id do post
+\brief Função que dá o id do post
 @param post Post recebido
 @returns Id do post se o post existe, NULL se não existe
 */
@@ -64,7 +65,7 @@ char * get_post_id(MyPost post){
 }
 
 /**
-\ brief Função que dá o titulo do post
+\brief Função que dá o titulo do post
 @param post Post recebido
 @returns Titulo do post se o post existe, NULL se não existe
 */
@@ -73,7 +74,7 @@ char * get_post_title(MyPost post){
 }
 
 /**
-\ brief Função que dá o id do proprietário do post
+\brief Função que dá o id do proprietário do post
 @param post Post recebido
 @returns Id do proprietário do post se o post existe, NULL se não existe
 */
@@ -82,7 +83,7 @@ char * get_post_ownerUser(MyPost post){
 }
 
 /**
-\ brief Função que dá o id da pergunta a que o post dá resposta
+\brief Função que dá o id da pergunta a que o post dá resposta
 @param post Post recebido
 @returns Id da pergunta a que o post dá resposta se o post existe, NULL se não existe
 */
@@ -91,16 +92,16 @@ char * get_post_parentID(MyPost post){
 }
 
 /**
-\ brief Função que dá a data do post
+\brief Função que dá a data do post
 @param post Post recebido
-@returns Data do post se o post existe, -1 se não existe
+@returns Data do post se o post existe, NULL se não existe
 */
 Date get_post_data (MyPost post){
 	return post ? post->data : NULL;
 }
 
 /**
-\ brief Função que dá a média ponderada do post (indicado na query 10)
+\brief Função que dá a média ponderada do post (indicado na query 10)
 @param post Post recebido
 @returns Média ponderada do post se o post existe, -1 se não existe
 */
@@ -108,7 +109,7 @@ float get_post_pont (MyPost post){
 	return post ? post->pont : -1;
 }
  /**
-\ brief Função que dá o número de comentários do post
+\brief Função que dá o número de comentários do post
 @param post Post recebido
 @returns Número de comentários do post se o post existe, -1 se não existe
 */
@@ -117,7 +118,7 @@ int get_post_comments (MyPost post){
 }
 
 /**
-\ brief Função que dá o score do post
+\brief Função que dá o score do post
 @param post Post recebido
 @returns Score do post se o post existe, -1 se não existe
 */
@@ -126,7 +127,7 @@ int get_post_score (MyPost post){
 }
 
 /**
-\ brief Função que dá o tipo do post
+\brief Função que dá o tipo do post
 @param post Post recebido
 @returns Tipo do post se o post existe, -1 se não existe
 */
@@ -135,7 +136,7 @@ int get_post_type (MyPost post){
 }
 
 /**
-\ brief Função que dá o número de respostas do post
+\brief Função que dá o número de respostas do post
 @param post Post recebido
 @returns Número de respostas do post se o post existe, NULL se não existe
 */
@@ -144,7 +145,7 @@ int get_post_answerCount (MyPost post){
 }
 
 /**
-\ brief Função que dá a lista de tags do post
+\brief Função que dá a lista de tags do post
 @param post Post recebido
 @returns Lista de tags do post
 */
@@ -153,7 +154,7 @@ GList* post_get_tags(MyPost post){
 }
 
 /**
-\ brief Função que dá lista das respostas do post
+\brief Função que dá lista das respostas do post
 @param post Post recebido
 @returns Lista das respostas do post
 */
@@ -162,7 +163,7 @@ GList* post_get_resp(MyPost post){
 }
 
 /**
-\ brief Função que dá a tabela de hash das respostas do post
+\brief Função que dá a tabela de hash das respostas do post
 @param post Post recebido
 @returns Tabela de hash das respostas do post
 */
@@ -171,7 +172,7 @@ GHashTable* post_get_resp_hash(MyPost post){
 }
 
 /**
-\ brief Função que define o id do post
+\brief Função que define o id do post
 @param post Post recebido
 @param id Id do post
 */
@@ -181,7 +182,7 @@ void set_post_id(MyPost post, char* id){
 }
 
 /**
-\ brief Função que define o titulo do post
+\brief Função que define o titulo do post
 @param post Post recebido
 @param title Titulo do post
 */
@@ -191,7 +192,7 @@ void set_post_title(MyPost post, char* title){
 }
 
 /**
-\ brief Função que define o id do proprietário do post
+\brief Função que define o id do proprietário do post
 @param post Post recebido
 @param ownerUser Id do proprietário post
 */
@@ -201,7 +202,7 @@ void set_post_ownerUser(MyPost post, char* ownerUser){
 }
 
 /**
-\ brief Função que define o id da pergunta a que o post dá resposta
+\brief Função que define o id da pergunta a que o post dá resposta
 @param post Post recebido
 @param parentID Id da pergunta a que o post dá resposta
 */
@@ -211,7 +212,7 @@ void set_post_parentID(MyPost post, char* parentID){
 }
 
 /**
-\ brief Função que define o score do post
+\brief Função que define o score do post
 @param post Post recebido
 @param score Score do post
 */
@@ -220,7 +221,7 @@ void set_post_score (MyPost post, int score){
 }
 
 /**
-\ brief Função que define o número de comentários do post
+\brief Função que define o número de comentários do post
 @param post Post recebido
 @param comments Número de comentários do post
 */
@@ -229,7 +230,7 @@ void set_post_comments (MyPost post, int comments){
 }
 
 /**
-\ brief Função que define o tipo do post
+\brief Função que define o tipo do post
 @param post Post recebido
 @param type Tipo do post
 */
@@ -238,7 +239,7 @@ void set_post_type (MyPost post, int type){
 }
 
 /**
-\ brief Função que adiciona à lista de tags do post uma nova tag
+\brief Função que adiciona à lista de tags do post uma nova tag
 @param post Post recebido
 @param tag Tag do post
 */
@@ -247,7 +248,7 @@ void set_post_tag (MyPost post, char *tag){
 }
 
 /**
-\ brief Função que adiciona uma resposta à lista de respostas do post
+\brief Função que adiciona uma resposta à lista de respostas do post
 @param post Post recebido
 @param resp Resposta do post 
 */
@@ -259,7 +260,7 @@ void set_post_resp (MyPost post, MyPost resp){
 }
 
 /**
-\ brief Função que calcula a média ponderada do post (indicado na query 10)
+\brief Função que calcula a média ponderada do post (indicado na query 10)
 @param post Post recebido
 @param reputation Reputação do post
 */
@@ -268,7 +269,7 @@ void calc_post_pont (MyPost post, int reputation){
 }
 
 /**
-\ brief Função que indica se o post contém a tag dada no parametro
+\brief Função que indica se o post contém a tag dada no parametro
 @param post Post recebido
 @param tag Tag do post
 @returns 1 se o post não contém a tag do parametro, 0 se existe
@@ -280,7 +281,7 @@ int post_contains_tag(MyPost post, char* tag) {
 }
 
 /**
-\ brief Função que compara dois posts relativamente às suas datas
+\brief Função que compara dois posts relativamente às suas datas
 @param p1 Post 1 recebido
 @param p2 Post 2 recebido
 @returns 1 se a data do post p1 é menor que a do post p2, 0 se forem iguais e -1 se a data do post p1 é maior que a do post p2
@@ -290,7 +291,7 @@ int compare_posts (MyPost p1, MyPost p2){
 }
 
 /**
-\ brief Função que compara os votos de 2 posts
+\brief Função que compara os votos de 2 posts
 @param p1 Post 1 recebido
 @param p2 Post 2 recebido
 @returns 1 se o score do post p1 é menor que o do p2, 0 se os scores são iguais e -1 se o score do post p1 é maior que o do post p2
@@ -302,7 +303,7 @@ int compare_votes (MyPost p1, MyPost p2){
 		if (atoi(p1->id) < atoi(p2->id))
 			return 1;
 		else
-			if (atoi(p1->id) < atoi(p2->id))
+			if (atoi(p1->id) > atoi(p2->id))
 				return -1;
 			else
 				return 0;
@@ -312,7 +313,7 @@ int compare_votes (MyPost p1, MyPost p2){
 }
 
 /**
-\ brief Função que compara o número de respostas do post
+\brief Função que compara o número de respostas do post
 @param p1 Post 1 recebido
 @param p2 Post 2 recebido
 @returns 1 se o número de respostas do post p1 é menor que o do post p2, 0 se forem iguais e -1 se o número de respostas do post p1 for maior que o do post p2
@@ -324,7 +325,7 @@ int compare_answerCount(MyPost p1, MyPost p2){
 		if (atoi(p1->id) < atoi(p2->id))
 			return 1;
 		else
-			if (atoi(p1->id) < atoi(p2->id))
+			if (atoi(p1->id) > atoi(p2->id))
 				return -1;
 			else
 				return 0;
@@ -333,7 +334,7 @@ int compare_answerCount(MyPost p1, MyPost p2){
 }
 
 /**
-\ brief Função que compara o valor pont de data com o primeiro elemento do par e caso seja maior coloca-o no primeiro elemento do par e o id desse post no segundo elemento do par
+\brief Função que compara o valor pont de data com o primeiro elemento do par e caso seja maior coloca-o no primeiro elemento do par e o id desse post no segundo elemento do par
 @param data Post recebido
 @param pair Par de longs recebido
 */
@@ -345,7 +346,7 @@ void best(MyPost data, LONG_pair pair){
 }
 
 /**
-\ brief Função que recebe o id da melhor resposta
+\brief Função que recebe o id da melhor resposta
 @param post Post recebido
 @returns Id da melhor resposta
 */
@@ -359,7 +360,7 @@ int get_best_answer(MyPost post){
 }
 
 /**
-\ brief Função que dá free de um post e os seus componentes
+\brief Função que dá free de um post e os seus componentes
 @param post Post recebido
 */
 void destroy_mypost (MyPost post){
