@@ -4,6 +4,11 @@
 #include <loader.h>
 
 /**
+@file query11.c
+Implementação da query 11.
+*/
+
+/**
 \brief Dado um id de uma pergunta retorna a resposta mais votada por utilizadores com melhor reputação.
 @param com Estrutura de dados.
 @param id ID da pergunta.
