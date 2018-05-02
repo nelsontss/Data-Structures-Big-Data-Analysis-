@@ -17,6 +17,10 @@
 #include <query10.h>
 #include <query11.h>
 
+/**
+@file interface.c
+Definição da estrutura de dados e chamada das funções gerais.
+*/
 
 struct TCD_community
 {
