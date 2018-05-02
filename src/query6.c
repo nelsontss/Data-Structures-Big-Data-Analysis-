@@ -5,6 +5,11 @@
 #include <stdio.h>
 
 /**
+@file query6.c
+Implementação da query 6.
+*/
+
+/**
 \brief Encontra o top N de respostas com mais votos dentro de um intervalo de tempo.
 @param com Estrutura de dados.
 @param N Numero de utilizadores do top.
