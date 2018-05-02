@@ -1,0 +1,209 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[a4paper,left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+\title{
+            Laboratorios de Inform\'{a}tica 3
+\\
+        MiEI --- 2017/18
+}
+
+
+
+
+\date\mydate
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\begin{center}\large
+\begin{tabular}{ll}
+\textbf{Grupo} nr. & 48
+\\\hline
+a82053 & Nelson Sousa 
+\\
+a80207 & Rui Ribeiro  
+\\
+a81922 & Tiago Sousa  
+\end{tabular}
+\end{center}
+
+\section{Tipo de dados Concreto}
+
+
+struct TCD\_community \{
+  
+  \quad GHashTable* posts; 
+  
+  \quad GHashTable* users;
+  
+  \quad GHashTable* tags;
+  
+  \quad GList* posts\_list;
+
+  \quad GList* users\_list;
+  
+  \quad GList* questions\_list;
+  
+  \quad GList* users\_list\_rep;
+  
+  \quad long total\_questions;
+  
+  \quad long total\_answers;
+  \\
+\};
+  
+
+\section{Estrutura de Dados}
+  \begin{itemize}
+  \item MyPost
+  
+  \quad Estrutura responsavel por armezenar a informa\c{c}\~{a}o dos posts.
+  
+  \quad Contem: 
+    
+    \quad \quad - Id do post;
+    
+    \quad \quad - Titulo do post;
+    
+    \quad \quad - Id do usu\'{a}rio que publicou o post;
+    
+    \quad \quad - Data de cria\c{c}\~{a}o;
+
+    \quad \quad - Tipo do post, 1 se for pergunta 2 se for resposta;
+  
+    \quad \quad - Lista com as tags que o post possui;
+
+    \quad \quad - Lista com as respostas ao post caso este seja uma pergunta;
+
+    \quad \quad - Tabela de hash com as respostas ao post caso este seja uma pergunta;
+
+    \quad \quad - Score do post, ou seja numero de votos;
+
+    \quad \quad - Numero de comentarios;
+
+    \quad \quad - Pontua\c{c}\~{a}o do post;
+
+    \quad \quad - Numero de respostas;
+
+    \quad \quad - Id do post "pai", ou seja caso o post seja uma resposta, contem o id da respetiva pergunta;
+
+    \item MyUser
+  
+  \quad Estrutura responsavel por armezenar a informa\c{c}\~{a}o dos users.
+  
+  \quad Contem: 
+    
+    \quad \quad - Id do user;
+    
+    \quad \quad - Nome do user;
+    
+    \quad \quad - Short bio do user;
+    
+    \quad \quad - N\'{u}mero de perguntas feitas pelo user;
+
+    \quad \quad - N\'{u}mero de respostas dadas pelo user;
+  
+    \quad \quad - N\'{u}mero total de posts feitos pelo user;
+
+    \quad \quad - Reputa\c{c}\~{a}o do user;
+
+    \quad \quad - Lista com os ultimos 10 posts;
+
+    \item Tabelas de Hash
+
+    \quad Na nossa estrutura possuimos 3 tabelas de hash, para conseguirmos tempo de procura constante. Uma tabela para os Users que contem os dados armazenados segundo a estrutura \textbf{MyUser}, onde a key \'e representada pelo id do user. Uma para os Posts que contem os dados armazenados segundo a estrutura \textbf{MyPost}, onde a key \'e representada pelo id do post. E finalmente uma tabela de hash para as tags, onde a key \'e o nome da tag e o id da tag \'e o value(ter\'a utilidade na query 11.
+
+    \item Listas
+
+    \quad Para melhorar os tempos decidimos produzir varias listas ligadas, ordenadas de diferentes formas para acelarar as querys, assim possuimos 4 listas ligadas. Duas contem todos os users, estando apenas ordenadas de maneira diferente. Um ordenada por numero total de posts que cada usu\'{a}rio tem, e outra ordenada pela reputa\c{c}\~{a}o de cada usu\'{a}rio.
+
+    \quad As outras duas listas contem os posts ordenados por data. A diferen\c{c}a \'e que uma contem tanto perguntas como respostas e outra s\'{o} contem as perguntas.
+
+    \quad \textbf{Nota}: estas listas s\~{a}o "shallow copy's" das tabelas de hash, ou seja o conteudo dentro de cada nodo da lista \'e o mesmo que est\'{a} contido numa das tabelas de hash.Assim evitamos um gasto de mem\'{o}ria muito grande pois teriamos de copiar cada post e cada usu\'{a}rio tantas vezes quanto o numero de listas que possuiamos.O encapsulamento continua garantido apesar disso pois, n\~{a}o \'e possivel para o utilizador do programa alterar nenhuma destas listas.
+
+    \item Contadores
+
+    \quad Para finalizar a nossa estrutura armazena o n\'{u}mero total de perguntas e respostas contidas no ficheiro xml.
+
+    \end{itemize}
+    
+
+    \section {Modulariza\c{c}\~{a}o Funcional}
+
+    \quad Neste projeto Modularizamos o nosso codigo em varias partes, um modulo "interface" que contem a chamada de todas as querys do load da estrutura de dados e do clean da estrutura, um modulo para cada querry contendo a sua respetiva implementa\c{c}\~{a}o, um modulo "loader" que contem a implementa\c{c}\~{a}o do load, carregando a estrutura de dados e funções de acesso aos campos da estrutura como a get\_user() ou a get\_post(), um modulo "parser" que contem 2 funçoes auxiliares, que abrem ficheiros xml e que encontra atributos especificados pelo utilizador, possuimos tambem 2 modulos "myuser" e "myparser" que implementam as estrutras \textbf{MyUser} e \textbf{MyPost} e as respetivas funções necesse\c{ç}arias que operam sobre essas estruras, por fim temos um modulo "date\_to\_int" que \'e responsavel por transformar uma data em dias passando do formato Date para um int;
+
+
+    \section {Abstra\c{c}\~{a}o de Dados}
+
+    \quad Garantimos abstra\c{c}\~{a}o de dados ao definir as nossas estruturas nos ficheiros .c respetivos, passando apenas uma API ao utilizador que contem as fun\c{c}\~{o}es que eles podem usar para ter acesso a informaçao contida nestas mesmas estruturas, essas fun\c{c}\~{o}es estao feitas de modo a garantir encapsulamento ou seja tudo o que é passado ao utilizador s\~ao apenas copias da informa\c{c}ao contida na estrutura para que n\~ao seja possivel esta ser alterada por utilizadores externos.
+  
+
+  \section {Estrategias seguidas nas query's}
+    
+    \begin{itemize}
+    
+    \item \textbf{Query 1}
+    
+    \quad\quad Nesta query tiramos proveito das tabelas de hash de usu\'arios e de posts que possuimos na estrutura tendo acesso em tempo constante a qualquer post.Caso o post passado como parametro seja uma resposta fazemos o get do respetivo post na tabela de hash, e verificamos o campo da estrutura que contem o id do pai.A seguir \'e s\'o consultar o campo da estrutura que tem o titlo e o campo que tem o id do dono do post.Por fim fazemos get do dono do post e consultarmos o campo que contem o seu nome.
+    
+    \item \textbf{Query 2}
+    
+    \quad\quad Atráves da lista ligada users\_list que possuimos na estrutura, que est\'a por ordem decrescente n\'umero total de post que um usu\'ario fez.A unica coisa necess\'aria a fazer para esta query \'e obter os N primeiros id's desta lista.
+    
+    \item \textbf{Query 3}
+    
+    \quad\quad A estrategia adotada nesta query foi percorrer a lista ligada posts\_list que est\'a ordenada da data da mais recente para a mais antiga.Parando quando se encontra uma data maior que a data que \'e passada como parametro (Date end).A medida que percorre-mos a lista vamos incrementando as variaveis que contam o n\'umero de perguntas e respostas dependo do tipo de post que obsevamos em cada  itera\c{c}\~ao.
+
+  \item \textbf{Query 4}
+    
+    \quad\quad Nesta query tiramos proveito de possuirmos uma lista ligada s\'o com as perguntas na nossa estrutura.Assim o tempo de percorrer a lista \'e consideravelmente menor.Tal como na query anterior percorremos a lista ate que seja encontrada uma data maior que a data que \'e passada como parametro (Date end).Em cada itera\c{c}\~ao vemos se o post possui ou não a tag passada como parametro, visto que na nossa estrutura os posts armazenam as tags que possuem.Em caso afirmativo inserimos o id desse post numa lista que no fim \'e passada ao utilizador.
+
+  \item \textbf{Query 5}
+    
+    \quad\quad A partir da tabela de hash tudo o que precisamos de fazer nesta query \'e o get do user atrav\'ez do id passado como parametro e depois consultar os campos shorbio e lastposts que a estrutra MyUser possui.
+
+  \item \textbf{Query 6}
+    
+    \quad\quad A estrategia seguida nesta query foi percorrer a lista ligada posts\_list como na query 2 e inserindo todos as respostas numa lista auxiliar.
+
+    \quad\quad No fim de percorrida a lista, ordena-se lista auxiliar que, assim contem as perguntas por ordem decrescente de votos. Assim \'e s\'o preciso devolver os N primeiros id's dessa lista ao utilizador.
+    
+  \item \textbf{Query 7}
+    
+    \quad\quad Para resover esta query basta percorrer a lista de perguntas (questions\_list), e inserir todas as perguntas que estao dentro numa lista auxiliar, ordenando-a no fim, e depois retirar os N primeiros id's da lista auxiliar.
+
+    \quad\quad Em caso de empate, foi utilizado como criterio a ordem decresente dos ids.
+  
+  \item \textbf{Query 8}
+    
+    \quad\quad Para fazer esta query \'e apenas necess\'ario percorrer a lista ligada questions\_list que possui apenas as perguntas e est\'a ordenada por cronologia inversa.\`A medida que encontramos posts cujo o titulo contenha a palavra passada como parametro inserimos o id dessa post numa lista que \'e no fim passada ao utilizador.
+    
+  \item \textbf{Query 9}
+    
+    \quad\quad \'E de relembrar que cada post, caso seja uma pergunta, armazena uma lista com todas as suas respostas.Assim, percorrendo mais uma vez a lista ligada questions\_list e para cada pergunta percorrendo a sua respetiva lista de respostas ate que se detete que ambos os utilizadores participaram nessa pergunta ou ate ao fim da lista de respostas, obtemos a lista com os id's das perguntas em que ambos os utilizadores participaram, a ordem cronologica inversa est\á garantida pois a lista ligada est\á tamb\'em em ordem cronologica inversa.
+    
+  \item \textbf{Query 10}
+    
+    \quad\quad Estando a pontua\c{c}\~ao de cada resposta calculada previamente pelo load, para esta query s\'o precisamos de fazer o get da pergunta atrav\'ez do seu id, a partir da tabela de hash. E percorrer a lista das respostas que essa pergunta tem vendo qual tem a pontua\c{c}\~ao mais alta.
+    
+  \item \textbf{Query 11}
+    
+    \quad\quad A estrategia seguida nesta query foi percorrer a lista de todos os posts e, caso o propriet\'ario esteja nos N primeiros lugares da lista users\_list\_rep, que est\'a na nossa estrutura de dados por ordem decrescente de reputa\c{c}\~ao, todas os ids das tags desse post s\~ao adicionados por ordem decrescente de vezes que a tag j\'a foi usada, a uma lista auxiliar. Esta lista tem em cada n\'o um par com o id da tag e o n\'umero de vezes que esta ja foi usada. No fim basta retornar os N primeiros ids da lista auxiliar.
+    
+    \quad\quad Em caso de empate, foi utilizado como criterio a ordem decresente dos ids.
+    
+    \quad\quad Esta query foi melhorada posteriormente! Ver sec\c{c}ao "Estrategias para melhorar o desempenho"
+    
+    \end{itemize}
+    
+    \section {Estrategias para melhorar o desempenho}
+    
+    \quad A principal estrategia seguida para melhorar o desempenho foi passar a maior quantidade possivel de trabalho para a parte de loading da estrutura. Isto foi feito com o pressoposto que o load e feito apenas uma vez e cada query pode ser executada varias vezes. Assim \'e preferivel ter um load mais pesado a nivel de complexidade e ter querys  mais eficientes. Coisas como criar diferentes listas ordenadas de diferentes maneiras e filtradas de diferentes maneiras, o facto de cada pergunta armazenar a lista das suas respostas e cada usu\'ario armazenar os seus ultimos 10 posts foram implementadas neste ambito. O que faz melhorar o desempenho de grande parte das querys .
+
+    \quad Na query 11 de modo melhorar o desempenho, criamos uma tabela de hash com os N primeiros users da lista user\_list\_rep, para que a parte de verificar se o dono de um post esta ou nao no top N users seja feita em tempo constante.
+    
+\end{document}
+
