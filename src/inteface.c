@@ -24,16 +24,16 @@ Definição da estrutura de dados e chamada das funções gerais.
 
 struct TCD_community
 {
-	GHashTable* posts;
-	GHashTable* users;
-	GHashTable* tags;
-	GList* posts_list;
-	GList* users_list;
-	GList* questions_list;
-	GList* users_list_rep;
+	GHashTable* posts; /**<Tabela de hash que contém os posts */ 
+	GHashTable* users; /**<Tabela de hash que contém os utilizadores */
+	GHashTable* tags; /**<Tabela de hash que contém as tags */
+	GList* posts_list; /**<Lista que contém os posts */
+	GList* users_list; /**<Lista que contém os utilizadores */
+	GList* questions_list; /**<Lista que contém as questões */
+	GList* users_list_rep; /**<Lista que contém as respostas de cada utilizador */
 
-	long total_questions;
-	long total_answers;
+	long total_questions; /**<Valor que representa o número total de questões */
+	long total_answers; /**<Valor que representa o número total de respostas */
 
 };
 
