@@ -205,7 +205,7 @@ long better_answer(TAD_community com, long id){
 @returns Lista final das tags.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
-	return most_used_best_rep_aux(com->posts_list,com->users_list_rep,com->tags,N,begin,end);
+	return most_used_best_rep_aux(com->questions_list,com->users_list_rep,com->tags,N,begin,end);
 }
 
 /**
