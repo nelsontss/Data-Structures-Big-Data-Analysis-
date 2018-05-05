@@ -80,7 +80,7 @@ struct TCD\_community \{
 
     \quad \quad - Tabela de hash com as respostas ao post caso este seja uma pergunta;
 
-    \quad \quad - Score do post, ou seja numero de votos;
+    \quad \quad - Score do post, ou seja, numero de votos;
 
     \quad \quad - Numero de comentarios;
 
@@ -114,7 +114,7 @@ struct TCD\_community \{
 
     \item Tabelas de Hash
 
-    \quad Na nossa estrutura possuimos 3 tabelas de hash, para conseguirmos tempo de procura constante. Uma tabela para os Users que contem os dados armazenados segundo a estrutura \textbf{MyUser}, onde a key \'e representada pelo id do user. Uma para os Posts que contem os dados armazenados segundo a estrutura \textbf{MyPost}, onde a key \'e representada pelo id do post. E finalmente uma tabela de hash para as tags, onde a key \'e o nome da tag e o id da tag \'e o value(ter\'a utilidade na query 11.
+    \quad Na nossa estrutura possuimos 3 tabelas de hash, para conseguirmos tempo de procura constante. Uma tabela para os Users que contem os dados armazenados segundo a estrutura \textbf{MyUser}, onde a key \'e representada pelo id do user. Uma para os Posts que contem os dados armazenados segundo a estrutura \textbf{MyPost}, onde a key \'e representada pelo id do post. E finalmente uma tabela de hash para as tags, onde a key \'e o nome da tag e o id da tag \'e o value(ter\'a utilidade na query 11).
 
     \item Listas
 
@@ -133,12 +133,12 @@ struct TCD\_community \{
 
     \section {Modulariza\c{c}\~{a}o Funcional}
 
-    \quad Neste projeto Modularizamos o nosso codigo em varias partes, um modulo "interface" que contem a chamada de todas as querys do load da estrutura de dados e do clean da estrutura, um modulo para cada querry contendo a sua respetiva implementa\c{c}\~{a}o, um modulo "loader" que contem a implementa\c{c}\~{a}o do load, carregando a estrutura de dados e funções de acesso aos campos da estrutura como a get\_user() ou a get\_post(), um modulo "parser" que contem 2 funçoes auxiliares, que abrem ficheiros xml e que encontra atributos especificados pelo utilizador, possuimos tambem 2 modulos "myuser" e "myparser" que implementam as estrutras \textbf{MyUser} e \textbf{MyPost} e as respetivas funções necesse\c{ç}arias que operam sobre essas estruras, por fim temos um modulo "date\_to\_int" que \'e responsavel por transformar uma data em dias passando do formato Date para um int;
+    \quad Neste projeto modularizamos o nosso codigo em varias partes, um modulo "interface" que contem a chamada de todas as querys, do load da estrutura de dados e do clean da estrutura, um modulo para cada query contendo a sua respetiva implementa\c{c}\~{a}o, um modulo "loader" que contem a implementa\c{c}\~{a}o do load, carregando a estrutura de dados e fun\c{c}\~{o}es de acesso aos campos da estrutura como a get\_user() ou a get\_post(), um modulo "myparser" que contem 2 fun\c{c}\~{o}es auxiliares, que abrem ficheiros xml e que encontra atributos especificados pelo utilizador, possuimos tambem 2 modulos "myuser" e "mypost" que implementam as estrutras \textbf{MyUser} e \textbf{MyPost} e as respetivas fun\c{c}\~{o}es necesse\c{c}arias que operam sobre essas estruturas, por fim temos um modulo "compare\_date" que \'e responsavel por comparar 2 datas e de transformar datas que se apresentam como strings no formato Date e vice-versa.
 
 
     \section {Abstra\c{c}\~{a}o de Dados}
 
-    \quad Garantimos abstra\c{c}\~{a}o de dados ao definir as nossas estruturas nos ficheiros .c respetivos, passando apenas uma API ao utilizador que contem as fun\c{c}\~{o}es que eles podem usar para ter acesso a informaçao contida nestas mesmas estruturas, essas fun\c{c}\~{o}es estao feitas de modo a garantir encapsulamento ou seja tudo o que é passado ao utilizador s\~ao apenas copias da informa\c{c}ao contida na estrutura para que n\~ao seja possivel esta ser alterada por utilizadores externos.
+    \quad Garantimos abstra\c{c}\~{a}o de dados ao definir as nossas estruturas nos ficheiros .c respetivos, passando apenas uma API ao utilizador que contem as fun\c{c}\~{o}es que eles podem usar para ter acesso a informa\c{c}ao contida nestas mesmas estruturas, essas fun\c{c}\~{o}es estao feitas de modo a garantir encapsulamento, ou seja, tudo o que é passado ao utilizador s\~ao apenas copias da informa\c{c}ao contida na estrutura para que n\~ao seja possivel esta ser alterada por utilizadores externos.
   
 
   \section {Estrategias seguidas nas query's}
@@ -147,7 +147,7 @@ struct TCD\_community \{
     
     \item \textbf{Query 1}
     
-    \quad\quad Nesta query tiramos proveito das tabelas de hash de usu\'arios e de posts que possuimos na estrutura tendo acesso em tempo constante a qualquer post.Caso o post passado como parametro seja uma resposta fazemos o get do respetivo post na tabela de hash, e verificamos o campo da estrutura que contem o id do pai.A seguir \'e s\'o consultar o campo da estrutura que tem o titlo e o campo que tem o id do dono do post.Por fim fazemos get do dono do post e consultarmos o campo que contem o seu nome.
+    \quad\quad Nesta query tiramos proveito das tabelas de hash de usu\'arios e de posts que possuimos na estrutura tendo acesso em tempo constante a qualquer post.Caso o post passado como parametro seja uma resposta fazemos o get do respetivo post na tabela de hash, e verificamos o campo da estrutura que contem o id do pai.A seguir \'e s\'o consultar o campo da estrutura que tem o titulo e o campo que tem o id do dono do post.Por fim fazemos get do dono do post e consultarmos o campo que contem o seu nome.
     
     \item \textbf{Query 2}
     
@@ -155,7 +155,7 @@ struct TCD\_community \{
     
     \item \textbf{Query 3}
     
-    \quad\quad A estrategia adotada nesta query foi percorrer a lista ligada posts\_list que est\'a ordenada da data da mais recente para a mais antiga.Parando quando se encontra uma data maior que a data que \'e passada como parametro (Date end).A medida que percorre-mos a lista vamos incrementando as variaveis que contam o n\'umero de perguntas e respostas dependo do tipo de post que obsevamos em cada  itera\c{c}\~ao.
+    \quad\quad A estrategia adotada nesta query foi percorrer a lista ligada posts\_list que est\'a ordenada da data da mais recente para a mais antiga.Parando quando se encontra uma data maior que a data que \'e passada como parametro (Date end).A medida que percorremos a lista vamos incrementando as variaveis que contam o n\'umero de perguntas e respostas dependo do tipo de post que obsevamos em cada  itera\c{c}\~ao.
 
   \item \textbf{Query 4}
     
@@ -163,7 +163,7 @@ struct TCD\_community \{
 
   \item \textbf{Query 5}
     
-    \quad\quad A partir da tabela de hash tudo o que precisamos de fazer nesta query \'e o get do user atrav\'ez do id passado como parametro e depois consultar os campos shorbio e lastposts que a estrutra MyUser possui.
+    \quad\quad A partir da tabela de hash tudo o que precisamos de fazer nesta query \'e o get do user atrav\'es do id passado como parametro e depois consultar os campos shortbio e lastposts que a estrutra MyUser possui.
 
   \item \textbf{Query 6}
     
@@ -179,11 +179,11 @@ struct TCD\_community \{
   
   \item \textbf{Query 8}
     
-    \quad\quad Para fazer esta query \'e apenas necess\'ario percorrer a lista ligada questions\_list que possui apenas as perguntas e est\'a ordenada por cronologia inversa.\`A medida que encontramos posts cujo o titulo contenha a palavra passada como parametro inserimos o id dessa post numa lista que \'e no fim passada ao utilizador.
+    \quad\quad Para fazer esta query \'e apenas necess\'ario percorrer a lista ligada questions\_list que possui apenas as perguntas e est\'a ordenada por cronologia inversa.\`A medida que encontramos posts cujo o titulo contenha a palavra passada como parametro inserimos o id desse post numa lista que \'e no fim passada ao utilizador.
     
   \item \textbf{Query 9}
     
-    \quad\quad \'E de relembrar que cada post, caso seja uma pergunta, armazena uma lista com todas as suas respostas.Assim, percorrendo mais uma vez a lista ligada questions\_list e para cada pergunta percorrendo a sua respetiva lista de respostas ate que se detete que ambos os utilizadores participaram nessa pergunta ou ate ao fim da lista de respostas, obtemos a lista com os id's das perguntas em que ambos os utilizadores participaram, a ordem cronologica inversa est\á garantida pois a lista ligada est\á tamb\'em em ordem cronologica inversa.
+    \quad\quad \'E de relembrar que cada post, caso seja uma pergunta, armazena uma lista com todas as suas respostas.Assim, percorrendo mais uma vez a lista ligada questions\_list e para cada pergunta percorrendo a sua respetiva lista de respostas ate que se detete que ambos os utilizadores participaram nessa pergunta ou ate ao fim da lista de respostas, obtemos a lista com os id's das perguntas em que ambos os utilizadores participaram, a ordem cronologica inversa est\'a garantida pois a lista ligada est\'a tamb\'em em ordem cronologica inversa.
     
   \item \textbf{Query 10}
     
