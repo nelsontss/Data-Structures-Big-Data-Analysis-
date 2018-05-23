@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=UserHandler
+comment1.params=uri\ localName\ qName\ attributes
+comment1.target=void\ startElement(java.lang.String,\ java.lang.String,\ java.lang.String,\ org.xml.sax.Attributes)
+comment2.params=uri\ localName\ qName
+comment2.target=void\ endElement(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment3.params=ch\ start\ length
+comment3.target=void\ characters(char[],\ int,\ int)
+numComments=4
