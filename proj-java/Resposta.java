@@ -11,7 +11,7 @@ public class Resposta extends MyPost
     private String parentID;
     private int comments;
     private int score;
-    private float pont;
+    private double pont;
     
     /**
      * Constructor for objects of class Resposta
@@ -26,14 +26,14 @@ public class Resposta extends MyPost
         this.pont=0;
     }
     
-    public Resposta(String pID, int comm, int score, float pont, String id, String ownerUser, LocalDate data)
+    public Resposta(String pID, int comm, int score, String id, String ownerUser, LocalDate data)
     {
         // initialise instance variables
         super(id,ownerUser, data);
         this.parentID=pID;
         this.comments=comm;
         this.score=score;
-        this.pont=pont;
+        this.pont=0.0;    
     }
 
     public Resposta(Resposta r1)
@@ -60,7 +60,7 @@ public class Resposta extends MyPost
         return this.score;
     }
     
-    public float getPont(){
+    public double getPont(){
         return this.pont;
     }
     
@@ -76,8 +76,14 @@ public class Resposta extends MyPost
         this.score=score;
     }
     
-    public void setPont(float pont){
+    public void setPont(double pont){
         this.pont=pont;
+    }
+    
+    public double calc_post_pont (int reputation){
+        double r = this.score*0.65 + reputation*0.25 + this.comments*0.1;
+        setPont(r);
+        return r;
     }
     
     public boolean equals(Object o){

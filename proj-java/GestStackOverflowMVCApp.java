@@ -8,8 +8,11 @@
 public class GestStackOverflowMVCApp
 {
     private static GestStackOverflowModel createDate(){
-        Parser p = new Parser();
-        return p.parse("");
+        GestStackOverflowModel e = new GestStackOverflowModel();
+        Parser p = new Parser(e);
+        p.parseUsers("");
+        p.parsePosts("");
+        p.parseTags("");
     }
     
     public static void main(String[] args){
