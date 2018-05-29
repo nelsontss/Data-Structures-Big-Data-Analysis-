@@ -1,5 +1,5 @@
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +30,13 @@ public class Parser {
        
          XMLInputFactory factory = XMLInputFactory.newInstance();
          XMLEventReader eventReader =
-         factory.createXMLEventReader(new FileReader("Users.xml"));
-
+         factory.createXMLEventReader(new FileInputStream(path + "Users.xml"));
+         
+         String Id = "";
+         int Reputation = 0;
+         String DisplayName = "" ;
+         String AboutMe = "";
+         Attribute a ;
          while(eventReader.hasNext()) {
             XMLEvent event = eventReader.nextEvent();
                
@@ -43,10 +48,12 @@ public class Parser {
 
                if (qName.equalsIgnoreCase("row")) {
                  
-                 String Id = startElement.getAttributeByName(new QName("Id")).getValue();
-                 int Reputation = Integer.parseInt(startElement.getAttributeByName(new QName("Reputation")).getValue());
-                 String DisplayName =startElement.getAttributeByName(new QName("DisplayName")).getValue();
-                 String AboutMe =startElement.getAttributeByName(new QName("AboutMe")).getValue();
+                 Id = startElement.getAttributeByName(new QName("Id")).getValue();
+                 Reputation = Integer.parseInt(startElement.getAttributeByName(new QName("Reputation")).getValue());
+                 DisplayName = startElement.getAttributeByName(new QName("DisplayName")).getValue();
+                 a = startElement.getAttributeByName(new QName("AboutMe"));
+                 if (a!=null)
+                    AboutMe = a.getValue();
                  this.e.addUser(new myUser(Id,DisplayName,AboutMe,0,0,0,Reputation,new ArrayList<MyPost>()));
                }
                break;
@@ -61,8 +68,14 @@ public class Parser {
        
          XMLInputFactory factory = XMLInputFactory.newInstance();
          XMLEventReader eventReader =
-         factory.createXMLEventReader(new FileReader("Posts.xml"));
+         factory.createXMLEventReader(new FileInputStream(path + "Posts.xml"));
+         
+         String Id = "";
+         String ownerUser = ""; 
+         LocalDate data = LocalDate.now();
+         int Type = 0;
 
+         
          while(eventReader.hasNext()) {
             XMLEvent event = eventReader.nextEvent();
             
@@ -73,25 +86,39 @@ public class Parser {
 
                if (qName.equalsIgnoreCase("row")) {
                   
-                 String Id = startElement.getAttributeByName(new QName("Id")).getValue();
-                 String ownerUser = startElement.getAttributeByName(new QName("ownerUser")).getValue();
-                 LocalDate data = LocalDate.parse(startElement.getAttributeByName(new QName("CreationDate")).getValue().substring(0,9));
-                 int Type = Integer.parseInt(startElement.getAttributeByName(new QName("PostTypeId")).getValue());
+                 Attribute at;  
+                 Id = startElement.getAttributeByName(new QName("Id")).getValue();
+                 //ownerUser = startElement.getAttributeByName(new QName("ownerUser")).getValue();
+                 data = LocalDate.parse(startElement.getAttributeByName(new QName("CreationDate")).getValue().substring(0,10));
+                 Type = Integer.parseInt(startElement.getAttributeByName(new QName("PostTypeId")).getValue());
 
                  if(Type == 1){
-                        String Title = startElement.getAttributeByName(new QName("Title")).getValue();
-                        int answerCount = Integer.parseInt(startElement.getAttributeByName(new QName("answerCount")).getValue());
-                        String x = startElement.getAttributeByName(new QName("Tags")).getValue();
+                        String Title = "";
+                        int answerCount = 0;
+                        String x = "";
+                        
+                        
+                        Title = startElement.getAttributeByName(new QName("Title")).getValue();
+                        at=startElement.getAttributeByName(new QName("AnswerCount"));
+                        if(at!=null)
+                            answerCount = Integer.parseInt(at.getValue());
+                        x = startElement.getAttributeByName(new QName("Tags")).getValue();
                         x = x.substring(1,x.length()-2);
                         String[] a = x.split("\\s*><\\s*");
                         ArrayList<String> Tags = new ArrayList<String>();
                         for(String s : a)
                         Tags.add(s);
                         this.e.addPost(new Pergunta(Title,Tags,new ArrayList<Resposta>(),new HashMap<String,Resposta>(),answerCount, Id, ownerUser,data));
-                 }else{
-                         String parentId = startElement.getAttributeByName(new QName("ParentId")).getValue();
-                         int score = Integer.parseInt(startElement.getAttributeByName(new QName("Score")).getValue());
-                         int comments = Integer.parseInt(startElement.getAttributeByName(new QName("commentsCount")).getValue());
+                 }else if (Type == 2){
+                         String parentId ="";
+                         int score = 0;
+                         int comments = 0;
+                         
+                         parentId = startElement.getAttributeByName(new QName("ParentId")).getValue();
+                         score = Integer.parseInt(startElement.getAttributeByName(new QName("Score")).getValue());
+                         at = startElement.getAttributeByName(new QName("CommentCount"));
+                         if(at!=null)
+                         comments = Integer.parseInt(at.getValue());
                          this.e.addPost(new Resposta(parentId,comments,score,Id,ownerUser,data));
                   }
                }
@@ -108,7 +135,7 @@ public class Parser {
        
          XMLInputFactory factory = XMLInputFactory.newInstance();
          XMLEventReader eventReader =
-         factory.createXMLEventReader(new FileReader("Tags.xml"));
+         factory.createXMLEventReader(new FileInputStream(path + "Tags.xml"));
 
          while(eventReader.hasNext()) {
             XMLEvent event = eventReader.nextEvent();
@@ -119,8 +146,11 @@ public class Parser {
                   String qName = startElement.getName().getLocalPart();
 
                if (qName.equalsIgnoreCase("row")) {
-                 String Id = startElement.getAttributeByName(new QName("Id")).getValue();
-                 String Name = startElement.getAttributeByName(new QName("TagName")).getValue();
+                 String Id = "";
+                 String Name = "";
+                   
+                 Id = startElement.getAttributeByName(new QName("Id")).getValue();
+                 Name = startElement.getAttributeByName(new QName("TagName")).getValue();
                  this.e.addTag(Name,Id);
                }
                break;

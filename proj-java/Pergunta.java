@@ -121,10 +121,11 @@ public class Pergunta extends MyPost
     
     public String toString(){
         StringBuilder sb= new StringBuilder(super.toString());
-        sb.append("Titulo: ");sb.append(this.title);
-        sb.append("Tags: ");sb.append(this.tags.toString());
-        sb.append("Respostas: ");sb.append(this.resp.toString());
-        sb.append("Id da Resposta e respetiva Resposta: ");sb.append(this.respHash.toString());
+        sb.append("\nTitulo: ");sb.append(this.title);
+        sb.append("\nTags: ");sb.append(this.tags.toString());
+        sb.append("\nNumero de respostas: ");sb.append(this.answerCount);
+        sb.append("\nRespostas: ");sb.append(this.resp.toString());
+        sb.append("\nId da Resposta e respetiva Resposta: ");sb.append(this.respHash.toString());
         return sb.toString();
     }
 }

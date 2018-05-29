@@ -1,4 +1,5 @@
-
+import javax.xml.stream.XMLStreamException;
+import java.io.FileNotFoundException;
 /**
  * Write a description of class GestStackOverflowMVCApp here.
  *
@@ -7,16 +8,33 @@
  */
 public class GestStackOverflowMVCApp
 {
-    private static GestStackOverflowModel createDate(){
-        GestStackOverflowModel e = new GestStackOverflowModel();
-        Parser p = new Parser(e);
-        p.parseUsers("");
-        p.parsePosts("");
-        p.parseTags("");
+    private static GestStackOverflowModel createDate(String path) throws FileNotFoundException, XMLStreamException {
+        GestStackOverflowModel estado = new GestStackOverflowModel();
+        Parser p = new Parser(estado);
+        
+        p.parseUsers(path);
+        p.parsePosts(path);
+        p.parseTags(path);
+        return estado;
+        
+        
+        
     }
     
     public static void main(String[] args){
-        GestStackOverflowModel model = createDate();
         
+        GestStackOverflowModel model;
+        try{
+            model = createDate("xml/");
+        }catch(FileNotFoundException e){
+            System.out.println("Ficheiro nao encontrado!");
+            return;
+        }catch(XMLStreamException e){
+             e.printStackTrace();
+            return;
+        }
+        
+        
+        System.out.println(model.toString());
     }
 }

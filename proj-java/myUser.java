@@ -27,85 +27,117 @@ public class myUser
     }
 
     public myUser(String id, String name,String aboutme,int questions,int answers,int totalposts,int reputation,ArrayList <MyPost> lastposts)
-{
-this.id=id;
-this.name=name;
-this.aboutme=aboutme;
-this.questions=questions;
-this.answers=answers;
-this.totalposts=totalposts;
-this.reputation=reputation;
-for(MyPost s: lastposts)
-            this.lastposts.add(s);
-}
-public myUser (myUser User){
-this.id=User.getId();
-this.name=User.getName();
-this.aboutme=User.getAboutMe();
-this.questions=User.getQuestions();
-this.answers=User.getAnswers();
-this.totalposts=User.getTotalPosts();
-this.reputation=User.getReputation();
-this.lastposts=User.getLastPosts(); 
-}
-public String getId(){
-return this.id;
-}
-public String getNamed(){
-return this.name;
-}
-public String getAboutMe(){
-return this.aboutme;
-}
-public int getQuestions(){
-return this.questions;
-}
-public int getAnswers(){
-return this.answers;
-}
-public int getTotalPosts(){
-return this.totalposts;
-}
-public int getReputation(){
-return this.reputation;
-}
-public ArrayList<MyPost> getLastPosts(){
-        ArrayList<MyPost> r = new ArrayList<MyPost>();
-        
-        for(MyPost s: this.lastposts){
-            MyPost x = (MyPost) s;
-            r.add(x.clone());
-        }
-        return r;
-}
-public void setId(String id){
-this.id=id;
-}
-public void setName(String Name){
-this.name=name;
-}
-public void setAboutMe (String aboutme){
-this.aboutme=aboutme;
-}
-public void setReputation(int reputation){
-this.reputation=reputation;
-}
-public void setQuestions(int questions){
-this.questions=questions;
-}
-public void setAnswers(int answers){
-this.answers=answers;
-}
-public void setTotalPosts(int totalposts){
-this.totalposts=totalposts;
-}
-public void setLastPosts(ArrayList<myPost> lastposts){
-    this.lastposts=new ArrayList<myPost>();
-    for(myPost s: lastposts)
-            this.lastposts.add(s);
+    {
+    this.id=id;
+    this.name=name;
+    this.aboutme=aboutme;
+    this.questions=questions;
+    this.answers=answers;
+    this.totalposts=totalposts;
+    this.reputation=reputation;
+    for(MyPost s: lastposts)
+                this.lastposts.add(s);
+    }
+    public myUser (myUser User){
+    this.id=User.getId();
+    this.name=User.getName();
+    this.aboutme=User.getAboutMe();
+    this.questions=User.getQuestions();
+    this.answers=User.getAnswers();
+    this.totalposts=User.getTotalPosts();
+    this.reputation=User.getReputation();
+    this.lastposts=User.getLastPosts(); 
     }
     
- public myUser clone() {
+    
+    public String getId(){
+    return this.id;
+    }
+    
+    
+    public String getName(){
+    return this.name;
+    }
+    
+    
+    public String getAboutMe(){
+    return this.aboutme;
+    }
+    
+    
+    public int getQuestions(){
+    return this.questions;
+    }
+    
+    
+    public int getAnswers(){
+    return this.answers;
+    }
+    
+    
+    public int getTotalPosts(){
+    return this.totalposts;
+    }
+    
+    
+    public int getReputation(){
+    return this.reputation;
+    }
+    
+    
+    public ArrayList<MyPost> getLastPosts(){
+            ArrayList<MyPost> r = new ArrayList<MyPost>();
+            
+            for(MyPost s: this.lastposts){
+                MyPost x = (MyPost) s;
+                r.add(x.clone());
+            }
+            return r;
+    }
+    
+    
+    public void setId(String id){
+    this.id=id;
+    }
+    
+    
+    public void setName(String Name){
+    this.name=name;
+    }
+    
+    
+    public void setAboutMe (String aboutme){
+    this.aboutme=aboutme;
+    }
+    
+    
+    public void setReputation(int reputation){
+    this.reputation=reputation;
+    }
+    
+    
+    public void setQuestions(int questions){
+    this.questions=questions;
+    }
+    
+    
+    public void setAnswers(int answers){
+    this.answers=answers;
+    }
+    
+    
+    public void setTotalPosts(int totalposts){
+    this.totalposts=totalposts;
+    }
+    
+    
+    public void setLastPosts(ArrayList<MyPost> lastposts){
+        this.lastposts=new ArrayList<MyPost>();
+        for(MyPost s: lastposts)
+                this.lastposts.add(s);
+    }
+        
+    public myUser clone() {
         return new myUser(this); 
     }
 }

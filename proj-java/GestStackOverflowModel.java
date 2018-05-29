@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 /**
  * Write a description of class EstruturaPrincipal here.
  *
@@ -30,4 +31,14 @@ public class GestStackOverflowModel
         this.tags.put(name,id);
     }
     
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        
+        for(Map.Entry<String,MyPost> me: posts.entrySet()){
+            sb.append("\n"+me.getKey().toString());
+            sb.append("\n"+me.getValue().toString());
+        }
+        
+        return sb.toString();
+    }
 }

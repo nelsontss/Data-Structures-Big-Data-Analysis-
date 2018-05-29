@@ -97,10 +97,10 @@ public class Resposta extends MyPost
     
     public String toString(){
         StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("Id da pergunta: ");sb.append(this.parentID);
-        sb.append("Numero de comentarios: ");sb.append(this.comments);
-        sb.append("Score: ");sb.append(this.score);
-        sb.append("Pontuaçao: ");sb.append(this.pont);
+        sb.append(" nId da pergunta: ");sb.append(this.parentID);
+        sb.append("\nNumero de comentarios: ");sb.append(this.comments);
+        sb.append("\nScore: ");sb.append(this.score);
+        sb.append("\nPontuaçao: ");sb.append(this.pont);
         return sb.toString();
     }
     

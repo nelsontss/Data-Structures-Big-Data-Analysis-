@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=GestStackOverflowModel
+comment0.text=\n\ Write\ a\ description\ of\ class\ EstruturaPrincipal\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=GestStackOverflowModel()
+comment2.params=u
+comment2.target=void\ addUser(myUser)
+comment3.params=p
+comment3.target=void\ addPost(MyPost)
+comment4.params=name\ id
+comment4.target=void\ addTag(java.lang.String,\ java.lang.String)
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6
