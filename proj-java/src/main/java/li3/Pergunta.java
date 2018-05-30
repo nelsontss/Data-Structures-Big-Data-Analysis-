@@ -107,6 +107,11 @@ public class Pergunta extends MyPost
         this.answerCount=ac;
     }
     
+    public void addResp(Resposta r){
+        this.resp.add(r.clone());
+        this.respHash.put(r.getID(),r.clone());
+    }
+    
     public Pergunta clone(){
         return new Pergunta(this);
     }

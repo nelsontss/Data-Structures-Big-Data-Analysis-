@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=TADCommunity
+comment1.params=dumpPath
+comment1.target=void\ load(java.lang.String)
+comment10.params=
+comment10.target=void\ clear()
+comment2.params=N
+comment2.target=java.util.List\ topMostActive(int)
+comment3.params=tag\ begin\ end
+comment3.target=java.util.List\ questionsWithTag(java.lang.String,\ java.time.LocalDate,\ java.time.LocalDate)
+comment4.params=N\ begin\ end
+comment4.target=java.util.List\ mostVotedAnswers(int,\ java.time.LocalDate,\ java.time.LocalDate)
+comment5.params=N\ begin\ end
+comment5.target=java.util.List\ mostAnsweredQuestions(int,\ java.time.LocalDate,\ java.time.LocalDate)
+comment6.params=N\ word
+comment6.target=java.util.List\ containsWord(int,\ java.lang.String)
+comment7.params=N\ id1\ id2
+comment7.target=java.util.List\ bothParticipated(int,\ long,\ long)
+comment8.params=id
+comment8.target=long\ betterAnswer(long)
+comment9.params=N\ begin\ end
+comment9.target=java.util.List\ mostUsedBestRep(int,\ java.time.LocalDate,\ java.time.LocalDate)
+numComments=11

@@ -136,6 +136,16 @@ public class myUser
         for(MyPost s: lastposts)
                 this.lastposts.add(s);
     }
+    
+    public void aumentaAnswers(){
+        this.answers++;
+        this.totalposts++;
+    } 
+    
+    public void aumentaQuestions(){
+        this.questions++;
+        this.totalposts++;
+    }
         
     public myUser clone() {
         return new myUser(this); 
