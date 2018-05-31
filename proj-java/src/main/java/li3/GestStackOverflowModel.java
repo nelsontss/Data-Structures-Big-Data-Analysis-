@@ -134,7 +134,7 @@ public myUser get_user(String id){
             if (a instanceof Resposta){
             Resposta p = (Resposta) a;
             MyPost d=get_Post(p.getParentID());
-            myUser v=get_user(p.getParentID());
+            String v=(get_user(p.getParentID())).getId();
             Pergunta ç= (Pergunta) d;
             String z= ç.getTitle();
             return(v,z);
