@@ -110,15 +110,15 @@ public class GestStackOverflowModel
              if (a instanceof Pergunta){
                 Pergunta p = (Pergunta) a;
                 String l =p.getTitle();
-                myUser b =get_user(p.getOwnerUser());
+                myUser b =this.users.get(p.getOwnerUser());
                 String m=b.getName();
                 r =  new Pair(l,m);
                 
              }
              if (a instanceof Resposta){
                 Resposta p = (Resposta) a;
-                MyPost d=get_Post(p.getParentID());
-                String v=(get_user(p.getParentID())).getId();
+                MyPost d=this.posts.get(p.getParentID());
+                String v=(p.getParentID());
                 Pergunta ç= (Pergunta) d;
                 String z= ç.getTitle();
                 r =  new Pair(v,z);
