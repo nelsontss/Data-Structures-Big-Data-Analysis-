@@ -140,10 +140,12 @@ public class GestStackOverflowModel
         long resp = 0;
         long perg = 0;
         for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
-            if(i == 0) j = begin.getMonthValue(); else j = 1;
-            for(int a = j; a <=12; a++){
-                if(a==0) l = begin.getDayOfMonth(); else l  = 0;
-                for (int k = l; k<=31; k++ ){
+            if(i == 0) j1 = begin.getMonthValue(); else j1 = 1;
+            if(i == end.getYear()-2000) j2 = end.getMonthValue(); else j2 = 12;
+            for(int a = j1; a <=j2; a++){
+                if(a==0) l1 = begin.getDayOfMonth(); else l1  = 1;
+                if(a==end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
+                for (int k = l1; k<=l2; k++ ){
                     for(MyPost p : posts.get(i).get(a).get(k)){
                         if(p instanceof Resposta)
                             resp++;
