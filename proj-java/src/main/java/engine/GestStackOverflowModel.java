@@ -159,3 +159,11 @@ public class GestStackOverflowModel
     }
 }
 
+public Pair<String, List<Long>> getUserInfo(long id){
+myUser c=users.get(id);
+List m=new ArrayList<Long>();
+m=c.getLastPosts().stream().limit(10).collect(Collectors.toList());  
+String k= c.getAboutMe();
+return new Pair (k,m);
+}
+
