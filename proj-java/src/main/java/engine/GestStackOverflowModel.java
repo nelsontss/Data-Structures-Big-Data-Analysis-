@@ -1,20 +1,14 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.TreeSet;
 import java.io.FileNotFoundException;
 import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
+
 import common.Pair;
 /**
  * Write a description of class EstruturaPrincipal here.
@@ -22,7 +16,8 @@ import common.Pair;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class GestStackOverflowModel 
+
+public class GestStackOverflowModel
 {
     // instance variables - replace the example below with your own
     private HashMap<String,myUser> users;
@@ -39,10 +34,10 @@ public class GestStackOverflowModel
     public GestStackOverflowModel(){
         this.users = new HashMap<String,myUser>();
         this.posts = new HashMap<String,MyPost>();
-        this.tags = new HashMap<String,String>();
+        this.tags = new HashMap<>();
         this.usersByNPosts = new TreeSet<myUser>(new ComparadorUsersPorPosts());
         this.usersByReputation = new TreeSet<myUser>(new ComparadorUsersPorReputation());
-        this.postsList = new ArrayList<ArrayList<ArrayList<ArrayList<MyPost>>>>(18);
+        this.postsList = new ArrayList<>(18);
         this.totalAnswers = 0;
         this.totalQuestions = 0;
         this.totalPosts = 0;
@@ -80,6 +75,7 @@ public class GestStackOverflowModel
     }
     
     public void addTag(String name, String id){
+
         this.tags.put(name,id);
     }
     
@@ -102,52 +98,62 @@ public class GestStackOverflowModel
         
         return sb.toString();
     }
-    public List<Long> topMostActive(int N){
-     List<Long> list = new ArrayList<Long>();
-        list=this.usersByNPosts.stream()
-                                      .limit(N)
-                                      .map(e->Long.valueOf(e.getId()))
-                                      .collect(Collectors.toList()); 
-      return list;                                
-    }
 
-public myUser get_user(String id){
-	if (this.users.containsKey(id)){
-	for (myUser c: users.values()){
-	  if (c.getId()==id)
-	  return c;
-	   }
-}
 
-}
+
+
+
     public Pair<String,String> infoFromPost(long id){
-         if (this.users.containsKey(id)){
+        Pair<String,String> r = new Pair("","");
+        if (this.users.containsKey(id)){
              MyPost a=this.posts.get(id);
              if (a instanceof Pergunta){
                 Pergunta p = (Pergunta) a;
                 String l =p.getTitle();
                 myUser b =get_user(p.getOwnerUser());
                 String m=b.getName();
-                return (l,m);
+                r =  new Pair(l,m);
                 
-    }
-            if (a instanceof Resposta){
-            Resposta p = (Resposta) a;
-            MyPost d=get_Post(p.getParentID());
-            String v=(get_user(p.getParentID())).getId();
-            Pergunta ç= (Pergunta) d;
-            String z= ç.getTitle();
-            return(v,z);
+             }
+             if (a instanceof Resposta){
+                Resposta p = (Resposta) a;
+                MyPost d=get_Post(p.getParentID());
+                String v=(get_user(p.getParentID())).getId();
+                Pergunta ç= (Pergunta) d;
+                String z= ç.getTitle();
+                r =  new Pair(v,z);
+             }
         }
-}
+        return r;
+    }
+
+    public List<Long> topMostActive(int N){
+        List<Long> list = new ArrayList<Long>();
+        list=this.usersByNPosts.stream()
+                .limit(N)
+                .map(e->Long.valueOf(e.getId()))
+                .collect(Collectors.toList());
+        return list;
+    }
+
+    public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
+        long resp = 0;
+        long perg = 0;
+        for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
+            if(i == 0) j = begin.getMonthValue(); else j = 1;
+            for(int a = j; a <=12; a++){
+                if(a==0) l = begin.getDayOfMonth(); else l  = 0;
+                for (int k = l; k<=31; k++ ){
+                    for(MyPost p : posts.get(i).get(a).get(k)){
+                        if(p instanceof Resposta)
+                            resp++;
+                        if(p instanceof Pergunta)
+                            perg++;
+                    }
+                }
+            }
+        }
+        return new Pair(perg,resp);
+    }
 }
 
- public MyPost get_Post(String id){
-	if (this.posts.containsKey(id)){
-	for (MyPost c: posts.values()){
-	  if (c.getID()==id)
-	  return c;
-	   }
-}
-}
-}

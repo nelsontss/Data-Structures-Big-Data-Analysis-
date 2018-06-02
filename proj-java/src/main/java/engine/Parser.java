@@ -13,6 +13,7 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.Attribute;
 import javax.xml.namespace.QName;
+
 public class Parser {
    private GestStackOverflowModel e;
     

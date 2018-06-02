@@ -97,15 +97,16 @@ public class myUser
     
     
     public void setId(String id){
-    this.id=id;
+
+        this.id=id;
     }
     
     
     public void setName(String Name){
     this.name=name;
     }
-    
-    
+
+
     public void setAboutMe (String aboutme){
     this.aboutme=aboutme;
     }
