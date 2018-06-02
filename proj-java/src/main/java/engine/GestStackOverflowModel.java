@@ -137,6 +137,10 @@ public class GestStackOverflowModel
     }
 
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
+        int l1;
+        int l2; 
+        int j1;
+        int j2;
         long resp = 0;
         long perg = 0;
         for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
@@ -146,7 +150,7 @@ public class GestStackOverflowModel
                 if(a==0) l1 = begin.getDayOfMonth(); else l1  = 1;
                 if(a==end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
                 for (int k = l1; k<=l2; k++ ){
-                    for(MyPost p : posts.get(i).get(a).get(k)){
+                    for(MyPost p : this.postsList.get(i).get(a).get(k)){
                         if(p instanceof Resposta)
                             resp++;
                         if(p instanceof Pergunta)
