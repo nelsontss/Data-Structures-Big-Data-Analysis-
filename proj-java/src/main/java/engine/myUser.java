@@ -147,6 +147,18 @@ public class myUser
         this.questions++;
         this.totalposts++;
     }
+
+    public void addLastPost(MyPost p){
+        if(this.lastposts.size()<10){
+            this.lastposts.add(p);
+        }else{
+            if(this.lastposts.get(this.lastposts.size()-1).getData().compareTo(p.getData())>0){
+                this.lastposts.set(this.lastposts.size()-1,p);
+            }
+
+        }
+
+    }
         
     public myUser clone() {
         return new myUser(this); 

@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
-
 import common.Pair;
 /**
  * Write a description of class EstruturaPrincipal here.
@@ -56,6 +55,8 @@ public class GestStackOverflowModel
         int day  = p.getData().getDayOfMonth();
         ArrayList<MyPost> aux = this.postsList.get(year-2000).get(month).get(day);
         aux.add(p);
+        myUser u = users.get(p.getOwnerUser());
+        u.addLastPost(p);
         if(p instanceof Resposta){
             Resposta r = (Resposta) p;
             Pergunta parent = (Pergunta)this.posts.get(r.getParentID());
