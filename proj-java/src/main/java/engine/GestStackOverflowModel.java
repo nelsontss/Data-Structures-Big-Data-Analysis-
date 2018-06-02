@@ -161,7 +161,6 @@ public class GestStackOverflowModel
         }
         return new Pair(perg,resp);
     }
-}
 
 public Pair<String, List<Long>> getUserInfo(long id){
 myUser c=users.get(id);
@@ -170,4 +169,30 @@ m=c.getLastPosts().stream().limit(10).collect(Collectors.toList());
 String k= c.getAboutMe();
 return new Pair (k,m);
 }
+
+public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end){
+List t=new ArrayList <Long>();
+int l1;
+int l2; 
+int j1;
+int j2;    
+        for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
+            if(i == 0) j1 = begin.getMonthValue(); else j1 = 1;
+            if(i == end.getYear()-2000) j2 = end.getMonthValue(); else j2 = 12;
+            for(int a = j1; a <=j2; a++){
+                if(a==0) l1 = begin.getDayOfMonth(); else l1  = 1;
+                if(a==end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
+                for (int k = l1; k<=l2; k++ ){
+                    for(MyPost p : this.questionsList.get(i).get(a).get(k)){ 
+                        Pergunta v= (Pergunta) p;
+                        if (v.getTags().contains(tag)){
+                        t.add(v.getID());
+                        }
+                    }
+                }
+            }
+ return t;
+   }
+}    
+    
 
