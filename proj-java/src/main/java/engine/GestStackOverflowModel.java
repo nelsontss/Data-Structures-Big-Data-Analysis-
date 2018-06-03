@@ -56,7 +56,7 @@ public class GestStackOverflowModel
         int year = p.getData().getYear();
         int month = p.getData().getMonthValue();
         int day  = p.getData().getDayOfMonth();
-        ArrayList<MyPost> aux = this.postsList.get(year-2000).get(month).get(day);
+        ArrayList<MyPost> aux = this.postsList.get(17-(year-2000)).get(12-month).get(31-day);
         aux.add(p);
         myUser u = users.get(p.getOwnerUser());
         u.addLastPost(p);
@@ -71,7 +71,7 @@ public class GestStackOverflowModel
         }else{
             this.totalQuestions++;
             this.totalPosts++;
-            ArrayList<MyPost> aux1 = this.questionsList.get(year-2000).get(month).get(day);
+            ArrayList<MyPost> aux1 = this.questionsList.get(17-(year-2000)).get(12-month).get(31-day);
             aux1.add(p);
             this.users.get(p.getOwnerUser()).aumentaQuestions();
         }
@@ -148,13 +148,13 @@ public class GestStackOverflowModel
         int j2;
         long resp = 0;
         long perg = 0;
-        for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
+        for(int i = 17-(begin.getYear()-2000); i<= 17-(end.getYear()-2000); i++){
             if(i == 0) j1 = begin.getMonthValue(); else j1 = 1;
-            if(i == end.getYear()-2000) j2 = end.getMonthValue(); else j2 = 12;
-            for(int a = j1; a <=j2; a++){
+            if(i == 17-(end.getYear()-2000)) j2 = end.getMonthValue(); else j2 = 12;
+            for(int a = 12-j1; a <=12-j2; a++){
                 if(a==0) l1 = begin.getDayOfMonth(); else l1  = 1;
-                if(a==end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
-                for (int k = l1; k<=l2; k++ ){
+                if(a==12-end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
+                for (int k = 31-l1; k<=31-l2; k++ ){
                     for(MyPost p : this.postsList.get(i).get(a).get(k)){
                         if(p instanceof Resposta)
                             resp++;
@@ -181,13 +181,13 @@ public class GestStackOverflowModel
         int l2;
         int j1;
         int j2;
-                for(int i = begin.getYear()-2000; i<= end.getYear()-2000; i++){
+                for(int i = 17-(begin.getYear()-2000); i<= 17-(end.getYear()-2000); i++){
                     if(i == 0) j1 = begin.getMonthValue(); else j1 = 1;
                     if(i == end.getYear()-2000) j2 = end.getMonthValue(); else j2 = 12;
                     for(int a = j1; a <=j2; a++){
                         if(a==0) l1 = begin.getDayOfMonth(); else l1  = 1;
-                        if(a==end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
-                        for (int k = l1; k<=l2; k++ ){
+                        if(a==12-end.getMonthValue()) l2 = end.getDayOfMonth(); else l2  = 31;
+                        for (int k = 31-l1; k<=31-l2; k++ ){
                             for(MyPost p : this.questionsList.get(i).get(a).get(k)){
                                 Pergunta v= (Pergunta) p;
                                 if (v.getTags().contains(tag)){
@@ -202,7 +202,51 @@ public class GestStackOverflowModel
     }
 
 
+    public List<Long> containsWord(int N, String word){
+        List<Long> r = new ArrayList<>();
+        Iterator<ArrayList<ArrayList<ArrayList<MyPost>>>> i = questionsList.iterator();
+        int x = 0 ;
+        while (i.hasNext() && x<N){
+            Iterator<ArrayList<ArrayList<MyPost>>> k = i.next().iterator();
+            while (k.hasNext() && x<N){
+                Iterator<ArrayList<MyPost>> j = k.next().iterator();
+                while (j.hasNext() && x<N){
+                    Iterator<MyPost> o = j.next().iterator();
+                    while(o.hasNext() && x<N){
+                        Pergunta p1 = (Pergunta) o.next();
+                        if(p1.getTitle().contains(word)){
+                            r.add(Long.valueOf(p1.getID()));
+                            x++;
+                        }
+                    }
+                }
+            }
+        }
+        return r;
+    }
 
+    public List<Long> bothParticipated(int N, long id1, long id2){
+        List<Long> r = new ArrayList<>();
+        Iterator<ArrayList<ArrayList<ArrayList<MyPost>>>> i = questionsList.iterator();
+        int x = 0 ;
+        while (i.hasNext() && x<N){
+            Iterator<ArrayList<ArrayList<MyPost>>> k = i.next().iterator();
+            while (k.hasNext() && x<N){
+                Iterator<ArrayList<MyPost>> j = k.next().iterator();
+                while (j.hasNext() && x<N){
+                    Iterator<MyPost> o = j.next().iterator();
+                    while(o.hasNext() && x<N){
+                        Pergunta p1 = (Pergunta) o.next();
+                        if(p1.bothParticipated(id1,id2)){
+                            r.add(Long.valueOf(p1.getID()));
+                            x++;
+                        }
+                    }
+                }
+            }
+        }
+        return r;
+    }
 
     public long betterAnswer(long id){
         String x = String.valueOf(id);

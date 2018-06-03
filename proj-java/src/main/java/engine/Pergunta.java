@@ -118,7 +118,22 @@ public class Pergunta extends MyPost
             r.add(x);
         return r.first().getID();
     }
-    
+
+    public boolean bothParticipated(long id1, long id2){
+        int flag = 0;
+        if(id1==Long.valueOf(this.getOwnerUser()) && respHash.containsKey(String.valueOf(id2))){
+            return true;
+        }
+        if(id2==Long.valueOf(this.getOwnerUser()) && respHash.containsKey(String.valueOf(id1))){
+            return true;
+        }
+        if(respHash.containsKey(String.valueOf(id1)) && respHash.containsKey(String.valueOf(id2))){
+            return true;
+        }
+        return false;
+
+    }
+
     public Pergunta clone(){
         return new Pergunta(this);
     }
