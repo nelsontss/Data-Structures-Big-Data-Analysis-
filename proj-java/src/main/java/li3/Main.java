@@ -1,8 +1,9 @@
- 
+package engine;
 
 
 import common.MyLog;
-import engine.TCDExample;
+import common.Pair;
+import li3.TADCommunity;
 
 import java.time.LocalDate;
 import java.time.Month;
