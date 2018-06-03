@@ -1,7 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+package engine;
+
+import javax.swing.tree.TreeCellEditor;
+import java.util.*;
 import java.time.LocalDate;
 /**
  * Write a description of class Pergunta here.
@@ -110,6 +110,13 @@ public class Pergunta extends MyPost
     public void addResp(Resposta r){
         this.resp.add(r.clone());
         this.respHash.put(r.getID(),r.clone());
+    }
+
+    public String getBestAnswer(){
+        TreeSet<Resposta> r = new TreeSet<>(new ComparadorRespostasPorPont());
+        for(Resposta x : resp)
+            r.add(x);
+        return r.first().getID();
     }
     
     public Pergunta clone(){

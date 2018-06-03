@@ -1,3 +1,5 @@
+package engine;
+
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.util.Iterator;
@@ -16,7 +18,7 @@ import javax.xml.namespace.QName;
 
 public class Parser {
    private GestStackOverflowModel e;
-    
+
    public Parser(){
        super();
        this.e = new GestStackOverflowModel();

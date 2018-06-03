@@ -1,3 +1,5 @@
+package engine;
+
 import java.util.Comparator;
 /**
  * Comparador de users por numero de posts feitos.

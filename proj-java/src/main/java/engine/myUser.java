@@ -1,3 +1,4 @@
+package engine;
 import java.util.ArrayList;
 public class myUser
 {
@@ -157,7 +158,7 @@ public class myUser
             }
 
         }
-
+        this.lastposts.sort(new ComparadorPostsPorData());
     }
         
     public myUser clone() {

@@ -1,3 +1,4 @@
+package engine;
 import java.time.LocalDate;
 import java.util.Iterator;
 /**
@@ -6,7 +7,7 @@ import java.util.Iterator;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class MyPost
+public abstract class MyPost
 {
     // instance variables - replace the example below with your own
     private String id;
@@ -65,9 +66,7 @@ public class MyPost
         this.data=data;
     }
     
-    public MyPost clone(){
-        return new MyPost(this);
-    }
+    public abstract MyPost clone();
     
     public boolean equals(Object o){
         if(this==o) return true;
