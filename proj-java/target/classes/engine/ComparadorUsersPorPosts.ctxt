@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=ComparadorUsersPorPosts
+comment0.text=\n\ Comparador\ de\ users\ por\ numero\ de\ posts\ feitos.\n\ @version\ 27/05\n
+comment1.params=u1\ u2
+comment1.target=int\ compare(myUser,\ myUser)
+numComments=2

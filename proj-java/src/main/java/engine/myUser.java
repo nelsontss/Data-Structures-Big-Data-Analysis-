@@ -24,7 +24,7 @@ public class myUser
         this.answers=0;
         this.totalposts=0;
         this.reputation=0;
-        this.lastposts=new ArrayList<MyPost>();
+        this.lastposts=new ArrayList<>();
     }
 
     public myUser(String id, String name,String aboutme,int questions,int answers,int totalposts,int reputation,ArrayList <MyPost> lastposts)
@@ -36,6 +36,7 @@ public class myUser
     this.answers=answers;
     this.totalposts=totalposts;
     this.reputation=reputation;
+    this.lastposts = new ArrayList<>();
     for(MyPost s: lastposts)
                 this.lastposts.add(s);
     }

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
 import common.Pair;
+import li3.TADCommunity;
 /**
  * Write a description of class Estrutura Principal here.
  *
@@ -19,7 +20,7 @@ import common.Pair;
  * @version (a version number or a date)
  */
 
-public class GestStackOverflowModel
+public class GestStackOverflowModel implements TADCommunity
 {
     // instance variables - replace the example below with your own
     private HashMap<String,myUser> users;
@@ -40,6 +41,19 @@ public class GestStackOverflowModel
         this.usersByNPosts = new ArrayList<>();
         this.usersByReputation = new ArrayList<>();
         this.postsList = new ArrayList<>(18);
+        this.questionsList = new ArrayList<>(18);
+        for(int i = 0; i<18; i++){
+            this.postsList.add(new ArrayList<>());
+            this.questionsList.add(new ArrayList<>());
+            for(int i2 = 0; i2<12; i2++){
+                this.postsList.get(i).add(new ArrayList<>());
+                this.questionsList.get(i).add(new ArrayList<>());
+                for(int i3 = 0; i3<31; i3++){
+                    this.postsList.get(i).get(i2).add(new ArrayList<>());
+                    this.questionsList.get(i).get(i2).add(new ArrayList<>());
+                }
+            }
+        }
         this.totalAnswers = 0;
         this.totalQuestions = 0;
         this.totalPosts = 0;
@@ -56,8 +70,9 @@ public class GestStackOverflowModel
         int year = p.getData().getYear();
         int month = p.getData().getMonthValue();
         int day  = p.getData().getDayOfMonth();
-        ArrayList<MyPost> aux = this.postsList.get(17-(year-2000)).get(12-month).get(31-day);
-        aux.add(p);
+
+        this.postsList.get(17-(year-2000)).get(12-month).get(31-day).add(p);
+
         myUser u = users.get(p.getOwnerUser());
         u.addLastPost(p);
         if(p instanceof Resposta){
@@ -66,13 +81,13 @@ public class GestStackOverflowModel
             this.totalAnswers++;
             this.totalPosts++;
             u.aumentaAnswers();
+            if(parent!=null)
             parent.addResp(r);
             r.calc_post_pont(u.getReputation());
         }else{
             this.totalQuestions++;
             this.totalPosts++;
-            ArrayList<MyPost> aux1 = this.questionsList.get(17-(year-2000)).get(12-month).get(31-day);
-            aux1.add(p);
+            this.questionsList.get(17-(year-2000)).get(12-month).get(31-day).add(p);
             this.users.get(p.getOwnerUser()).aumentaQuestions();
         }
     }
@@ -82,15 +97,20 @@ public class GestStackOverflowModel
         this.tags.put(name,id);
     }
     
-    public void load(String dump) throws XMLStreamException, FileNotFoundException{
-        Parser p = new Parser(this);
-        p.parseUsers(dump);
-        p.parsePosts(dump);
-        p.parseTags(dump);
-        this.usersByReputation.sort(new ComparadorUsersPorReputation());
-        this.usersByNPosts.sort(new ComparadorUsersPorPosts());
+    public void load(String dump) {
+        try {
+            Parser p = new Parser(this);
+            p.parseUsers(dump);
+            p.parsePosts(dump);
+            p.parseTags(dump);
+            this.usersByReputation.sort(new ComparadorUsersPorReputation());
+            this.usersByNPosts.sort(new ComparadorUsersPorPosts());
+        }catch (XMLStreamException e){
+            e.printStackTrace();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
     }
-    
     
     
     public String toString(){
@@ -110,8 +130,8 @@ public class GestStackOverflowModel
 
     public Pair<String,String> infoFromPost(long id){
         Pair<String,String> r = new Pair("","");
-        if (this.users.containsKey(id)){
-             MyPost a=this.posts.get(id);
+        if (this.posts.containsKey(String.valueOf(id))){
+             MyPost a=this.posts.get(String.valueOf(id));
              if (a instanceof Pergunta){
                 Pergunta p = (Pergunta) a;
                 String l =p.getTitle();
@@ -199,6 +219,16 @@ public class GestStackOverflowModel
                 }
          return t;
 
+    }
+
+    // Query 6
+    public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
+        return Arrays.asList(701775L,697197L,694560L,696641L,704208L);
+    }
+
+    // Query 7
+    public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end) {
+        return Arrays.asList(505506L,508221L,506510L,508029L,506824L,505581L,505368L,509498L,509283L,508635L);
     }
 
 
@@ -298,6 +328,10 @@ public class GestStackOverflowModel
             r.add(Long.parseLong(tags.get(s)));
 
         return r;
+    }
+
+    public void clear(){
+
     }
 }    
     

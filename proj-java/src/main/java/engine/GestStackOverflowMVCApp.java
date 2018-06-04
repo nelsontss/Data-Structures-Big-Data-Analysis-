@@ -1,7 +1,10 @@
 package engine;
 
+import li3.TADCommunity;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 /**
  * Write a description of class GestStackOverflowMVCApp here.
  *
@@ -10,33 +13,32 @@ import java.io.FileNotFoundException;
  */
 public class GestStackOverflowMVCApp
 {
-    private static GestStackOverflowModel createDate(String path) throws FileNotFoundException, XMLStreamException {
+    private static TADCommunity createDate(String path) {
         GestStackOverflowModel estado = new GestStackOverflowModel();
-        Parser p = new Parser(estado);
+        estado.load(path);
         
-        p.parseUsers(path);
-        p.parsePosts(path);
-        p.parseTags(path);
+        
         return estado;
-        
-        
-        
     }
-    
+
+
+
+
     public static void main(String[] args){
         
-        GestStackOverflowModel model;
-        try{
-            model = createDate("xml/");
-        }catch(FileNotFoundException e){
-            System.out.println("Ficheiro nao encontrado!");
-            return;
-        }catch(XMLStreamException e){
-             e.printStackTrace();
-            return;
-        }
-        
-        
-        System.out.println(model.toString());
+        TADCommunity model;
+
+        model = createDate("xml/");
+
+
+        GestStackOverflowView view = new GestStackOverflowView();
+        GestStackOverflowController control = new GestStackOverflowController();
+        control.setModel(model);
+        control.setView(view);
+
+        control.startController();
+
+        System.exit(0);
+
     }
 }

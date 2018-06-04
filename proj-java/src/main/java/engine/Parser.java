@@ -91,7 +91,7 @@ public class Parser {
                   
                  Attribute at;  
                  Id = startElement.getAttributeByName(new QName("Id")).getValue();
-                 //ownerUser = startElement.getAttributeByName(new QName("ownerUser")).getValue();
+                 ownerUser = startElement.getAttributeByName(new QName("OwnerUserId")).getValue();
                  data = LocalDate.parse(startElement.getAttributeByName(new QName("CreationDate")).getValue().substring(0,10));
                  Type = Integer.parseInt(startElement.getAttributeByName(new QName("PostTypeId")).getValue());
 
