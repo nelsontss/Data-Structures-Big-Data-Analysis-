@@ -169,15 +169,17 @@ public class GestStackOverflowModel implements TADCommunity
         long resp = 0;
         long perg = 0;
         for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++){
-            if(i == 0) j1 = end.getMonthValue(); else j1 = 12;
+            if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
             if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
             for(int a = 12-j1; a <= 12-j2; a++){
                 if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
                 if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
                 for (int k = 31-l1; k<=31-l2; k++ ){
                     for(MyPost p : this.postsList.get(i).get(a).get(k)){
-                        if(p instanceof Resposta)
+                        if(p instanceof Resposta) {
                             resp++;
+                            System.out.println(p.getData());
+                        }
                         if(p instanceof Pergunta)
                             perg++;
                     }
@@ -201,13 +203,13 @@ public class GestStackOverflowModel implements TADCommunity
         int l2;
         int j1;
         int j2;
-                for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++){
-                    if(i == 0) j1 = end.getMonthValue(); else j1 = 12;
-                    if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
-                    for(int a = 12-j1; a <= 12-j2; a++){
-                        if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
-                        if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
-                        for (int k = 31-l1; k<=31-l2; k++ ){
+        for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++){
+            if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
+            if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
+            for(int a = 12-j1; a <= 12-j2; a++){
+                if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++ ){
                             for(MyPost p : this.questionsList.get(i).get(a).get(k)){
                                 Pergunta v= (Pergunta) p;
                                 if (v.getTags().contains(tag)){
@@ -301,7 +303,7 @@ public class GestStackOverflowModel implements TADCommunity
         int j1;
         int j2;
         for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++){
-            if(i == 0) j1 = end.getMonthValue(); else j1 = 12;
+            if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
             if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
             for(int a = 12-j1; a <= 12-j2; a++){
                 if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;

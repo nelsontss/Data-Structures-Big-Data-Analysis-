@@ -33,6 +33,37 @@ public class GestStackOverflowView {
         return sb.toString();
     }
 
+    public String getTopMostActiveMenu(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n--------------------------------------------");
+        sb.append("\n-                                          -");
+        sb.append("\n-          Query 2 - topMostActive         -");
+        sb.append("\n-  Dado um numero N, devolve os N users    -");
+        sb.append("\n-  com mais posts.                         -");
+        sb.append("\n-                                          -");
+        sb.append("\n-                                          -");
+        sb.append("\n--------------------------------------------");
+
+
+
+        return sb.toString();
+    }
+
+    public String getTotalPostsMenu(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n--------------------------------------------");
+        sb.append("\n-                                          -");
+        sb.append("\n-          Query 3 - totalPosts            -");
+        sb.append("\n-  Devolve o numero de perguntas e         -");
+        sb.append("\n-  respostas, num dado intervalo de tempo. -");
+        sb.append("\n-                                          -");
+        sb.append("\n-                                          -");
+        sb.append("\n--------------------------------------------");
+
+        return sb.toString();
+    }
+
+
     public String getMainMenu() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
