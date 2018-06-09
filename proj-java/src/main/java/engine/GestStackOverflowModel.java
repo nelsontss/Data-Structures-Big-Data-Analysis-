@@ -90,6 +90,7 @@ public class GestStackOverflowModel implements TADCommunity
             this.questionsList.get(17-(year-2000)).get(12-month).get(31-day).add(p);
             this.users.get(p.getOwnerUser()).aumentaQuestions();
         }
+
     }
     
     public void addTag(String name, String id){
@@ -109,7 +110,9 @@ public class GestStackOverflowModel implements TADCommunity
             e.printStackTrace();
         }catch (FileNotFoundException e){
             e.printStackTrace();
+
         }
+
     }
     
     
@@ -153,7 +156,7 @@ public class GestStackOverflowModel implements TADCommunity
     }
 
     public List<Long> topMostActive(int N){
-        List<Long> list = new ArrayList<Long>();
+        List<Long> list;
         list=this.usersByNPosts.stream()
                 .limit(N)
                 .map(e->Long.valueOf(e.getId()))
@@ -172,14 +175,12 @@ public class GestStackOverflowModel implements TADCommunity
             if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
             if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
             for(int a = 12-j1; a <= 12-j2; a++){
-                if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
-                if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
-                for (int k = 31-l1; k<=31-l2; k++ ){
+                if(i == 17-(end.getYear()-2000)) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(i == 17-(begin.getYear()-2000)) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++){
                     for(MyPost p : this.postsList.get(i).get(a).get(k)){
-                        if(p instanceof Resposta) {
+                        if(p instanceof Resposta)
                             resp++;
-                            System.out.println(p.getData());
-                        }
                         if(p instanceof Pergunta)
                             perg++;
                     }
@@ -190,9 +191,11 @@ public class GestStackOverflowModel implements TADCommunity
     }
 
     public Pair<String, List<Long>> getUserInfo(long id){
-        myUser c=users.get(id);
-        List m=new ArrayList<Long>();
-        m=c.getLastPosts().stream().limit(10).collect(Collectors.toList());
+        myUser c=users.get(String.valueOf(id));
+        List m;
+        m=c.getLastPosts().stream()
+                          .map(MyPost::getID)
+                          .collect(Collectors.toList());
         String k= c.getAboutMe();
         return new Pair (k,m);
     }
@@ -207,13 +210,13 @@ public class GestStackOverflowModel implements TADCommunity
             if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
             if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
             for(int a = 12-j1; a <= 12-j2; a++){
-                if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
-                if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
-                for (int k = 31-l1; k<=31-l2; k++ ){
+                if(i == 17-(end.getYear()-2000)) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(i == 17-(begin.getYear()-2000)) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++){
                             for(MyPost p : this.questionsList.get(i).get(a).get(k)){
                                 Pergunta v= (Pergunta) p;
                                 if (v.getTags().contains(tag)){
-                                t.add(v.getID());
+                                    t.add(v.getID());
                                 }
                             }
                         }
@@ -285,7 +288,7 @@ public class GestStackOverflowModel implements TADCommunity
         MyPost p = posts.get(x);
         if(p instanceof Pergunta){
             Pergunta y = (Pergunta) p;
-            return Long.parseLong(y.getBestAnswer());
+            return y.getBestAnswer();
         }else
             return -1;
     }
@@ -306,15 +309,15 @@ public class GestStackOverflowModel implements TADCommunity
             if(i == 17-(end.getYear()-2000)) j1 = end.getMonthValue(); else j1 = 12;
             if(i == 17-(begin.getYear()-2000)) j2 = begin.getMonthValue(); else j2 = 1;
             for(int a = 12-j1; a <= 12-j2; a++){
-                if(a==0) l1 = end.getDayOfMonth(); else l1  = 31;
-                if(a==12-begin.getMonthValue()) l2 = begin.getDayOfMonth(); else l2  = 1;
-                for (int k = 31-l1; k<=31-l2; k++ ){
+                if(i == 17-(end.getYear()-2000)) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(i == 17-(begin.getYear()-2000)) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++){
                     for(MyPost p : this.questionsList.get(i).get(a).get(k)){
                         Pergunta v= (Pergunta) p;
                         if (topN.containsKey(v.getOwnerUser())){
                             for(String s: v.getTags()) {
                                 if(aux.containsKey(s)){
-                                    aux.put(s,aux.get(s)+1);
+                                    aux.replace(s,aux.get(s)+1);
                                 }else aux.put(s,1);
                             }
                         }
@@ -329,7 +332,7 @@ public class GestStackOverflowModel implements TADCommunity
         for (String s : aux2)
             r.add(Long.parseLong(tags.get(s)));
 
-        return r;
+        return r.subList(0,N);
     }
 
     public void clear(){

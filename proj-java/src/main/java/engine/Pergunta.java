@@ -112,11 +112,11 @@ public class Pergunta extends MyPost
         this.respHash.put(r.getID(),r.clone());
     }
 
-    public String getBestAnswer(){
+    public Long getBestAnswer(){
         TreeSet<Resposta> r = new TreeSet<>(new ComparadorRespostasPorPont());
         for(Resposta x : resp)
             r.add(x);
-        return r.first().getID();
+        return Long.parseLong(r.first().getID());
     }
 
     public boolean bothParticipated(long id1, long id2){

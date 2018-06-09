@@ -106,12 +106,13 @@ public class Parser {
                         if(at!=null)
                             answerCount = Integer.parseInt(at.getValue());
                         x = startElement.getAttributeByName(new QName("Tags")).getValue();
-                        x = x.substring(1,x.length()-2);
+                        x = x.substring(1,x.length()-1);
                         String[] a = x.split("\\s*><\\s*");
                         ArrayList<String> Tags = new ArrayList<String>();
                         for(String s : a)
                         Tags.add(s);
                         this.e.addPost(new Pergunta(Title,Tags,new ArrayList<Resposta>(),new HashMap<String,Resposta>(),answerCount, Id, ownerUser,data));
+
                  }else if (Type == 2){
                          String parentId ="";
                          int score = 0;

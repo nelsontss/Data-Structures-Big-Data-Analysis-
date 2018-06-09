@@ -154,7 +154,7 @@ public class myUser
         if(this.lastposts.size()<10){
             this.lastposts.add(p);
         }else{
-            if(this.lastposts.get(this.lastposts.size()-1).getData().compareTo(p.getData())>0){
+            if(this.lastposts.get(this.lastposts.size()-1).getData().compareTo(p.getData())<0){
                 this.lastposts.set(this.lastposts.size()-1,p);
             }
 
