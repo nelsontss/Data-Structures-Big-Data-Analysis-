@@ -228,12 +228,57 @@ public class GestStackOverflowModel implements TADCommunity
 
     // Query 6
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(701775L,697197L,694560L,696641L,704208L);
+        TreeSet<Long> res = new TreeSet<Long>(new ComparadorRespostasVotos());
+        int l1;
+        int l2;
+        int j1;
+        int j2;
+        for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++) {
+            if (i == 17-(end.getYear()-2000)) j1 = end.getMonthValue();
+            else j1 = 12;
+            if (i == 17 - (begin.getYear() - 2000)) j2 = begin.getMonthValue();
+            else j2 = 1;
+            for (int a = 12 - j1; a <= 12 - j2; a++) {
+                if(i == 17-(end.getYear()-2000)) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(i == 17-(begin.getYear()-2000)) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++){
+                    for (MyPost p : this.postsList.get(i).get(a).get(k)) {
+                        if (p instanceof Resposta) {
+                            Resposta r = (Resposta) p;
+                            res.add(r.clone());
+                        }
+
+                    }
+                }
+            }
+        }
+        return res.stream().limit(N).collect(Collectors.toList());
     }
 
     // Query 7
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(505506L,508221L,506510L,508029L,506824L,505581L,505368L,509498L,509283L,508635L);
+        TreeSet<Long> res= new TreeSet<Long>(new ComparadorPerguntasPorResposta());
+        int l1;
+        int l2;
+        int j1;
+        int j2;
+        for(int i = 17-(end.getYear()-2000); i<= 17-(begin.getYear()-2000); i++) {
+            if (i == 17-(end.getYear()-2000)) j1 = end.getMonthValue();
+            else j1 = 12;
+            if (i == 17 - (begin.getYear() - 2000)) j2 = begin.getMonthValue();
+            else j2 = 1;
+            for (int a = 12 - j1; a <= 12 - j2; a++) {
+                if(i == 17-(end.getYear()-2000)) l1 = end.getDayOfMonth(); else l1  = 31;
+                if(i == 17-(begin.getYear()-2000)) l2 = begin.getDayOfMonth(); else l2  = 1;
+                for (int k = 31-l1; k<=31-l2; k++){
+                    for (MyPost p : this.questionsList.get(i).get(a).get(k)) {
+                        Pergunta v = (Pergunta) p;
+                        res.add(v.clone());
+                    }
+                }
+            }
+        }
+        return res.stream().limit(N).collect(Collectors.toList());
     }
 
 
