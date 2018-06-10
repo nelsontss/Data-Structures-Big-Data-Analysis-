@@ -274,10 +274,8 @@ public class GestStackOverflowModel implements TADCommunity
                 for (int k = 31-l1; k<=31-l2; k++){
                     for (MyPost p : this.questionsList.get(i).get(a).get(k)) {
                         Pergunta v = (Pergunta) p;
-                        System.out.println(v.getID() + "|" + v.getAnswerCount());
-                        boolean f1 = res.contains(v);
-                        boolean f = res.add(v);
-                        System.out.println(f+"|"+f1);
+                        res.add(v);
+
                     }
                 }
             }
