@@ -175,7 +175,7 @@ public class myUser
     
          /**
      * Metodo que define o numero de respostas feitas pelo user
-     * @param questions Numero de respostas feitas pelo user
+     * @param answers Numero de respostas feitas pelo user
      */
     public void setAnswers(int answers){
     this.answers=answers;

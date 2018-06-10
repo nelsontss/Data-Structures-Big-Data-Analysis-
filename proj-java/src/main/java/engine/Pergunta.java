@@ -171,7 +171,7 @@ public class Pergunta extends MyPost
      * Função que devolve a melhor resposta feita à pergunta
      * @return Resposta com melhor pontuação
      */
-    public String getBestAnswer(){
+    public Long getBestAnswer(){
         TreeSet<Resposta> r = new TreeSet<>(new ComparadorRespostasPorPont());
         for(Resposta x : resp)
             r.add(x);

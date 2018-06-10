@@ -229,7 +229,7 @@ public class GestStackOverflowModel implements TADCommunity
 
     // Query 6
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end) {
-        TreeSet<Long> res = new TreeSet<Long>(new ComparadorRespostasVotos());
+        TreeSet<Resposta> res = new TreeSet<>(new ComparadorRespostasVotos());
         int l1;
         int l2;
         int j1;
@@ -253,12 +253,12 @@ public class GestStackOverflowModel implements TADCommunity
                 }
             }
         }
-        return res.stream().limit(N).collect(Collectors.toList());
+        return res.stream().map(p -> Long.parseLong(p.getID())).limit(N).collect(Collectors.toList());
     }
 
     // Query 7
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end) {
-        TreeSet<Long> res= new TreeSet<Long>(new ComparadorPerguntasPorResposta());
+        TreeSet<Pergunta> res= new TreeSet<>(new ComparadorPerguntasPorResposta());
         int l1;
         int l2;
         int j1;
@@ -279,7 +279,7 @@ public class GestStackOverflowModel implements TADCommunity
                 }
             }
         }
-        return res.stream().limit(N).collect(Collectors.toList());
+        return res.stream().map(p -> Long.parseLong(p.getID())).limit(N).collect(Collectors.toList());
     }
 
 
