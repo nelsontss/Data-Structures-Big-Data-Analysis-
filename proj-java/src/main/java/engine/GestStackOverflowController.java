@@ -46,9 +46,13 @@ public class GestStackOverflowController {
         System.out.println("-  Inserir o id do post: ");
         try {
             id = sc.nextLong();
+            long before,after;
+            before = System.currentTimeMillis();
             Pair<String,String> p = estrutura.infoFromPost(id);
+            after = System.currentTimeMillis();
             System.out.println("Titulo: " + p.getFst());
             System.out.println("Nome: " + p.getSnd());
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (InputMismatchException e){
             System.out.print("Id invalido!");
         }
@@ -64,8 +68,12 @@ public class GestStackOverflowController {
         System.out.println("Qual o numero de users que deseja ver no top? ");
         try{
             N = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.topMostActive(N);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
 
         }catch (InputMismatchException e){
             System.out.println(("Nao digitou um numero!"));
@@ -82,8 +90,12 @@ public class GestStackOverflowController {
             begin = LocalDate.parse(sc.nextLine());
             System.out.println("Qual é a segunda data: ");
             end = LocalDate.parse(sc.nextLine());
+            long before,after;
+            before = System.currentTimeMillis();
             Pair<Long,Long> p = estrutura.totalPosts(begin,end);
+            after = System.currentTimeMillis();
             System.out.println(p);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (DateTimeException e){
             System.out.println("Datas invalidas!!");
         }
@@ -102,8 +114,12 @@ public class GestStackOverflowController {
             begin = LocalDate.parse(sc.nextLine());
             System.out.println("Qual é a segunda data: ");
             end = LocalDate.parse(sc.nextLine());
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.questionsWithTag(tag,begin,end);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (DateTimeException e){
             System.out.println("Datas invalidas!!");
         }
@@ -117,8 +133,12 @@ public class GestStackOverflowController {
         System.out.println("Qual o id ?");
         try {
             id = sc.nextLong();
+            long before,after;
+            before = System.currentTimeMillis();
             Pair<String,List<Long>> r = estrutura.getUserInfo(id);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (InputMismatchException e){
             System.out.println("Id invalido!!");
         }
@@ -138,8 +158,12 @@ public class GestStackOverflowController {
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.mostVotedAnswers(N,begin,end);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (Exception e){
             System.out.println("Inputs invalidos!");
         }
@@ -158,8 +182,12 @@ public class GestStackOverflowController {
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.mostAnsweredQuestions(N,begin,end);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (Exception e){
             System.out.println("Inputs invalidos!");
         }
@@ -176,8 +204,12 @@ public class GestStackOverflowController {
             word = sc.nextLine();
             System.out.println("Qual o N? ");
             N  = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.containsWord(N,word);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (InputMismatchException e){
             System.out.println("Inputs invalidos!");
         }
@@ -196,8 +228,12 @@ public class GestStackOverflowController {
             id2 = sc.nextLong();
             System.out.println("Qual o N: ");
             N = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.bothParticipated(N,id1,id2);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (InputMismatchException e){
             System.out.println("Inputs invalidos!");
         }
@@ -211,8 +247,12 @@ public class GestStackOverflowController {
         try {
             System.out.println("Id da pergunta: ");
             id = sc.nextLong();
+            long before,after;
+            before = System.currentTimeMillis();
             Long r = estrutura.betterAnswer(id);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (InputMismatchException e){
             System.out.println("Inputs invalidos!");
         }
@@ -231,8 +271,12 @@ public class GestStackOverflowController {
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();
+            long before,after;
+            before = System.currentTimeMillis();
             List<Long> r = estrutura.mostUsedBestRep(N,begin,end);
+            after = System.currentTimeMillis();
             System.out.println(r);
+            System.out.println("Tempo -> " + (after-before) + " ms");
         }catch (Exception e){
             System.out.println("Inputs invalidos!");
         }

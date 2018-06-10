@@ -27,8 +27,7 @@ public class GestStackOverflowMVCApp
     public static void main(String[] args){
         
         TADCommunity model;
-
-        model = createDate("xml/");
+        model = createDate(args[0]);
 
 
         GestStackOverflowView view = new GestStackOverflowView();
