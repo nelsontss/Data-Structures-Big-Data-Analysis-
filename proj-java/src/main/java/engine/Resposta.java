@@ -84,7 +84,7 @@ public class Resposta extends MyPost
     
     public double calc_post_pont (int reputation){
         double r = this.score*0.65 + reputation*0.25 + this.comments*0.1;
-        setPont(r);
+        this.pont = r;
         return r;
     }
     

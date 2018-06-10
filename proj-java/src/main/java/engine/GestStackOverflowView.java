@@ -139,7 +139,7 @@ public class GestStackOverflowView {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
         sb.append("\n-                                          -");
-        sb.append("\n-          Query 10 - betterAnswer          -");
+        sb.append("\n-          Query 10 - betterAnswer         -");
         sb.append("\n-  Dado o id de uma pergunta devolve a     -");
         sb.append("\n-  melhor resposta.                        -");
         sb.append("\n-                                          -");
@@ -153,7 +153,7 @@ public class GestStackOverflowView {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
         sb.append("\n-                                          -");
-        sb.append("\n-          Query 9 - betterAnswer         -");
+        sb.append("\n-          Query 9 - betterAnswer          -");
         sb.append("\n-  Dados 2 ids devolve as N perguntas em   -");
         sb.append("\n-  que esses 2 utilizadores participaram.  -");
         sb.append("\n-                                          -");

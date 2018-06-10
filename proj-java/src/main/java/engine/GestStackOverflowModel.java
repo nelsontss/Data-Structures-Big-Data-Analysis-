@@ -77,13 +77,14 @@ public class GestStackOverflowModel implements TADCommunity
         u.addLastPost(p);
         if(p instanceof Resposta){
             Resposta r = (Resposta) p;
+            r.calc_post_pont(u.getReputation());
             Pergunta parent = (Pergunta)this.posts.get(r.getParentID());
             this.totalAnswers++;
             this.totalPosts++;
             u.aumentaAnswers();
             if(parent!=null)
             parent.addResp(r);
-            r.calc_post_pont(u.getReputation());
+
         }else{
             this.totalQuestions++;
             this.totalPosts++;
@@ -316,9 +317,9 @@ public class GestStackOverflowModel implements TADCommunity
                         Pergunta v= (Pergunta) p;
                         if (topN.containsKey(v.getOwnerUser())){
                             for(String s: v.getTags()) {
-                                if(aux.containsKey(s)){
-                                    aux.replace(s,aux.get(s)+1);
-                                }else aux.put(s,1);
+                                if(aux.containsKey(tags.get(s))){
+                                    aux.replace(tags.get(s),aux.get(tags.get(s))+1);
+                                }else aux.put(tags.get(s),1);
                             }
                         }
                     }
@@ -326,13 +327,14 @@ public class GestStackOverflowModel implements TADCommunity
             }
         }
 
-        List<String> aux2 = aux.keySet().stream()
-                                        .sorted((v1,v2)-> -1 * aux.get(v1).compareTo(aux.get(v2)))
+              List<String> aux2 = aux.entrySet().stream()
+                                        .sorted(new ComparadorTagsPorOcorrencia())
+                                        .map(Map.Entry::getKey)
                                         .collect(Collectors.toList());
-        for (String s : aux2)
-            r.add(Long.parseLong(tags.get(s)));
+        for (int i = 0; i<N;i++)
+            r.add(Long.parseLong(aux2.get(i)));
 
-        return r.subList(0,N);
+        return r;
     }
 
     public void clear(){

@@ -116,6 +116,7 @@ public class Pergunta extends MyPost
         TreeSet<Resposta> r = new TreeSet<>(new ComparadorRespostasPorPont());
         for(Resposta x : resp)
             r.add(x);
+
         return Long.parseLong(r.first().getID());
     }
 
