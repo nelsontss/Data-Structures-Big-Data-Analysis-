@@ -93,7 +93,7 @@ public class Resposta extends MyPost
         if(o==null && this.getClass()!=o.getClass()) return false;
         
         Resposta r= (Resposta) o;
-        return(this.getParentID().equals(r.getParentID()) && this.getNComments() == r.getNComments()
+        return(super.equals(o) && this.getParentID().equals(r.getParentID()) && this.getNComments() == r.getNComments()
         && this.getScore() == r.getScore() && this.getPont() == r.getPont());
     }
     

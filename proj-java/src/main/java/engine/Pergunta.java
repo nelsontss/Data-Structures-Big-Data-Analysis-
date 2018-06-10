@@ -217,8 +217,8 @@ public class Pergunta extends MyPost
         if(this==o) return true;
         if(o==null && this.getClass()!=o.getClass()) return false;
         Pergunta p= (Pergunta) o;
-        return (this.title.equals(p.getTitle()) && this.tags.equals(p.getTags())
-        && this.resp.equals(p.getResp()) && this.respHash.equals(p.getRespHash()));
+        return super.equals(o) && this.title.equals(p.getTitle()) && this.tags.equals(p.getTags())
+        && this.resp.equals(p.getResp()) && this.respHash.equals(p.getRespHash());
     }
 
     /**
