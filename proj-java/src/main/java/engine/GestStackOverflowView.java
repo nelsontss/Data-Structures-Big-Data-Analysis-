@@ -6,10 +6,17 @@ import java.util.List;
 public class GestStackOverflowView {
     private List<String> menus;
 
+    /**
+     * Função que inicia os menus
+     */
     public GestStackOverflowView() {
         menus = initMenus();
     }
 
+    /**
+     * Função que adiciona o main menu
+     * @return Lista com os menus
+     */
     public List<String> initMenus() {
         List<String> r = new ArrayList<>();
         r.add(this.getMainMenu());
@@ -17,6 +24,10 @@ public class GestStackOverflowView {
         return r;
     }
 
+    /**
+     * Início do menu da query 1
+     * @return String que inicia o menu da query 1
+     */
     public String getInfoFromPostMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -33,6 +44,10 @@ public class GestStackOverflowView {
         return sb.toString();
     }
 
+    /**
+     * Início do menu da query 2
+     * @return String que inicia o menu da query 2
+     */
     public String getTopMostActiveMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -48,7 +63,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 3
+     * @return String que inicia o menu da query 3
+     */
     public String getTotalPostsMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -63,7 +81,10 @@ public class GestStackOverflowView {
         return sb.toString();
     }
 
-
+    /**
+     * Início do menu da query 4
+     * @return String que inicia o menu da query 4
+     */
     public String getQuestionsWithTagMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -78,7 +99,10 @@ public class GestStackOverflowView {
         return sb.toString();
     }
 
-
+    /**
+     * Início do menu da query 5
+     * @return String que inicia o menu da query 5
+     */
     public String getUserInfoMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -92,7 +116,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 6
+     * @return String que inicia o menu da query 6
+     */
     public String getMostVotedAnswersMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -106,7 +133,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 7
+     * @return String que inicia o menu da query 7
+     */
     public String getMostAnsweredQuestionsMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -120,7 +150,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 8
+     * @return String que inicia o menu da query 8
+     */
     public String getContainsWordMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -134,7 +167,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 10
+     * @return String que inicia o menu da query 10
+     */
     public String getBetterAnswerMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -148,7 +184,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 9
+     * @return String que inicia o menu da query 9
+     */
     public String getBothParticipatedMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -162,7 +201,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do menu da query 11
+     * @return String que inicia o menu da query 11
+     */
     public String getMostUsedBestRepMenu(){
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
@@ -176,7 +218,10 @@ public class GestStackOverflowView {
 
         return sb.toString();
     }
-
+    /**
+     * Início do main menu
+     * @return String que inicia o main menu
+     */
     public String getMainMenu() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------");
