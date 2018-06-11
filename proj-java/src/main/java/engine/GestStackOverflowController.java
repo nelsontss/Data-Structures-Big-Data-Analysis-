@@ -85,10 +85,10 @@ public class GestStackOverflowController {
         String menu; LocalDate begin; LocalDate end;
         menu = viewMenus.getTotalPostsMenu();
         System.out.println(menu);
-        System.out.println("Qual é a primeira data: ");
+        System.out.println("Qual é a primeira data: (AAAA-MM-DD)");
         try{
             begin = LocalDate.parse(sc.nextLine());
-            System.out.println("Qual é a segunda data: ");
+            System.out.println("Qual é a segunda data: (AAAA-MM-DD)");
             end = LocalDate.parse(sc.nextLine());
             long before,after;
             before = System.currentTimeMillis();
@@ -110,9 +110,9 @@ public class GestStackOverflowController {
         System.out.println("Qual a tag ?");
         try{
             tag = sc.nextLine();
-            System.out.println("Qual é a primeira data: ");
+            System.out.println("Qual é a primeira data: (AAAA-MM-DD)");
             begin = LocalDate.parse(sc.nextLine());
-            System.out.println("Qual é a segunda data: ");
+            System.out.println("Qual é a segunda data: (AAAA-MM-DD)");
             end = LocalDate.parse(sc.nextLine());
             long before,after;
             before = System.currentTimeMillis();
@@ -152,9 +152,9 @@ public class GestStackOverflowController {
         menu = viewMenus.getMostVotedAnswersMenu();
         System.out.println(menu);
         try {
-            System.out.println("Data de inicio: ");
+            System.out.println("Data de inicio: (AAAA-MM-DD)");
             begin = LocalDate.parse(sc.nextLine());
-            System.out.println("Data do fim: ");
+            System.out.println("Data do fim: (AAAA-MM-DD)");
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();
@@ -176,9 +176,9 @@ public class GestStackOverflowController {
         menu = viewMenus.getMostAnsweredQuestionsMenu();
         System.out.println(menu);
         try {
-            System.out.println("Data de inicio: ");
+            System.out.println("Data de inicio: (AAAA-MM-DD)");
             begin = LocalDate.parse(sc.nextLine());
-            System.out.println("Data do fim: ");
+            System.out.println("Data do fim: (AAAA-MM-DD)");
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();
@@ -265,9 +265,9 @@ public class GestStackOverflowController {
         menu = viewMenus.getMostUsedBestRepMenu();
         System.out.println(menu);
         try {
-            System.out.println("Data de inicio: ");
+            System.out.println("Data de inicio: (AAAA-MM-DD)");
             begin = LocalDate.parse(sc.nextLine());
-            System.out.println("Data do fim: ");
+            System.out.println("Data do fim: (AAAA-MM-DD)");
             end = LocalDate.parse(sc.nextLine());
             System.out.println("Qual o N?");
             N = sc.nextInt();

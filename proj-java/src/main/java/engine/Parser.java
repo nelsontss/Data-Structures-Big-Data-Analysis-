@@ -62,7 +62,8 @@ public class Parser {
                break;
             }   
         }
-        
+        eventReader.close();
+
         
    }
     
@@ -131,7 +132,7 @@ public class Parser {
          
         }
         
-        
+        eventReader.close();
    } 
     
     
@@ -162,6 +163,6 @@ public class Parser {
          
         }
         
-        
+        eventReader.close();
     }  
 }
