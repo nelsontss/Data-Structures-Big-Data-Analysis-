@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import common.Pair;
-import org.w3c.dom.ls.LSException;
+
 
 public class GestStackOverflowController {
     private TADCommunity  estrutura;
@@ -303,7 +303,7 @@ public class GestStackOverflowController {
                 case 9: startBothParticipated();break;
                 case 10: startBetterAnswer();break;
                 case 11: startMostUsedBestRep();break;
-                case 12: estrutura.clear();
+                case 12: estrutura.clear();break;
                 default: System.out.println("Opçao errada!");break;
             }
         } while(op!=-1);

@@ -1,18 +1,17 @@
 package engine;
 
+import common.Pair;
+import li3.TADCommunity;
+
 import java.util.*;
 import java.time.LocalDate;
 import java.io.FileNotFoundException;
-import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
-import common.Pair;
-import li3.TADCommunity;
 /**
  * Write a description of class Estrutura Principal here.
  *
@@ -30,9 +29,7 @@ public class GestStackOverflowModel implements TADCommunity
     private ArrayList<ArrayList<ArrayList<ArrayList<MyPost>>>> questionsList;
     private ArrayList<myUser> usersByNPosts;
     private ArrayList<myUser> usersByReputation;
-    private long totalAnswers;
-    private long totalQuestions;
-    private long totalPosts;
+
     
     public GestStackOverflowModel(){
         this.users = new HashMap<String,myUser>();
@@ -54,9 +51,7 @@ public class GestStackOverflowModel implements TADCommunity
                 }
             }
         }
-        this.totalAnswers = 0;
-        this.totalQuestions = 0;
-        this.totalPosts = 0;
+
     }
     
     public void addUser(myUser u) {
@@ -79,15 +74,13 @@ public class GestStackOverflowModel implements TADCommunity
             Resposta r = (Resposta) p;
             r.calc_post_pont(u.getReputation());
             Pergunta parent = (Pergunta)this.posts.get(r.getParentID());
-            this.totalAnswers++;
-            this.totalPosts++;
+
             u.aumentaAnswers();
             if(parent!=null)
             parent.addResp(r);
 
         }else{
-            this.totalQuestions++;
-            this.totalPosts++;
+
             this.questionsList.get(17-(year-2000)).get(12-month).get(31-day).add(p);
             this.users.get(p.getOwnerUser()).aumentaQuestions();
         }
@@ -100,6 +93,7 @@ public class GestStackOverflowModel implements TADCommunity
     }
     
     public void load(String dump) {
+
         try {
             Parser p = new Parser(this);
             p.parseUsers(dump);
@@ -385,7 +379,24 @@ public class GestStackOverflowModel implements TADCommunity
     }
 
     public void clear(){
-
+        users.clear();
+        usersByNPosts.clear();
+        usersByReputation.clear();
+        posts.clear();
+        postsList.clear();
+        questionsList.clear();
+        for(int i = 0; i<18; i++){
+            this.postsList.add(new ArrayList<>());
+            this.questionsList.add(new ArrayList<>());
+            for(int i2 = 0; i2<12; i2++){
+                this.postsList.get(i).add(new ArrayList<>());
+                this.questionsList.get(i).add(new ArrayList<>());
+                for(int i3 = 0; i3<31; i3++){
+                    this.postsList.get(i).get(i2).add(new ArrayList<>());
+                    this.questionsList.get(i).get(i2).add(new ArrayList<>());
+                }
+            }
+        }
     }
 }    
     
