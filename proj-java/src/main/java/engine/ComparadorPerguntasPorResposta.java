@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 /**
  * Comparador de perguntas por número de respostas
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorPerguntasPorResposta implements Comparator<Pergunta> {

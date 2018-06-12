@@ -7,14 +7,14 @@ public class GestStackOverflowView {
     private List<String> menus;
 
     /**
-     * Função que inicia os menus
+     * Função que inicia a apresentação dos menus
      */
     public GestStackOverflowView() {
         menus = initMenus();
     }
 
     /**
-     * Função que adiciona o main menu
+     * Função que adiciona a apresentação main menu
      * @return Lista com os menus
      */
     public List<String> initMenus() {
@@ -25,7 +25,7 @@ public class GestStackOverflowView {
     }
 
     /**
-     * Início do menu da query 1
+     * Apresentação da query 1
      * @return String que inicia o menu da query 1
      */
     public String getInfoFromPostMenu(){
@@ -45,7 +45,7 @@ public class GestStackOverflowView {
     }
 
     /**
-     * Início do menu da query 2
+     * Apresentação da query 2
      * @return String que inicia o menu da query 2
      */
     public String getTopMostActiveMenu(){
@@ -64,7 +64,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 3
+     * Apresentação da query 3
      * @return String que inicia o menu da query 3
      */
     public String getTotalPostsMenu(){
@@ -82,7 +82,7 @@ public class GestStackOverflowView {
     }
 
     /**
-     * Início do menu da query 4
+     * Apresentação da query 4
      * @return String que inicia o menu da query 4
      */
     public String getQuestionsWithTagMenu(){
@@ -100,7 +100,7 @@ public class GestStackOverflowView {
     }
 
     /**
-     * Início do menu da query 5
+     * Apresentação da query 5
      * @return String que inicia o menu da query 5
      */
     public String getUserInfoMenu(){
@@ -117,7 +117,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 6
+     * Apresentação da query 6
      * @return String que inicia o menu da query 6
      */
     public String getMostVotedAnswersMenu(){
@@ -134,7 +134,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 7
+     * Apresentação da query 7
      * @return String que inicia o menu da query 7
      */
     public String getMostAnsweredQuestionsMenu(){
@@ -151,7 +151,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 8
+     * Apresentação da query 8
      * @return String que inicia o menu da query 8
      */
     public String getContainsWordMenu(){
@@ -168,7 +168,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 10
+     * Apresentação da query 10
      * @return String que inicia o menu da query 10
      */
     public String getBetterAnswerMenu(){
@@ -185,7 +185,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 9
+     * Apresentação da query 9
      * @return String que inicia o menu da query 9
      */
     public String getBothParticipatedMenu(){
@@ -202,7 +202,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do menu da query 11
+     * Apresentação da query 11
      * @return String que inicia o menu da query 11
      */
     public String getMostUsedBestRepMenu(){
@@ -219,7 +219,7 @@ public class GestStackOverflowView {
         return sb.toString();
     }
     /**
-     * Início do main menu
+     * Apresentação do main menu
      * @return String que inicia o main menu
      */
     public String getMainMenu() {

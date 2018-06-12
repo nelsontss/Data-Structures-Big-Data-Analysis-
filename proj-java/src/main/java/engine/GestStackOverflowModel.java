@@ -15,8 +15,8 @@ import java.util.Map;
 /**
  * Write a description of class Estrutura Principal here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Grupo 48
+ * @version 12/06/2018
  */
 
 public class GestStackOverflowModel implements TADCommunity
@@ -125,7 +125,7 @@ public class GestStackOverflowModel implements TADCommunity
 
 
 
-
+    //query 1
     public Pair<String,String> infoFromPost(long id){
         Pair<String,String> r = new Pair("","");
         if (this.posts.containsKey(String.valueOf(id))){
@@ -150,7 +150,7 @@ public class GestStackOverflowModel implements TADCommunity
         }
         return r;
     }
-
+    //query 2
     public List<Long> topMostActive(int N){
         List<Long> list;
         list=this.usersByNPosts.stream()
@@ -159,7 +159,7 @@ public class GestStackOverflowModel implements TADCommunity
                 .collect(Collectors.toList());
         return list;
     }
-
+    //query 3
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
         int l1;
         int l2; 
@@ -185,7 +185,7 @@ public class GestStackOverflowModel implements TADCommunity
         }
         return new Pair(perg,resp);
     }
-
+    //query 5
     public Pair<String, List<Long>> getUserInfo(long id){
         myUser c=users.get(String.valueOf(id));
         List m;
@@ -195,7 +195,7 @@ public class GestStackOverflowModel implements TADCommunity
         String k= c.getAboutMe();
         return new Pair (k,m);
     }
-
+    //query 4
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end){
         List t=new ArrayList <Long>();
         int l1;
@@ -279,7 +279,7 @@ public class GestStackOverflowModel implements TADCommunity
         return res.stream().map(p -> Long.parseLong(p.getID())).limit(N).collect(Collectors.toList());
     }
 
-
+    //query 8
     public List<Long> containsWord(int N, String word){
         List<Long> r = new ArrayList<>();
         Iterator<ArrayList<ArrayList<ArrayList<MyPost>>>> i = questionsList.iterator();
@@ -302,7 +302,7 @@ public class GestStackOverflowModel implements TADCommunity
         }
         return r;
     }
-
+    //query 9
     public List<Long> bothParticipated(int N, long id1, long id2){
         List<Long> r = new ArrayList<>();
         Iterator<ArrayList<ArrayList<ArrayList<MyPost>>>> i = questionsList.iterator();
@@ -325,7 +325,7 @@ public class GestStackOverflowModel implements TADCommunity
         }
         return r;
     }
-
+    //query 10
     public long betterAnswer(long id){
         String x = String.valueOf(id);
         MyPost p = posts.get(x);
@@ -335,7 +335,7 @@ public class GestStackOverflowModel implements TADCommunity
         }else
             return -1;
     }
-
+    //query 11
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end){
         List<Long> r = new ArrayList<>();
         HashMap<String,Integer> aux = new HashMap<>();
@@ -379,6 +379,9 @@ public class GestStackOverflowModel implements TADCommunity
         return r;
     }
 
+    /**
+     * Função que permite limpar os conteudos da estrutura principal
+     */
     public void clear(){
         users.clear();
         usersByNPosts.clear();

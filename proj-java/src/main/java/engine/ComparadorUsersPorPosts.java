@@ -3,6 +3,7 @@ package engine;
 import java.util.Comparator;
 /**
  * Comparador de users por numero de posts feitos.
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorUsersPorPosts implements Comparator<myUser>

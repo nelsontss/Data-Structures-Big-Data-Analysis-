@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Map;
 /**
  * Comparador de pares (tag, ocorrência) por ocorrência
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorTagsPorOcorrencia implements Comparator<Map.Entry<String, Integer>> {

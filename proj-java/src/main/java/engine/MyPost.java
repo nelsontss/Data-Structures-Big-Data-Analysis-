@@ -4,8 +4,8 @@ import java.util.Iterator;
 /**
  * Classe que implementa um post
  *
- * Grupo 48
- * 12/6/2018
+ * @author Grupo 48
+ * @version 12/6/2018
  */
 public abstract class MyPost
 {
