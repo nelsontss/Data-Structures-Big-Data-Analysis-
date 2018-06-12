@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
 /**
- * Write a description of class Estrutura Principal here.
+ * Classe que contém a estrutura principal e implementa as querys
  *
  * @author Grupo 48
  * @version 12/06/2018
@@ -30,7 +30,9 @@ public class GestStackOverflowModel implements TADCommunity
     private ArrayList<myUser> usersByNPosts;
     private ArrayList<myUser> usersByReputation;
 
-    
+    /**
+     * Construtor vazio da estrutura principal
+     */
     public GestStackOverflowModel(){
         this.users = new HashMap<String,myUser>();
         this.posts = new HashMap<String,MyPost>();
@@ -53,13 +55,21 @@ public class GestStackOverflowModel implements TADCommunity
         }
 
     }
-    
+
+    /**
+     * Função que adicionar um utilizador às estruturas com utilizadores
+     * @param u
+     */
     public void addUser(myUser u) {
         this.users.put(u.getId(), u);
         this.usersByNPosts.add(u);
         this.usersByReputation.add(u);
     }
-    
+
+    /**
+     * Função que adiciona um post às estruturas com posts
+     * @param p Post a adicionar
+     */
     public void addPost(MyPost p){
         this.posts.put(p.getID(),p);
         int year = p.getData().getYear();
@@ -86,12 +96,21 @@ public class GestStackOverflowModel implements TADCommunity
         }
 
     }
-    
+
+    /**
+     * Função que adiciona uma tag ao map com as tags
+     * @param name Nome da tag
+     * @param id ID da tag
+     */
     public void addTag(String name, String id){
 
         this.tags.put(name,id);
     }
-    
+
+    /**
+     * Função que carrega as estruturas de posts, users e tags
+     * @param dump Caminho para os ficheiros xml
+     */
     public void load(String dump) {
 
         try {
@@ -109,8 +128,11 @@ public class GestStackOverflowModel implements TADCommunity
         }
 
     }
-    
-    
+
+    /**
+     * Função que transforma os pares (id,post) numa string
+     * @return String dos pares (id,post)
+     */
     public String toString(){
         StringBuilder sb = new StringBuilder();
         
