@@ -316,6 +316,7 @@ public class GestStackOverflowModel implements TADCommunity
                     while(o.hasNext() && x<N){
                         Pergunta p1 = (Pergunta) o.next();
                         if(p1.bothParticipated(id1,id2)){
+                           
                             r.add(Long.valueOf(p1.getID()));
                             x++;
                         }

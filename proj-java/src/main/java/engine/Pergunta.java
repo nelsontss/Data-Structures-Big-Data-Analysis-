@@ -164,7 +164,7 @@ public class Pergunta extends MyPost
      */
     public void addResp(Resposta r){
         this.resp.add(r.clone());
-        this.respHash.put(r.getID(),r.clone());
+        this.respHash.put(r.getOwnerUser(),r.clone());
     }
 
     /**
@@ -186,7 +186,7 @@ public class Pergunta extends MyPost
      * @return True se ambos participaram, false se pelo menos um não participou
      */
     public boolean bothParticipated(long id1, long id2){
-        int flag = 0;
+
         if(id1==Long.valueOf(this.getOwnerUser()) && respHash.containsKey(String.valueOf(id2))){
             return true;
         }
