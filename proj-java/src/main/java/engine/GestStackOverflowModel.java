@@ -141,10 +141,11 @@ public class GestStackOverflowModel implements TADCommunity
              if (a instanceof Resposta){
                 Resposta p = (Resposta) a;
                 MyPost d=this.posts.get(p.getParentID());
-                String v=(p.getParentID());
+                String v=this.posts.get(p.getParentID()).getOwnerUser();
+                v = this.users.get(v).getName();
                 Pergunta ç= (Pergunta) d;
                 String z= ç.getTitle();
-                r =  new Pair(v,z);
+                r =  new Pair(z,v);
              }
         }
         return r;
