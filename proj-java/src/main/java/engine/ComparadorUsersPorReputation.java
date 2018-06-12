@@ -2,6 +2,7 @@ package engine;
 import java.util.Comparator;
 /**
  * Comparador de users por reputaçao.
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorUsersPorReputation implements Comparator<myUser>

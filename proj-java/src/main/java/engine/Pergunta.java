@@ -6,8 +6,8 @@ import java.time.LocalDate;
 /**
  * Classe que implementa uma pergunta
  *
- * Grupo 48
- * 12/6/2018
+ * @author Grupo 48
+ * @version 12/6/2018
  */
 public class Pergunta extends MyPost
 {

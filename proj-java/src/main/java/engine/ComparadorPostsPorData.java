@@ -3,6 +3,7 @@ package engine;
 import java.util.Comparator;
 /**
  * Comparador de posts por data
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorPostsPorData implements Comparator<MyPost> {

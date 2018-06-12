@@ -3,6 +3,7 @@ package engine;
 import java.util.Comparator;
 /**
  * Comparador de respostas por número de votos
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorRespostasVotos implements Comparator<Resposta> {

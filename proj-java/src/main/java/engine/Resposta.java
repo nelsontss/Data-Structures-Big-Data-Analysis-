@@ -4,8 +4,8 @@ import java.time.LocalDate;
 /**
  * Classe que implementa uma resposta
  *
- * Grupo 48
- * 12/6/2018
+ * @author Grupo 48
+ * @version 12/6/2018
  */
 public class Resposta extends MyPost
 {

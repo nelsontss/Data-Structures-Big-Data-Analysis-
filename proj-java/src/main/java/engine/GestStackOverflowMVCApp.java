@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
- * Write a description of class GestStackOverflowMVCApp here.
+ * Classe que permite iniciar o programa
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Grupo 48
+ * @version 12/06/2018
  */
 public class GestStackOverflowMVCApp
 {
@@ -20,8 +20,6 @@ public class GestStackOverflowMVCApp
         
         return estado;
     }
-
-
 
 
     public static void main(String[] args){

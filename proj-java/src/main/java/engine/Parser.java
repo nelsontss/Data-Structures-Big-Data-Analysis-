@@ -17,19 +17,37 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.Attribute;
 import javax.xml.namespace.QName;
 
+/**
+ * Classe que permite obter a informação dos ficheiros xml
+ * @author Grupo 48
+ * @version 12/06/2018
+ */
 public class Parser {
    private GestStackOverflowModel e;
 
+    /**
+     * Construtor vazio da classe parser
+     */
    public Parser(){
        super();
        this.e = new GestStackOverflowModel();
    }
 
+    /**
+     * Construtor parametrizado da classe parser
+     * @param e
+     */
    public Parser(GestStackOverflowModel e){
        super();
        this.e = e;
    }
 
+    /**
+     * Função que vai buscar as informações sobre os utilizadores dos ficheiros xml e os coloca na estrutura principal
+     * @param path Caminho para os ficheiros xml
+     * @throws XMLStreamException Se houver erros de processamento de informação
+     * @throws FileNotFoundException Se não encontrar o ficheiro "Users.xml"
+     */
    public void parseUsers(String path) throws XMLStreamException, FileNotFoundException {
          FileInputStream file = new FileInputStream(path + "Users.xml");
          XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -73,7 +91,12 @@ public class Parser {
 
    }
 
-
+    /**
+     * Função que vai buscar informações sobre os posts aos ficheiros xml e os coloca na estrutura principal
+     * @param path Caminho para os ficheiros xml
+     * @throws XMLStreamException Se houver erros de processamento de informação
+     * @throws FileNotFoundException Se não encontrar o ficheiro "Posts.xml"
+     */
    public void parsePosts(String path) throws XMLStreamException, FileNotFoundException {
        FileInputStream file = new FileInputStream(path + "Posts.xml");
          XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -145,7 +168,12 @@ public class Parser {
        eventReader.close();
    }
 
-
+    /**
+     * Função que vai buscar informações sobre as tags aos ficheiros xml e os coloca na estrutura principal
+     * @param path Caminho para os ficheiros xml
+     * @throws XMLStreamException Se houver erros de processamento de informação
+     * @throws FileNotFoundException Se não encontrar o ficheiro "Tags.xml"
+     */
    public void parseTags(String path) throws XMLStreamException, FileNotFoundException {
          FileInputStream file = new FileInputStream(path + "Tags.xml");
          XMLInputFactory factory = XMLInputFactory.newInstance();

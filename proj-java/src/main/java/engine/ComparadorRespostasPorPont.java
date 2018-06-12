@@ -3,6 +3,7 @@ package engine;
 import java.util.Comparator;
 /**
  * Comparador de respostas por pontuação
+ * @author Grupo 48
  * @version 12/06/2018
  */
 public class ComparadorRespostasPorPont implements Comparator<Resposta> {

@@ -10,27 +10,42 @@ import java.util.List;
 import java.util.Scanner;
 import common.Pair;
 
-
+/**
+ * Classe que implementa os menus(interface entre utilizador e programa)
+ * @author Grupo 48
+ * @version 12/06/2018
+ */
 public class GestStackOverflowController {
     private TADCommunity  estrutura;
     private GestStackOverflowView viewMenus;
 
+    /**
+     * Função que define o inicio dos menus
+     * @param m Representa uma lista com os menus a definir
+     */
     public void setView(GestStackOverflowView m) {
         viewMenus = m;
     }
 
+    /**
+     * Função que define a estrutura
+     * @param e Estrutura a definir
+     */
     public void setModel(TADCommunity e){
         estrutura = e;
     }
 
-
+    /**
+     * Função que permite ler o número introduzido pelo utilizador
+     * @return O número devolvido pelo utilizador
+     */
     public int lerOpcao(){
         Scanner sc = new Scanner(System.in);
         int r = 0;
         try {
                 r = sc.nextInt();
             }catch (InputMismatchException e){
-                System.out.println("Nao introduzio um numero!");
+                System.out.println("Nao introduziu um numero!");
                 lerOpcao();
             }
 
@@ -38,6 +53,9 @@ public class GestStackOverflowController {
         return r;
     }
 
+    /**
+     * Função que implementa o menu da query 1
+     */
     public void startInfoFromPost(){
         Scanner sc = new Scanner(System.in);
         String menu; long id;
@@ -60,6 +78,9 @@ public class GestStackOverflowController {
 
     }
 
+    /**
+     * Função que implementa o menu da query 2
+     */
     public void startTopMostActive(){
         Scanner sc = new Scanner(System.in);
         String menu; int N;
@@ -79,7 +100,9 @@ public class GestStackOverflowController {
             System.out.println(("Nao digitou um numero!"));
         }
     }
-
+    /**
+     * Função que implementa o menu da query 3
+     */
     public void startTotalPosts(){
         Scanner sc = new Scanner(System.in);
         String menu; LocalDate begin; LocalDate end;
@@ -100,7 +123,9 @@ public class GestStackOverflowController {
             System.out.println("Datas invalidas!!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 4
+     */
     public void startQuestionsWithTag(){
         Scanner sc = new Scanner(System.in);
         String menu; LocalDate begin; LocalDate end;
@@ -124,7 +149,9 @@ public class GestStackOverflowController {
             System.out.println("Datas invalidas!!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 5
+     */
     public void startGetUserInfo(){
         Scanner sc = new Scanner(System.in);
         String menu; Long id;
@@ -144,7 +171,9 @@ public class GestStackOverflowController {
         }
 
     }
-
+    /**
+     * Função que implementa o menu da query 6
+     */
     public void startMostVotedAnswers(){
         Scanner sc = new Scanner(System.in);
         String menu; int N;
@@ -168,7 +197,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 7
+     */
     public void startMostAnsweredQuestions(){
         Scanner sc = new Scanner(System.in);
         String menu; int N;
@@ -192,7 +223,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 8
+     */
     public void startContainsWord(){
         Scanner sc = new Scanner(System.in);
         String menu; String word;
@@ -214,7 +247,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 9
+     */
     public void startBothParticipated(){
         Scanner sc = new Scanner(System.in);
         String menu; Long id1; Long id2;
@@ -238,7 +273,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 10
+     */
     public void startBetterAnswer(){
         Scanner sc = new Scanner(System.in);
         String menu; Long id;
@@ -257,7 +294,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que implementa o menu da query 11
+     */
     public void startMostUsedBestRep(){
         Scanner sc = new Scanner(System.in);
         String menu; int N;
@@ -281,7 +320,9 @@ public class GestStackOverflowController {
             System.out.println("Inputs invalidos!");
         }
     }
-
+    /**
+     * Função que associa a cada número a função que implementa o menu da query respetiva
+     */
     public void startController(){
         String menu; int op;
         Scanner sc = new Scanner(System.in);

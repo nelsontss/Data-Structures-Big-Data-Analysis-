@@ -1,8 +1,14 @@
 package engine;
 import java.util.ArrayList;
+
+/**
+ * Classe que implementa um utilizador
+ * @author Grupo 48
+ * @version 12/06/2018
+ */
 public class myUser
 {
-    // variáveis de instância - substitua o exemplo abaixo pelo seu próprio
+    // variáveis de instância
     private String id;
     private String name;
     private String aboutme;
@@ -13,7 +19,7 @@ public class myUser
     private ArrayList <MyPost> lastposts;
 
     /**
-     * COnstrutor para objetos da classe user
+     * Construtor para objetos da classe myUser
      */
     public myUser()
     {
@@ -28,7 +34,7 @@ public class myUser
     }
 
     /**
-     * Constructor standard para a classe User
+     * Constructor parametrizado para a classe myUser
      * @param id Id do utilizador
      * @param name Nome do utilizador
      * @param aboutme About me do utilizador
@@ -49,8 +55,13 @@ public class myUser
     this.reputation=reputation;
     this.lastposts = new ArrayList<>();
     for(MyPost s: lastposts)
-                this.lastposts.add(s);
+        this.lastposts.add(s);
     }
+
+    /**
+     * Construtor de cópia da classe myUser
+     * @param User
+     */
     public myUser (myUser User){
     this.id=User.getId();
     this.name=User.getName();
@@ -62,7 +73,7 @@ public class myUser
     this.lastposts=User.getLastPosts(); 
     }
     
-     /**
+    /**
      * Metodo que devolve o id do user
      * @return Id do user
      */
@@ -70,7 +81,7 @@ public class myUser
     return this.id;
     }
     
-     /**
+    /**
      * Metodo que devolve o nome do user
      * @return Nome do user
      */
@@ -78,7 +89,7 @@ public class myUser
     return this.name;
     }
     
-     /**
+    /**
      * Metodo que devolve o about me do user
      * @return About me do user
      */
@@ -86,7 +97,7 @@ public class myUser
     return this.aboutme;
     }
     
-         /**
+    /**
      * Metodo que devolve o numero de perguntas feitas pelo user
      * @return numero de perguntas feitas pelo user
      */
@@ -118,7 +129,7 @@ public class myUser
     return this.reputation;
     }
     
-        /**
+    /**
      * Metodo que devolve os ultimos posts feitos pelo user     
      * @return ultimos posts feitos pelo user        
      */
@@ -132,7 +143,7 @@ public class myUser
             return r;
     }
     
-     /**
+    /**
      * Metodo que define o ID do user
      * @param id ID do user
      */
@@ -141,7 +152,7 @@ public class myUser
         this.id=id;
     }
     
-     /**
+    /**
      * Metodo que define o nome do user
      * @param Name Nome do user
      */
@@ -149,7 +160,7 @@ public class myUser
     this.name=name;
     }
 
-     /**
+    /**
      * Metodo que define o about me do user
      * @param aboutme Informação "aboutme" do user
      */
@@ -157,7 +168,7 @@ public class myUser
     this.aboutme=aboutme;
     }
     
-         /**
+    /**
      * Metodo que define a reputação do user
      * @param reputation Reputação do user
      */
@@ -165,7 +176,7 @@ public class myUser
     this.reputation=reputation;
     }
     
-     /**
+    /**
      * Metodo que define o numero de perguntas feitas pelo user
      * @param questions Numero de perguntas feitas pelo user
      */
@@ -173,7 +184,7 @@ public class myUser
     this.questions=questions;
     }
     
-         /**
+    /**
      * Metodo que define o numero de respostas feitas pelo user
      * @param answers Numero de respostas feitas pelo user
      */
@@ -189,7 +200,7 @@ public class myUser
     this.totalposts=totalposts;
     }
     
-             /**
+    /**
      * Metodo que define o array com os ultimos posts do user
      * @param lastposts Array com os ultimos posts do user
      */
@@ -205,8 +216,8 @@ public class myUser
     public void aumentaAnswers(){
         this.answers++;
         this.totalposts++;
-    } 
-       /**
+    }
+    /**
      * Função que aumenta o numero de perguntas , e consequentemente de posts do utilizador
      */  
     public void aumentaQuestions(){
@@ -214,7 +225,7 @@ public class myUser
         this.totalposts++;
     }
 
-       /**
+    /**
      * Função que adiciona um post aos lastposts do user
      *@param p Post a adicionar
      */  
